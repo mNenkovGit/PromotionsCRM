@@ -23,6 +23,8 @@ PromotionsCRM is a web application for managing promotional campaigns. Clients (
 - **Customer** — end customers
 - **Submission** — customer registrations
 - **User** — staff members processing submissions
+  <img width="1007" height="668" alt="image" src="https://github.com/user-attachments/assets/39896fb9-9ee2-49a3-b17e-55ef6fcbc467" />
+
 
 ## Technologies
 
