@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewBag.Title = "Clients";
+    IEnumerable<string> clients = ViewData["Clients"] as IEnumerable<string> ?? new List<string>();
+}
+
+<h2>@ViewBag.Title</h2>
+<p><strong>@ViewBag.Message</strong></p>
+
+<div class="text-center">
+    <h1 class="display-4 welcome-header">Welcome to Promotions CRM page!</h1>
+    <p></p>
+    
+    <div class="row">
+        <ul class="list-group">
+            @foreach (string client in clients)
+        {
+           <li class="list-group-item">@client</li>
+        }
+        </ul>
+    </div>
+</div>
