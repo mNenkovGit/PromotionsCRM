@@ -13,6 +13,7 @@ namespace PromotionsCRM.Web
 
             builder.Services.AddDbContext<PromotionsCrmDbContext>(options =>
             options.UseSqlServer(connectionString));
+
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
