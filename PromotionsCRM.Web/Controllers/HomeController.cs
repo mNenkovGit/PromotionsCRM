@@ -18,6 +18,7 @@ namespace PromotionsCRM.Web.Controllers
             return View();
         }
 
+        [Route("/privacy-policy")]
         public IActionResult Privacy()
         {
             return View();

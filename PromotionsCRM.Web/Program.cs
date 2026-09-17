@@ -32,6 +32,8 @@ namespace PromotionsCRM.Web
 
             app.UseRouting();
 
+            app.MapShortCircuit(404, "robots.txt");
+
             app.UseAuthorization();
 
             app.MapControllerRoute(
