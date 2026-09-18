@@ -42,6 +42,6 @@ PromotionsCRM is a web application for managing promotional campaigns. Clients (
 
 1. Clone the repository:
 
-       git clone https://github.com/mnenkov83/PromotionsCRM.git
+       git clone https://github.com/mNenkovGit/PromotionsCRM.git
 
 2. Configure the connection string in
