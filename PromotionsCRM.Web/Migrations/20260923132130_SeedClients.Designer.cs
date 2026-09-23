@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PromotionsCRM.Data;
 
@@ -11,9 +12,11 @@ using PromotionsCRM.Data;
 namespace PromotionsCRM.Migrations
 {
     [DbContext(typeof(PromotionsCrmDbContext))]
-    partial class PromotionsCrmDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260923132130_SeedClients")]
+    partial class SeedClients
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -362,32 +365,6 @@ namespace PromotionsCRM.Migrations
                     b.HasIndex("ClientId");
 
                     b.ToTable("Promotions");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ClientId = 1,
-                            EndDate = new DateTime(2026, 8, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Canon Summer Sale",
-                            StartDate = new DateTime(2026, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ClientId = 2,
-                            EndDate = new DateTime(2027, 2, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Nikon Winter Clearance",
-                            StartDate = new DateTime(2026, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ClientId = 3,
-                            EndDate = new DateTime(2026, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Sony Holiday Deals",
-                            StartDate = new DateTime(2026, 11, 15, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        });
                 });
 
             modelBuilder.Entity("PromotionsCRM.Data.Models.PromotionCountry", b =>

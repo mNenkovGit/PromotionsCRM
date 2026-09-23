@@ -103,7 +103,19 @@ namespace PromotionsCRM.Data
                 new Country { Id = 29, Name = "Ukraine" },
                 new Country { Id = 30, Name = "United Arab Emirates" }
             );
-            
+
+            modelBuilder.Entity<Client>().HasData(
+                new Client { Id = 1, Name = "Canon", Email = "canon@example.com", Address = "123 Canon Street", CountryId = 1, PhoneNumber = "123-456-7890", RegisteredOn = new DateTime(2026, 1, 15), Website = "www.canon.com" },
+                   new Client { Id = 2, Name = "Nikon", Email = "nikon@example.com", Address = "456 Nikon Avenue", CountryId = 1, PhoneNumber = "987-654-3210", RegisteredOn = new DateTime(2026, 1, 15), Website = "www.nikon.com" },
+                   new Client { Id = 3, Name = "Sony", Email = "sony@example.com", Address = "789 Sony Boulevard", CountryId = 1, PhoneNumber = "555-555-5555", RegisteredOn = new DateTime(2026, 1, 15), Website = "www.sony.com" }
+            );
+
+            modelBuilder.Entity<Promotion>().HasData(
+                new Promotion { Id = 1, Name = "Canon Summer Sale", StartDate = new DateTime(2026, 6, 1), EndDate = new DateTime(2026, 8, 31), ClientId = 1 },
+                new Promotion { Id = 2, Name = "Nikon Winter Clearance", StartDate = new DateTime(2026, 12, 1), EndDate = new DateTime(2027, 2, 28), ClientId = 2 },
+                new Promotion { Id = 3, Name = "Sony Holiday Deals",  StartDate = new DateTime(2026, 11, 15), EndDate = new DateTime(2026, 12, 31), ClientId = 3 }
+            );
+
         }
     }
 }

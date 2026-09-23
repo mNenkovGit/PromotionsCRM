@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PromotionsCRM.Data;
 
@@ -11,9 +12,11 @@ using PromotionsCRM.Data;
 namespace PromotionsCRM.Migrations
 {
     [DbContext(typeof(PromotionsCrmDbContext))]
-    partial class PromotionsCrmDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260923154321_SeedPromotions")]
+    partial class SeedPromotions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

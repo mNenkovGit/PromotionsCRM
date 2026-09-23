@@ -1,22 +1,64 @@
-﻿
+﻿@using PromotionsCRM.Data.Models
+@model IEnumerable<Client>
 @{
     ViewBag.Title = "Clients";
-    IEnumerable<string> clients = ViewData["Clients"] as IEnumerable<string> ?? new List<string>();
 }
 
 <h2>@ViewBag.Title</h2>
-<p><strong>@ViewBag.Message</strong></p>
 
 <div class="text-center">
     <h1 class="display-4 welcome-header">Welcome to Promotions CRM page!</h1>
     <p></p>
-    
-    <div class="row">
-        <ul class="list-group">
-            @foreach (string client in clients)
-            {
-               <li class="list-group-item">@client</li>
-            }
-        </ul>
     </div>
-</div>
+   <form asp-controller="Clients" asp-action="Index" method="get" class="mb-3">
+    <div class="input-group">
+        <input name="name" class="form-control" placeholder="Search by name (e.g. Client Name 123...)" />
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
+
+@if (!Model.Any())
+{
+    <p>No clients found.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Website</th>
+                <th>Country</th>
+                
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var client in Model)
+            {
+                <tr>
+                    <td>@client.Id</td>
+                    <td>@client.Name</td>
+                    <td>@client.Email</td>
+                    <td>@client.PhoneNumber</td>
+                    <td><a href="@client.Website" target="_blank">@client.Website</a></td>
+                    <td>@client.Country.Name</td>
+                    
+                    
+                    <td>
+                        <a asp-controller="Clients"
+                           asp-action="Details"
+                           asp-route-id="@client.Id"
+                            class="btn btn-warning">
+                            Details
+                        </a>
+                    </td>
+                </tr>
+            }
+            
+        </tbody>
+    </table>
+  }

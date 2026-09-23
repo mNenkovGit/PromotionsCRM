@@ -1,36 +1,53 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using PromotionsCRM.Data;
+using PromotionsCRM.Data.Models;
 
 namespace PromotionsCRM.Web.Controllers
 {
     public class ClientsController : Controller
     {
-        private static readonly IEnumerable<string> clients = new List<string>()
+        private readonly PromotionsCrmDbContext _dbContext;
+        public ClientsController(PromotionsCrmDbContext dbContext)
         {
-            "Canon",
-            "LG",
-            "Epson",
-        };
+            _dbContext = dbContext;
+        }
 
-        public IActionResult Index()
+
+        [HttpGet]
+        public IActionResult Index(string? name)
         {
-            ViewBag.Message = "Corporate clients registration page!";
+            IQueryable<Client> query = _dbContext.Clients
+                .Include(c => c.Country);
 
-            ViewData["Clients"] = clients;
-            return this.View();
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                query = query
+                    .Where(c => c.Name.ToLower().Contains(name.ToLower()));
+            }
+
+            var allClients = query.OrderBy(c => c.Name).ToList();
+
+            return View(allClients);
         }
 
         public IActionResult Details(int? id)
         {
             if(id == null)
             {
-                return this.BadRequest("Client ID is mandatory!");
-            }
-            if(id <= 0)
-            {
                 return this.BadRequest("Client not found!");
             }
+            var client = _dbContext.Clients
+                .Include(c => c.Country)
+                .Include(c => c.Promotions)
+                .SingleOrDefault(c => c.Id == id);
+
+            if (client == null)
+            {
+                return this.NotFound("Client not found!");
+            }
             
-            return this.Ok($"Client ID: {id}");
+            return this.View(client);
         }
     }
 }
