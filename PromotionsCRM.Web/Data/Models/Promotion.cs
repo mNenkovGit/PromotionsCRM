@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PromotionsCRM.Web.Data.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using static PromotionsCRM.Common.Validations;
 namespace PromotionsCRM.Data.Models
@@ -17,6 +18,8 @@ namespace PromotionsCRM.Data.Models
 
         [Column(TypeName = "datetime2")]
         public DateTime EndDate { get; set; }
+
+       public PromotionType PromotionType { get; set; }
 
         [ForeignKey(nameof(Client))]
         public int ClientId { get; set; }

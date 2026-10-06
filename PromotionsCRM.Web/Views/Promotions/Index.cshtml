@@ -1,0 +1,65 @@
+﻿@using PromotionsCRM.Web.ViewModels.Promotions
+@model IEnumerable<PromotionViewModel>
+
+@{
+    ViewBag.Title = "Promotions";
+}
+
+<h2 class="text-center">Promotions</h2>
+<hr />
+
+@if (!Model.Any())
+{
+    <p>No Promotions found.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Promotion Type</th>
+                <th>Promotion Status</th>
+                <th>Client</th>
+                <th></th>
+             </tr>
+        </thead>
+        <tbody>
+            @foreach (var promotion in Model)
+            {
+                <tr>
+                    <td>@promotion.Id</td>
+                    <td>@promotion.Name</td>
+                    <td>@promotion.StartDate.ToString("dd-MM-yyyy")</td>
+                    <td>@promotion.EndDate.ToString("dd-MM-yyyy")</td>
+                    <td>@promotion.PromotionType</td>
+                    <td>@promotion.PromotionStatus</td>
+                    <td>@promotion.ClientName</td>
+                    <td>
+                        <a asp-controller="Promotions"
+                           asp-action="Details"
+                           asp-route-id="@promotion.Id"
+                           class="btn btn-info">
+                            Details
+                        </a>
+                        <a asp-controller="Promotions"
+                           asp-action="Edit"
+                           asp-route-id="@promotion.Id"
+                           class="btn btn-primary">
+                            Edit
+                        </a>
+                        <a asp-controller="Promotions"
+                           asp-action="Delete"
+                           asp-route-id="@promotion.Id"
+                           class="btn btn-warning">
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

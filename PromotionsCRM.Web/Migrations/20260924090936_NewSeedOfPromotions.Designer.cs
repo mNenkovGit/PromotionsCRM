@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PromotionsCRM.Data;
 
@@ -11,9 +12,11 @@ using PromotionsCRM.Data;
 namespace PromotionsCRM.Migrations
 {
     [DbContext(typeof(PromotionsCrmDbContext))]
-    partial class PromotionsCrmDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260924090936_NewSeedOfPromotions")]
+    partial class NewSeedOfPromotions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -354,9 +357,6 @@ namespace PromotionsCRM.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("PromotionType")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
@@ -373,7 +373,6 @@ namespace PromotionsCRM.Migrations
                             ClientId = 1,
                             EndDate = new DateTime(2026, 8, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Canon Summer Sale",
-                            PromotionType = 0,
                             StartDate = new DateTime(2026, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -382,7 +381,6 @@ namespace PromotionsCRM.Migrations
                             ClientId = 2,
                             EndDate = new DateTime(2027, 2, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Nikon Winter Clearance",
-                            PromotionType = 0,
                             StartDate = new DateTime(2026, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -391,7 +389,6 @@ namespace PromotionsCRM.Migrations
                             ClientId = 3,
                             EndDate = new DateTime(2026, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Sony Holiday Deals",
-                            PromotionType = 0,
                             StartDate = new DateTime(2026, 11, 15, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -400,7 +397,6 @@ namespace PromotionsCRM.Migrations
                             ClientId = 1,
                             EndDate = new DateTime(2026, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Canon Back to School",
-                            PromotionType = 0,
                             StartDate = new DateTime(2026, 8, 15, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -409,7 +405,6 @@ namespace PromotionsCRM.Migrations
                             ClientId = 1,
                             EndDate = new DateTime(2026, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Canon Black Friday",
-                            PromotionType = 0,
                             StartDate = new DateTime(2026, 11, 20, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -418,7 +413,6 @@ namespace PromotionsCRM.Migrations
                             ClientId = 1,
                             EndDate = new DateTime(2026, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Canon Spring Photo Fest",
-                            PromotionType = 0,
                             StartDate = new DateTime(2026, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -427,7 +421,6 @@ namespace PromotionsCRM.Migrations
                             ClientId = 2,
                             EndDate = new DateTime(2026, 10, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Nikon Autumn Lens Offer",
-                            PromotionType = 0,
                             StartDate = new DateTime(2026, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -436,7 +429,6 @@ namespace PromotionsCRM.Migrations
                             ClientId = 2,
                             EndDate = new DateTime(2026, 8, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Nikon Summer Adventure",
-                            PromotionType = 0,
                             StartDate = new DateTime(2026, 6, 15, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -445,7 +437,6 @@ namespace PromotionsCRM.Migrations
                             ClientId = 2,
                             EndDate = new DateTime(2027, 1, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Nikon New Year Bundle",
-                            PromotionType = 0,
                             StartDate = new DateTime(2026, 12, 26, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -454,7 +445,6 @@ namespace PromotionsCRM.Migrations
                             ClientId = 3,
                             EndDate = new DateTime(2026, 9, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Sony Audio Week",
-                            PromotionType = 0,
                             StartDate = new DateTime(2026, 9, 20, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -463,7 +453,6 @@ namespace PromotionsCRM.Migrations
                             ClientId = 3,
                             EndDate = new DateTime(2026, 4, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Sony Easter Promo",
-                            PromotionType = 0,
                             StartDate = new DateTime(2026, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -472,7 +461,6 @@ namespace PromotionsCRM.Migrations
                             ClientId = 3,
                             EndDate = new DateTime(2027, 2, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Sony Winter Cashback",
-                            PromotionType = 0,
                             StartDate = new DateTime(2027, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -481,7 +469,6 @@ namespace PromotionsCRM.Migrations
                             ClientId = 1,
                             EndDate = new DateTime(2027, 2, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Canon Valentine's Print Deal",
-                            PromotionType = 0,
                             StartDate = new DateTime(2027, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -490,7 +477,6 @@ namespace PromotionsCRM.Migrations
                             ClientId = 2,
                             EndDate = new DateTime(2027, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Nikon Spring Wildlife Promo",
-                            PromotionType = 0,
                             StartDate = new DateTime(2027, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -499,7 +485,6 @@ namespace PromotionsCRM.Migrations
                             ClientId = 3,
                             EndDate = new DateTime(2027, 7, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Sony Summer Sound Festival",
-                            PromotionType = 0,
                             StartDate = new DateTime(2027, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
