@@ -33,6 +33,7 @@ else
                 <th>Promotion Type</th>
                 <th>Promotion Status</th>
                 <th>Client</th>
+                <th>Number of Submissions</th>
                 <th></th>
              </tr>
         </thead>
@@ -47,6 +48,7 @@ else
                     <td>@promotion.PromotionType</td>
                     <td>@promotion.PromotionStatus</td>
                     <td>@promotion.ClientName</td>
+                    <td>@promotion.SubmissionCount</td>
                     <td>
                         <a asp-controller="Promotions"
                            asp-action="Details"

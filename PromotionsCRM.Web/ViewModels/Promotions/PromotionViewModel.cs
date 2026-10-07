@@ -38,5 +38,7 @@ namespace PromotionsCRM.Web.ViewModels.Promotions
 
         public string ClientName { get; set; } = null!;
 
+        public int SubmissionCount { get; set; }
+
     }
 }

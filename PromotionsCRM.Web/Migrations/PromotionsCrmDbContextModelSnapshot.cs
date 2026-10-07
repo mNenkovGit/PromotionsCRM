@@ -63,7 +63,7 @@ namespace PromotionsCRM.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Clients");
+                    b.ToTable("Clients", (string)null);
 
                     b.HasData(
                         new
@@ -116,7 +116,7 @@ namespace PromotionsCRM.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries");
+                    b.ToTable("Countries", (string)null);
 
                     b.HasData(
                         new
@@ -309,7 +309,7 @@ namespace PromotionsCRM.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Customers");
+                    b.ToTable("Customers", (string)null);
 
                     b.HasData(
                         new
@@ -384,7 +384,7 @@ namespace PromotionsCRM.Migrations
 
                     b.HasIndex("PromotionId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
 
                     b.HasData(
                         new
@@ -526,7 +526,7 @@ namespace PromotionsCRM.Migrations
 
                     b.HasIndex("ClientId");
 
-                    b.ToTable("Promotions");
+                    b.ToTable("Promotions", (string)null);
 
                     b.HasData(
                         new
@@ -678,7 +678,7 @@ namespace PromotionsCRM.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("PromotionsCountries");
+                    b.ToTable("PromotionsCountries", (string)null);
 
                     b.HasData(
                         new
@@ -880,7 +880,7 @@ namespace PromotionsCRM.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Submissions");
+                    b.ToTable("Submissions", (string)null);
 
                     b.HasData(
                         new
@@ -1028,7 +1028,7 @@ namespace PromotionsCRM.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("PromotionsCRM.Data.Models.Client", b =>

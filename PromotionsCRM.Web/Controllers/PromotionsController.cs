@@ -42,7 +42,8 @@ namespace PromotionsCRM.Web.Controllers
                     StartDate = p.StartDate,
                     EndDate = p.EndDate,
                     PromotionType = p.PromotionType,
-                    ClientName = p.Client.Name
+                    ClientName = p.Client.Name,
+                    SubmissionCount = p.Submissions.Count
                 })
                 .ToList();
 
@@ -70,6 +71,9 @@ namespace PromotionsCRM.Web.Controllers
                     ClientName = p.Client.Name,
                     Countries = p.PromotionsCountries.Select(pc => pc.Country.Name).ToArray(),
                     Products = p.Products.Select(pr => pr.Name).ToArray(),
+                    SubmissionCount = p.Submissions.Count,
+                    SubmissionStatuses = p.Submissions.Select(s => s.Status).ToList(),
+                    
                 })
                 .FirstOrDefault();  
 
