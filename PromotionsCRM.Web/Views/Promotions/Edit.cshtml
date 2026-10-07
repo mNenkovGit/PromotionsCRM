@@ -1,0 +1,61 @@
+﻿@using PromotionsCRM.Web.Data.Enums
+@using PromotionsCRM.Web.ViewModels.Promotions
+@model PromotionEditViewModel
+
+@{
+    ViewBag.Title = "Edit Promotion";
+
+}
+
+<h2 class="text-center">Edit Promotion</h2>
+<hr />
+
+<div class="row">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="Id" />
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label">Promotion Name</label>
+                <input asp-for="Name" class="form-control" aria-required="true" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="StartDate" class="form-label">Start Date</label>
+                <input asp-for="StartDate" class="form-control" aria-required="true" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="EndDate" class="form-label">End Date</label>
+                <input asp-for="EndDate" class="form-control" aria-required="true" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="PromotionType" class="form-label">Promotion Type</label>
+                <select asp-for="PromotionType" class="form-select" aria-required="true"
+                        asp-items="Html.GetEnumSelectList<PromotionType>()">
+                    <option value="">Select Promotion Type...</option>
+                </select>
+                <span asp-validation-for="PromotionType" class="text-danger"></span>
+            </div>
+
+         
+
+            <div class="mb-3">
+                <input class="btn btn-warning mb-2 w-100 py-3 fw-bold rounded"
+                       type="submit" value="Save" />
+            </div>
+            <div class="mb-3">
+                <a asp-action="Details" asp-route-id="@Model.Id"
+                   class="btn btn-secondary mb-2 w-100 py-3 fw-bold rounded">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

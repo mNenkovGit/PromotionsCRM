@@ -1,4 +1,4 @@
-﻿
+﻿using PromotionsCRM.Data.Enums;
 using Microsoft.EntityFrameworkCore;
 using PromotionsCRM.Data.Models;
 
@@ -45,7 +45,7 @@ namespace PromotionsCRM.Data
                 .HasOne(pm => pm.Promotion)
                 .WithMany(pm => pm.PromotionsCountries)
                 .HasForeignKey(pm => pm.PromotionId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<PromotionCountry>()
                 .HasOne(pm => pm.Country)
@@ -166,6 +166,27 @@ namespace PromotionsCRM.Data
                     new PromotionCountry { PromotionId = 14, CountryId = 26 }, new PromotionCountry { PromotionId = 15, CountryId = 2 },
                     new PromotionCountry { PromotionId = 15, CountryId = 9 }
                 );
+
+            modelBuilder.Entity<Customer>().HasData(
+                new Customer { Id = 1, FirstName = "Ivan",   LastName = "Petrov",  Email = "ivan.petrov@example.com",   PhoneNumber = "359-888-1234", CountryId = 1,  RegisteredOn = new DateTime(2026, 2, 10) },
+                new Customer { Id = 2, FirstName = "Maria",  LastName = "Georgieva", Email = "maria.g@example.com",     PhoneNumber = "359-877-5678", CountryId = 1,  RegisteredOn = new DateTime(2026, 3, 5) },
+                new Customer { Id = 3, FirstName = "James",  LastName = "Smith",   Email = "james.smith@example.com",   PhoneNumber = "447-700-9001", CountryId = 3,  RegisteredOn = new DateTime(2026, 4, 18) },
+                new Customer { Id = 4, FirstName = "Anna",   LastName = "Muller",  Email = "anna.muller@example.com",   PhoneNumber = "491-512-3456", CountryId = 4,  RegisteredOn = new DateTime(2026, 1, 22) },
+                new Customer { Id = 5, FirstName = "Kenji",  LastName = "Tanaka",  Email = "kenji.tanaka@example.com",  PhoneNumber = "819-012-3456", CountryId = 20, RegisteredOn = new DateTime(2026, 5, 30) }
+            );
+
+            modelBuilder.Entity<Submission>().HasData(
+            new Submission { Id = 1,  CustomerId = 1, PromotionId = 1,  ProductId = 1,  Status = StatusName.Valid,          PurchaseDate = new DateTime(2026, 6, 10), SubmittedOn = new DateTime(2026, 6, 12), ProcessedOn = new DateTime(2026, 6, 20) },
+            new Submission { Id = 2,  CustomerId = 2, PromotionId = 1,  ProductId = 2,  Status = StatusName.Invalid,        PurchaseDate = new DateTime(2026, 7, 5),  SubmittedOn = new DateTime(2026, 7, 6),  ProcessedOn = new DateTime(2026, 7, 15) },
+            new Submission { Id = 3,  CustomerId = 3, PromotionId = 4,  ProductId = 3,  Status = StatusName.BeingProcessed, PurchaseDate = new DateTime(2026, 9, 1),  SubmittedOn = new DateTime(2026, 9, 3) },
+            new Submission { Id = 4,  CustomerId = 1, PromotionId = 4,  ProductId = 4,  Status = StatusName.Valid,          PurchaseDate = new DateTime(2026, 8, 20), SubmittedOn = new DateTime(2026, 8, 22), ProcessedOn = new DateTime(2026, 8, 30) },
+            new Submission { Id = 5,  CustomerId = 4, PromotionId = 6,  ProductId = 7,  Status = StatusName.Valid,          PurchaseDate = new DateTime(2026, 3, 15), SubmittedOn = new DateTime(2026, 3, 18), ProcessedOn = new DateTime(2026, 3, 25) },
+            new Submission { Id = 6,  CustomerId = 5, PromotionId = 7,  ProductId = 9,  Status = StatusName.BeingProcessed, PurchaseDate = new DateTime(2026, 9, 10), SubmittedOn = new DateTime(2026, 9, 12) },
+            new Submission { Id = 7,  CustomerId = 2, PromotionId = 7,  ProductId = 10, Status = StatusName.MissingInfo,    PurchaseDate = new DateTime(2026, 9, 25), SubmittedOn = new DateTime(2026, 9, 28), ProcessedOn = new DateTime(2026, 9, 30) },
+            new Submission { Id = 8,  CustomerId = 3, PromotionId = 8,  ProductId = 11, Status = StatusName.Valid,          PurchaseDate = new DateTime(2026, 7, 1),  SubmittedOn = new DateTime(2026, 7, 3),  ProcessedOn = new DateTime(2026, 7, 10) },
+            new Submission { Id = 9,  CustomerId = 4, PromotionId = 10, ProductId = 14, Status = StatusName.Cancelled,      PurchaseDate = new DateTime(2026, 9, 21), SubmittedOn = new DateTime(2026, 9, 24), ProcessedOn = new DateTime(2026, 9, 25) },
+            new Submission { Id = 10, CustomerId = 5, PromotionId = 11, ProductId = 16, Status = StatusName.Invalid,        PurchaseDate = new DateTime(2026, 4, 5),  SubmittedOn = new DateTime(2026, 4, 8),  ProcessedOn = new DateTime(2026, 4, 15) }
+            );              
         }
     }
 }

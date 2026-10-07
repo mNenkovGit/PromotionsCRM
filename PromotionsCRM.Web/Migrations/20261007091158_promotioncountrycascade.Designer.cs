@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PromotionsCRM.Data;
 
@@ -11,9 +12,11 @@ using PromotionsCRM.Data;
 namespace PromotionsCRM.Migrations
 {
     [DbContext(typeof(PromotionsCrmDbContext))]
-    partial class PromotionsCrmDbContextModelSnapshot : ModelSnapshot
+    [Migration("20261007091158_promotioncountrycascade")]
+    partial class promotioncountrycascade
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -310,58 +313,6 @@ namespace PromotionsCRM.Migrations
                     b.HasIndex("CountryId");
 
                     b.ToTable("Customers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CountryId = 1,
-                            Email = "ivan.petrov@example.com",
-                            FirstName = "Ivan",
-                            LastName = "Petrov",
-                            PhoneNumber = "359-888-1234",
-                            RegisteredOn = new DateTime(2026, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CountryId = 1,
-                            Email = "maria.g@example.com",
-                            FirstName = "Maria",
-                            LastName = "Georgieva",
-                            PhoneNumber = "359-877-5678",
-                            RegisteredOn = new DateTime(2026, 3, 5, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CountryId = 3,
-                            Email = "james.smith@example.com",
-                            FirstName = "James",
-                            LastName = "Smith",
-                            PhoneNumber = "447-700-9001",
-                            RegisteredOn = new DateTime(2026, 4, 18, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CountryId = 4,
-                            Email = "anna.muller@example.com",
-                            FirstName = "Anna",
-                            LastName = "Muller",
-                            PhoneNumber = "491-512-3456",
-                            RegisteredOn = new DateTime(2026, 1, 22, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CountryId = 20,
-                            Email = "kenji.tanaka@example.com",
-                            FirstName = "Kenji",
-                            LastName = "Tanaka",
-                            PhoneNumber = "819-012-3456",
-                            RegisteredOn = new DateTime(2026, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        });
                 });
 
             modelBuilder.Entity("PromotionsCRM.Data.Models.Product", b =>
@@ -881,116 +832,6 @@ namespace PromotionsCRM.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Submissions");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CustomerId = 1,
-                            ProcessedOn = new DateTime(2026, 6, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ProductId = 1,
-                            PromotionId = 1,
-                            PurchaseDate = new DateTime(2026, 6, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Status = 1,
-                            SubmittedOn = new DateTime(2026, 6, 12, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CustomerId = 2,
-                            ProcessedOn = new DateTime(2026, 7, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ProductId = 2,
-                            PromotionId = 1,
-                            PurchaseDate = new DateTime(2026, 7, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Status = 2,
-                            SubmittedOn = new DateTime(2026, 7, 6, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CustomerId = 3,
-                            ProductId = 3,
-                            PromotionId = 4,
-                            PurchaseDate = new DateTime(2026, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Status = 0,
-                            SubmittedOn = new DateTime(2026, 9, 3, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CustomerId = 1,
-                            ProcessedOn = new DateTime(2026, 8, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ProductId = 4,
-                            PromotionId = 4,
-                            PurchaseDate = new DateTime(2026, 8, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Status = 1,
-                            SubmittedOn = new DateTime(2026, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CustomerId = 4,
-                            ProcessedOn = new DateTime(2026, 3, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ProductId = 7,
-                            PromotionId = 6,
-                            PurchaseDate = new DateTime(2026, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Status = 1,
-                            SubmittedOn = new DateTime(2026, 3, 18, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 6,
-                            CustomerId = 5,
-                            ProductId = 9,
-                            PromotionId = 7,
-                            PurchaseDate = new DateTime(2026, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Status = 0,
-                            SubmittedOn = new DateTime(2026, 9, 12, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 7,
-                            CustomerId = 2,
-                            ProcessedOn = new DateTime(2026, 9, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ProductId = 10,
-                            PromotionId = 7,
-                            PurchaseDate = new DateTime(2026, 9, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Status = 3,
-                            SubmittedOn = new DateTime(2026, 9, 28, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 8,
-                            CustomerId = 3,
-                            ProcessedOn = new DateTime(2026, 7, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ProductId = 11,
-                            PromotionId = 8,
-                            PurchaseDate = new DateTime(2026, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Status = 1,
-                            SubmittedOn = new DateTime(2026, 7, 3, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 9,
-                            CustomerId = 4,
-                            ProcessedOn = new DateTime(2026, 9, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ProductId = 14,
-                            PromotionId = 10,
-                            PurchaseDate = new DateTime(2026, 9, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Status = 4,
-                            SubmittedOn = new DateTime(2026, 9, 24, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 10,
-                            CustomerId = 5,
-                            ProcessedOn = new DateTime(2026, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ProductId = 16,
-                            PromotionId = 11,
-                            PurchaseDate = new DateTime(2026, 4, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Status = 2,
-                            SubmittedOn = new DateTime(2026, 4, 8, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        });
                 });
 
             modelBuilder.Entity("PromotionsCRM.Data.Models.User", b =>
