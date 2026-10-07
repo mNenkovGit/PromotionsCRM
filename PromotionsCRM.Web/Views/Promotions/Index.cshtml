@@ -8,6 +8,15 @@
 <h2 class="text-center">Promotions</h2>
 <hr />
 
+
+<form asp-controller="Promotions" asp-action="Index" method="get" class="mb-3">
+    <div class="input-group">
+        <input name="name" class="form-control" placeholder="Search by name (e.g. Promotion Name 123...)" />
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+
+</form>
+
 @if (!Model.Any())
 {
     <p>No Promotions found.</p>
@@ -45,16 +54,17 @@ else
                            class="btn btn-info">
                             Details
                         </a>
+                     
                         <a asp-controller="Promotions"
                            asp-action="Edit"
                            asp-route-id="@promotion.Id"
-                           class="btn btn-primary">
+                           class="btn btn-warning">
                             Edit
                         </a>
                         <a asp-controller="Promotions"
                            asp-action="Delete"
                            asp-route-id="@promotion.Id"
-                           class="btn btn-warning">
+                           class="btn btn-danger">
                             Delete
                         </a>
                     </td>

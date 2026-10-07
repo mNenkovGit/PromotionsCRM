@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PromotionsCRM.Data;
 using PromotionsCRM.Data.Models;
 using PromotionsCRM.Web.ViewModels.Clients;

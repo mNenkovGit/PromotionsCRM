@@ -127,7 +127,45 @@ namespace PromotionsCRM.Data
                 new Promotion { Id = 14, Name = "Nikon Spring Wildlife Promo",  StartDate = new DateTime(2027, 3, 15), EndDate = new DateTime(2027, 4, 30), ClientId = 2 },
                 new Promotion { Id = 15, Name = "Sony Summer Sound Festival",   StartDate = new DateTime(2027, 6, 1),  EndDate = new DateTime(2027, 7, 15), ClientId = 3 }
             );
+             modelBuilder.Entity<Product>().HasData(
+                    new Product { Id = 1,  Name = "Canon EOS R6 Mark II",     PromotionId = 1 },
+                    new Product { Id = 2,  Name = "Canon RF 24-70mm f/2.8",   PromotionId = 1 },
+                    new Product { Id = 3,  Name = "Canon PIXMA G650",         PromotionId = 4 },
+                    new Product { Id = 4,  Name = "Canon i-SENSYS MF655Cdw",  PromotionId = 4 },
+                    new Product { Id = 5,  Name = "Canon EOS R8",             PromotionId = 5 },
+                    new Product { Id = 6,  Name = "Canon PowerShot V10",      PromotionId = 5 },
+                    new Product { Id = 7,  Name = "Canon RF 50mm f/1.8",      PromotionId = 6 },
+                    new Product { Id = 8,  Name = "Canon SELPHY CP1500",      PromotionId = 13 },
+                    new Product { Id = 9,  Name = "Nikon Z6 III",             PromotionId = 7 },
+                    new Product { Id = 10, Name = "Nikon NIKKOR Z 24-120mm",  PromotionId = 7 },
+                    new Product { Id = 11, Name = "Nikon COOLPIX P950",       PromotionId = 8 },
+                    new Product { Id = 12, Name = "Nikon Z fc",               PromotionId = 9 },
+                    new Product { Id = 13, Name = "Nikon Z 50mm f/1.8 S",     PromotionId = 14 },
+                    new Product { Id = 14, Name = "Sony WH-1000XM5",          PromotionId = 10 },
+                    new Product { Id = 15, Name = "Sony WF-1000XM5",          PromotionId = 10 },
+                    new Product { Id = 16, Name = "Sony SRS-XB100",           PromotionId = 11 },
+                    new Product { Id = 17, Name = "Sony Alpha 7 IV",          PromotionId = 12 },
+                    new Product { Id = 18, Name = "Sony ULT Field 1",         PromotionId = 15 }
+                );
 
+            modelBuilder.Entity<PromotionCountry>().HasData(
+                    new PromotionCountry { PromotionId = 1,  CountryId = 1 },  new PromotionCountry { PromotionId = 1,  CountryId = 4 },
+                    new PromotionCountry { PromotionId = 1,  CountryId = 5 },  new PromotionCountry { PromotionId = 4,  CountryId = 1 },
+                    new PromotionCountry { PromotionId = 4,  CountryId = 3 },  new PromotionCountry { PromotionId = 5,  CountryId = 2 },
+                    new PromotionCountry { PromotionId = 5,  CountryId = 8 },  new PromotionCountry { PromotionId = 6,  CountryId = 1 },
+                    new PromotionCountry { PromotionId = 7,  CountryId = 1 },  new PromotionCountry { PromotionId = 7,  CountryId = 4 },
+                    new PromotionCountry { PromotionId = 7,  CountryId = 21 }, new PromotionCountry { PromotionId = 8,  CountryId = 7 },
+                    new PromotionCountry { PromotionId = 8,  CountryId = 24 }, new PromotionCountry { PromotionId = 9,  CountryId = 1 },
+                    new PromotionCountry { PromotionId = 9,  CountryId = 2 },  new PromotionCountry { PromotionId = 9,  CountryId = 3 },
+                    new PromotionCountry { PromotionId = 9,  CountryId = 4 },  new PromotionCountry { PromotionId = 10, CountryId = 20 },
+                    new PromotionCountry { PromotionId = 11, CountryId = 6 },  new PromotionCountry { PromotionId = 11, CountryId = 17 },
+                    new PromotionCountry { PromotionId = 12, CountryId = 1 },  new PromotionCountry { PromotionId = 12, CountryId = 4 },
+                    new PromotionCountry { PromotionId = 12, CountryId = 5 },  new PromotionCountry { PromotionId = 12, CountryId = 6 },
+                    new PromotionCountry { PromotionId = 12, CountryId = 7 },  new PromotionCountry { PromotionId = 13, CountryId = 1 },
+                    new PromotionCountry { PromotionId = 14, CountryId = 16 }, new PromotionCountry { PromotionId = 14, CountryId = 22 },
+                    new PromotionCountry { PromotionId = 14, CountryId = 26 }, new PromotionCountry { PromotionId = 15, CountryId = 2 },
+                    new PromotionCountry { PromotionId = 15, CountryId = 9 }
+                );
         }
     }
 }

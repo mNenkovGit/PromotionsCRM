@@ -23,6 +23,9 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Clients" asp-action="Index">Clients</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Promotions" asp-action="Index">Promotions</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         <li class="nav-item">
@@ -33,8 +36,34 @@
             </div>
         </nav>
     </header>
+
+
     <div class="container">
         <main role="main" class="pb-3">
+
+            <div class="container">
+                <main role="main" class="pb-3">
+                    @if (TempData["SuccessMessage"] is string message)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            @message
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+                    @if (TempData.ContainsKey("ErrorMessage"))
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            @TempData["ErrorMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+                    @if (TempData.ContainsKey("DeleteMessage"))
+                    {
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            @TempData["DeleteMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
             @RenderBody()
         </main>
     </div>

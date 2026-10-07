@@ -1,6 +1,6 @@
 ﻿
 using PromotionsCRM.Web.Data.Enums;
-using System;
+
 
 namespace PromotionsCRM.Web.ViewModels.Promotions
 {

@@ -14,6 +14,7 @@ namespace PromotionsCRM.Data.Models
 
         [ForeignKey(nameof(Promotion))]
         public int PromotionId { get; set; }
+
         public virtual Promotion Promotion { get; set; } = null!;
 
         public virtual ICollection<Submission> Submissions { get; set; } = new List<Submission>();

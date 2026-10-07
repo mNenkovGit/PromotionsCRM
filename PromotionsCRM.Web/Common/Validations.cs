@@ -25,8 +25,8 @@
         public const int LastNameMinLen = 2;
         public const int LastNameMaxlen = 50;
 
-        public const int PromotionNameMinLen = 2;
-        public const int PromotionNameMaxlen = 50;
+        public const int PromotionNameMinLen = 5;
+        public const int PromotionNameMaxlen = 80;
 
         public const int ProductNameMinLen = 2;
         public const int ProductNameMaxlen = 50;
