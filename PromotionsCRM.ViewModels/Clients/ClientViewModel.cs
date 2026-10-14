@@ -1,6 +1,5 @@
-﻿using PromotionsCRM.Web.ViewModels.Promotions;
-
-namespace PromotionsCRM.Web.ViewModels.Clients
+﻿
+namespace PromotionsCRM.ViewModels.Clients
 {
     public class ClientViewModel
     {

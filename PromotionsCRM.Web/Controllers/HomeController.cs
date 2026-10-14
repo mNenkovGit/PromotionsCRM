@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using PromotionsCRM.Web.ViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using PromotionsCRM.ViewModels;
 using System.Diagnostics;
 
 namespace PromotionsCRM.Web.Controllers

@@ -1,5 +1,5 @@
 ﻿
-namespace PromotionsCRM.Web.ViewModels.Promotions
+namespace PromotionsCRM.ViewModels.Promotions
 {
     public class PromotionDeleteViewModel : PromotionViewModel
     {

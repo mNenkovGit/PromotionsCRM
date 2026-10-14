@@ -1,8 +1,7 @@
 ﻿
-using PromotionsCRM.Web.Data.Enums;
+using PromotionsCRM.Common.Enums;
 
-
-namespace PromotionsCRM.Web.ViewModels.Promotions
+namespace PromotionsCRM.ViewModels.Promotions
 {
     public class PromotionViewModel
     {
@@ -39,6 +38,7 @@ namespace PromotionsCRM.Web.ViewModels.Promotions
         public string ClientName { get; set; } = null!;
 
         public int SubmissionCount { get; set; }
+
 
     }
 }

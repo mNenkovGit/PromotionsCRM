@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PromotionsCRM.Data.Enums;
+using PromotionsCRM.Common.Enums;
 using PromotionsCRM.Data.Models;
 
 namespace PromotionsCRM.Web.Data.Configurations

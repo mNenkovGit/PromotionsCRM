@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using PromotionsCRM.Web.Data.Enums;
+﻿using PromotionsCRM.Common.Enums;
 using System.ComponentModel.DataAnnotations;
 using static PromotionsCRM.Common.Validations;
-namespace PromotionsCRM.Web.ViewModels.Promotions
+namespace PromotionsCRM.ViewModels.Promotions
 {
     public class PromotionEditViewModel
     {

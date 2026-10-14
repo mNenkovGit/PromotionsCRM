@@ -1,4 +1,4 @@
-﻿namespace PromotionsCRM.Web.Data.Enums
+﻿namespace PromotionsCRM.Common.Enums
 {
     public enum StatusName
     {

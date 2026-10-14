@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PromotionsCRM.Common;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using static PromotionsCRM.Common.Validations;
 namespace PromotionsCRM.Data.Models
@@ -21,7 +22,7 @@ namespace PromotionsCRM.Data.Models
 
         [Required]
         [MaxLength(PhoneNumberLength)]
-        [RegularExpression(Common.Validations.PhoneNumberRegEx)]
+        [RegularExpression(Validations.PhoneNumberRegEx)]
         public string PhoneNumber { get; set; } = null!;
 
         [MaxLength(WebsiteMaxLen)]

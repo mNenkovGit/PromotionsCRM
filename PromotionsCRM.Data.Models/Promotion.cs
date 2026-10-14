@@ -1,4 +1,4 @@
-﻿using PromotionsCRM.Web.Data.Enums;
+﻿using PromotionsCRM.Common.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using static PromotionsCRM.Common.Validations;

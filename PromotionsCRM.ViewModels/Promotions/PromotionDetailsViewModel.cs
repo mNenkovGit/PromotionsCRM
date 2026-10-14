@@ -1,7 +1,8 @@
 ﻿
-using PromotionsCRM.Data.Enums;
 
-namespace PromotionsCRM.Web.ViewModels.Promotions
+using PromotionsCRM.Common.Enums;
+
+namespace PromotionsCRM.ViewModels.Promotions
 {
     public class PromotionDetailsViewModel : PromotionViewModel
     {

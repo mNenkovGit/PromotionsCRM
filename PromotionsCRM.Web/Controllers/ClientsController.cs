@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PromotionsCRM.Data;
 using PromotionsCRM.Data.Models;
-using PromotionsCRM.Web.ViewModels.Clients;
-using PromotionsCRM.Web.ViewModels.Promotions;
+using PromotionsCRM.ViewModels.Clients;
+using PromotionsCRM.ViewModels.Promotions;
 
 namespace PromotionsCRM.Web.Controllers
 {

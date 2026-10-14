@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using PromotionsCRM.Common.Enums;
 using PromotionsCRM.Data;
 using PromotionsCRM.Data.Models;
-using PromotionsCRM.Web.Data.Enums;
-using PromotionsCRM.Web.ViewModels.Clients;
-using PromotionsCRM.Web.ViewModels.Promotions;
+using PromotionsCRM.ViewModels.Promotions;
 
 namespace PromotionsCRM.Web.Controllers
 {
@@ -90,7 +89,7 @@ namespace PromotionsCRM.Web.Controllers
         {
             var newPromotion = new PromotionCreateViewModel()
             {
-                Clients = LoadClients(),
+                Clients = (IEnumerable<SelectListItem>)LoadClients(),
                 ClientId = clientId ?? 0,
                 StartDate = DateTime.Today
                 
@@ -142,7 +141,7 @@ namespace PromotionsCRM.Web.Controllers
 
             if (!ModelState.IsValid)
             {
-                createPromotion.Clients = LoadClients();
+                createPromotion.Clients = (IEnumerable<SelectListItem>)LoadClients();
                 return View(createPromotion);
             }
 
@@ -168,7 +167,7 @@ namespace PromotionsCRM.Web.Controllers
             {
                 _logger.LogError(ex, "An error occurred while creating the promotion");
 
-                createPromotion.Clients = LoadClients();
+                createPromotion.Clients =   (IEnumerable<SelectListItem>)LoadClients();
 
                 TempData["ErrorMessage"] = "An error occurred while creating the promotion. Please try again later.";
 

@@ -1,4 +1,4 @@
-namespace PromotionsCRM.Web.ViewModels
+namespace PromotionsCRM.ViewModels
 {
     public class ErrorViewModel
     {
