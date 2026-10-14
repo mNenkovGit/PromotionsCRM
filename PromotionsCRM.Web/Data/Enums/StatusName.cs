@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PromotionsCRM.Data.Enums
+﻿namespace PromotionsCRM.Web.Data.Enums
 {
     public enum StatusName
     {

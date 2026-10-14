@@ -6,7 +6,7 @@ namespace PromotionsCRM.Web.ViewModels.Promotions
 {
     public class PromotionEditViewModel
     {
-        public int Id { get; internal set; }
+        public int Id { get; set; }
         
         [Required(ErrorMessage = "Promotion name is required.")]
         [StringLength(PromotionNameMaxlen, MinimumLength = PromotionNameMinLen, ErrorMessage = "Promotion name must be between {2} and {1} characters long.")]
