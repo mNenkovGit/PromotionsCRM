@@ -15,9 +15,14 @@ namespace PromotionsCRM.Services.Interfaces
 
         Task CreatePromotionAsync(PromotionCreateViewModel createPromotion);
 
-
         Task<PromotionEditViewModel?> GetPromotionForEditAsync(int promotionId);
 
         Task<bool> EditPromotionAsync(int promotionId, PromotionEditViewModel model);
+
+        Task<PromotionDeleteViewModel?> GetPromotionForDeletionAsync(int promotionId);
+
+        Task<bool> DeletePromotionAsync( int promotionId);
+
+        Task<bool> HasSubmissions(int promotionId);
     }
 }

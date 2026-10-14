@@ -1,26 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using PromotionsCRM.Common.Enums;
-using PromotionsCRM.Data;
-using PromotionsCRM.Data.Models;
 using PromotionsCRM.Services.Interfaces;
 using PromotionsCRM.ViewModels.Promotions;
-using System.Threading.Tasks;
 
 namespace PromotionsCRM.Web.Controllers
 {
     public class PromotionsController : Controller
     {
-        private readonly PromotionsCrmDbContext _dbContext;
         private readonly ILogger<PromotionsController> _logger;
 
         private readonly IPromotionService _promotionService;
 
-        public PromotionsController(ILogger<PromotionsController> logger, PromotionsCrmDbContext dbContext, IPromotionService promotionService)
+        public PromotionsController(ILogger<PromotionsController> logger,  IPromotionService promotionService)
         {
             _logger = logger;
-            _dbContext = dbContext;
             _promotionService = promotionService;
         }
 
@@ -218,32 +211,17 @@ namespace PromotionsCRM.Web.Controllers
 
         [HttpGet]
 
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
+            if (id <= 0)
             {
                 return BadRequest("Invalid Promotion Id!");
             }
-
-            var promotion = _dbContext.Promotions
-                .AsNoTracking()
-                .Where(x => x.Id == id)
-                .Select(p => new PromotionDeleteViewModel()
-                {
-                    Id = p.Id,
-                    Name = p.Name,
-                    StartDate = p.StartDate,
-                    EndDate = p.EndDate,
-                    PromotionType = p.PromotionType,
-                    ClientName = p.Client.Name,
-                    HasSubmissions = p.Submissions.Any(),
-                    ProductsCount = p.Products.Count(),
-                })
-                .FirstOrDefault();
+            var promotion = await _promotionService.GetPromotionForDeletionAsync(id );
 
             if (promotion == null)
             {
-                return NotFound("Promotion does not exist!");
+                return NotFound("Promotion not found");
             }
 
             return View(promotion);
@@ -253,24 +231,17 @@ namespace PromotionsCRM.Web.Controllers
         [HttpPost]
         [ActionName("Delete")]
 
-        public IActionResult DeleteConfirmed(int? id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (id == null)
+            if (id <= 0)
             {
                 return BadRequest("Invalid Promotion Id!");
             }
-
-            var promotion = _dbContext.Promotions.Find(id);
-
-            if (promotion == null)
-            {
-                return NotFound("Promotion does not exist! Try again!");
-            }
-            bool hasSubmissions = _dbContext.Submissions.Any(s => s.Promotion.Id == id);
+            bool hasSubmissions = await _promotionService.HasSubmissions(id);
 
             if (hasSubmissions)
             {
-                _logger.LogError("There are already submited registrations for this promotion! Delete Action is denied!");
+                _logger.LogWarning ("There are already submited registrations for this promotion! Delete Action is denied!");
 
                 TempData["ErrorMessage"] = "This promotion has submissions and cannot be deleted.";
                 return RedirectToAction(nameof(Details), new { id });
@@ -278,8 +249,11 @@ namespace PromotionsCRM.Web.Controllers
 
             try
             {
-                _dbContext.Remove(promotion);
-                _dbContext.SaveChanges();
+                var isDeleted = await _promotionService.DeletePromotionAsync(id);
+                if (!isDeleted)
+                {
+                    return NotFound("Promotion not found or could not be deleted");
+                }
 
                 TempData["SuccessMessage"] = "Promotion deleted successfully!";
                 return RedirectToAction(nameof(PromotionsController.Index), "Promotions");
@@ -294,17 +268,5 @@ namespace PromotionsCRM.Web.Controllers
 
         }
 
-        private IEnumerable<SelectListItem> LoadClients()
-        {
-            var allClients = _dbContext.Clients
-                .OrderBy(c => c.Name)
-                .Select(c => new SelectListItem()
-                {
-                   Value = c.Id.ToString(),
-                   Text = c.Name,
-                })
-                .ToList();
-            return allClients;
-        }
     }
 }

@@ -33,7 +33,21 @@ namespace PromotionsCRM.Services.Implementations
 
                 
         }
-         
+
+        public async Task<bool> DeletePromotionAsync(int promotionId)
+        {
+            var promotionToDelete = await _dbContext.Promotions.FindAsync(promotionId);
+
+            if (promotionToDelete == null)
+            {
+                return false;
+            }
+
+            _dbContext.Promotions.Remove(promotionToDelete);
+
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
 
         public async Task<bool> EditPromotionAsync(int promotionId, PromotionEditViewModel model)
         {
@@ -116,6 +130,26 @@ namespace PromotionsCRM.Services.Implementations
                  .FirstOrDefaultAsync();
         }
 
+        public async Task<PromotionDeleteViewModel?> GetPromotionForDeletionAsync(int promotionId)
+        {
+            return await _dbContext.Promotions
+                .AsNoTracking()
+                .Where(x => x.Id == promotionId)
+                .Select(p => new PromotionDeleteViewModel()
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    StartDate = p.StartDate,
+                    EndDate = p.EndDate,
+                    PromotionType = p.PromotionType,
+                    ClientName = p.Client.Name,
+                    HasSubmissions = p.Submissions.Any(),
+                    ProductsCount = p.Products.Count(),
+                })
+                .FirstOrDefaultAsync();
+
+        }
+
         public async Task<PromotionEditViewModel?> GetPromotionForEditAsync(int promotionId)
         {
             var promotionToEdit = await _dbContext.Promotions
@@ -132,6 +166,13 @@ namespace PromotionsCRM.Services.Implementations
                 .FirstOrDefaultAsync();
 
             return promotionToEdit;
+        }
+
+        public async Task<bool> HasSubmissions(int promotionId)
+        {
+            var hasSubmissions = await _dbContext.Submissions.AnyAsync(s => s.PromotionId == promotionId);
+
+            return hasSubmissions;
         }
     }
 }
