@@ -48,14 +48,14 @@ namespace PromotionsCRM.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Create(int clientId)
+        public async Task<IActionResult> Create(int? clientId)
         {
             if (clientId <= 0 )
             {
                 return BadRequest("Invalid client Id!");
             }
            
-            var clientName = await _promotionService.GetClientNameAsync(clientId);
+            var clientName = await _promotionService.GetClientNameAsync(clientId.Value);
            
             if (clientName == null)
             {
@@ -65,7 +65,7 @@ namespace PromotionsCRM.Web.Controllers
 
             var newPromotion = new PromotionCreateViewModel()
             {
-                ClientId = clientId,
+                ClientId = clientId.Value,
                 ClientName = clientName,
                 StartDate = DateTime.Today,
             };
@@ -142,30 +142,20 @@ namespace PromotionsCRM.Web.Controllers
 
         [HttpGet]
 
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
+            if (id <= 0 || id == null)
             {
-                return BadRequest("There is an error with your request! Please try again");
+                return BadRequest("Invalid Promotion Id!");
             }
 
-            var promotionForEdit = _dbContext.Promotions
-                .AsNoTracking()
-                .Where(p => p.Id == id)
-                .Select(p => new PromotionEditViewModel()
-                {
-                    Id = p.Id,
-                    Name = p.Name,
-                    StartDate = p.StartDate,
-                    EndDate = p.EndDate,
-                    PromotionType = p.PromotionType, 
-                })
-                .FirstOrDefault();
+            var promotionForEdit = await _promotionService.GetPromotionForEditAsync(id.Value);
 
             if (promotionForEdit == null)
             {
-                return NotFound("Promotion not found!");
+                return NotFound("Promotion not found");
             }
+            
 
             return View(promotionForEdit);
         }
@@ -173,50 +163,44 @@ namespace PromotionsCRM.Web.Controllers
         [ValidateAntiForgeryToken]
         [HttpPost]
 
-        public IActionResult Edit(int? id, PromotionEditViewModel promotionToEdit)
+        public async Task<IActionResult> Edit(int id, PromotionEditViewModel model)
         {
 
-            if (id == null)
+            if (id <= 0)
             {
                 return BadRequest("There was an error while editing the promtoion! Please try again!");
             }
-
-            var promotion = _dbContext.Promotions.Find(id);
  
-            if (promotionToEdit.PromotionType.HasValue && !Enum.IsDefined(typeof(PromotionType), promotionToEdit.PromotionType.Value))
+            if (model.PromotionType.HasValue && !Enum.IsDefined(typeof(PromotionType), model.PromotionType.Value))
             {
-                ModelState.AddModelError(nameof(promotionToEdit.PromotionType), "Invalid promotion type selected");
+                ModelState.AddModelError(nameof(model.PromotionType), "Invalid promotion type selected");
             }
 
-            if (promotionToEdit.StartDate.HasValue && promotionToEdit.EndDate.HasValue)
+            if (model.StartDate.HasValue && model.EndDate.HasValue)
             {
-                bool isValidDateRange = promotionToEdit.StartDate < promotionToEdit.EndDate;
+                bool isValidDateRange = model.StartDate < model.EndDate;
 
                 if (!isValidDateRange)
                 {
-                    ModelState.AddModelError(nameof(promotionToEdit.StartDate), "Start date must be before end date");
+                    ModelState.AddModelError(nameof(model.StartDate), "Start date must be before end date");
                 }
             }
          
             if (!ModelState.IsValid)
             {
-                return View(promotionToEdit);
+                return View(model);
             }
-
-            if (promotion == null)
-            {
-                return NotFound("Promotion Not found! Please try again!");
-            }
-
             try
             {
-                promotion.Name = promotionToEdit.Name;
-                promotion.StartDate = promotionToEdit.StartDate.Value;
-                promotion.EndDate = promotionToEdit.EndDate.Value;
-                promotion.PromotionType = promotionToEdit.PromotionType.Value;
 
-                _dbContext.SaveChanges();
-                TempData["SuccessMessage"]    = "Promotion Edited Successfully!";
+                bool isEdited = await _promotionService.EditPromotionAsync(id, model);
+
+                if (!isEdited)
+                {
+                    return NotFound("Promotion not found or could not be edited");
+                }
+
+                TempData["SuccessMessage"]  = "Promotion Edited Successfully!";
             }
 
             catch (Exception ex)
@@ -226,10 +210,8 @@ namespace PromotionsCRM.Web.Controllers
                 TempData["ErrorMessage"] = "Unexpected error occured while editing the promotion!";
 
 
-                return View(promotionToEdit);
+                return View(model);
             }
-
-
 
             return RedirectToAction(nameof(PromotionsController.Details), "Promotions", new { id });
         }

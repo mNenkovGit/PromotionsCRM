@@ -33,6 +33,27 @@ namespace PromotionsCRM.Services.Implementations
 
                 
         }
+         
+
+        public async Task<bool> EditPromotionAsync(int promotionId, PromotionEditViewModel model)
+        {
+            var promotionToEdit = await _dbContext.Promotions.FindAsync(promotionId);
+
+            if (promotionToEdit == null)
+            {
+                return false;
+            }
+
+            promotionToEdit.Name = model.Name;
+            promotionToEdit.StartDate = model.StartDate.Value;
+            promotionToEdit.EndDate = model.EndDate.Value;
+            promotionToEdit.PromotionType = model.PromotionType.Value;
+
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
+
+       
 
         public async Task<IEnumerable<PromotionViewModel>> GetAllPromotionsAsync(string? name)
         {
@@ -94,6 +115,23 @@ namespace PromotionsCRM.Services.Implementations
                  })
                  .FirstOrDefaultAsync();
         }
-           
+
+        public async Task<PromotionEditViewModel?> GetPromotionForEditAsync(int promotionId)
+        {
+            var promotionToEdit = await _dbContext.Promotions
+                .AsNoTracking()
+                .Where(p => p.Id == promotionId)
+                .Select(p => new PromotionEditViewModel()
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    StartDate = p.StartDate,
+                    EndDate = p.EndDate,
+                    PromotionType = p.PromotionType
+                })
+                .FirstOrDefaultAsync();
+
+            return promotionToEdit;
+        }
     }
 }
