@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using PromotionsCRM.Common.Enums;
 using PromotionsCRM.Data;
 using PromotionsCRM.Data.Models;
+using PromotionsCRM.Services.Interfaces;
 using PromotionsCRM.ViewModels.Promotions;
 
 namespace PromotionsCRM.Web.Controllers
@@ -13,73 +14,34 @@ namespace PromotionsCRM.Web.Controllers
         private readonly PromotionsCrmDbContext _dbContext;
         private readonly ILogger<PromotionsController> _logger;
 
-        public PromotionsController(ILogger<PromotionsController> logger, PromotionsCrmDbContext dbContext)
+        private readonly IPromotionService _promotionService;
+
+        public PromotionsController(ILogger<PromotionsController> logger, PromotionsCrmDbContext dbContext, IPromotionService promotionService)
         {
             _logger = logger;
             _dbContext = dbContext;
+            _promotionService = promotionService;
         }
 
 
         [HttpGet]
-        public IActionResult Index(string? name)
+        public async Task<IActionResult> Index()
         {
-            var query = _dbContext.Promotions.AsQueryable();
-
-            if (!string.IsNullOrWhiteSpace(name))
-            {
-                query = query.Where(p => p.Name.Contains(name));
-            }
-
-            var allPromotions = query
-                .OrderBy(p => p.Client.Name)
-                .ThenByDescending(p => p.StartDate)
-                .ThenBy(p => p.Name)
-                .Select(p => new PromotionViewModel()
-                {
-                    Id = p.Id,
-                    Name = p.Name,
-                    StartDate = p.StartDate,
-                    EndDate = p.EndDate,
-                    PromotionType = p.PromotionType,
-                    ClientName = p.Client.Name,
-                    SubmissionCount = p.Submissions.Count
-                })
-                .ToList();
+           
+            var allPromotions = await _promotionService.GetAllPromotionsAsync(null);
 
             return View(allPromotions);
         }
 
         [HttpGet]
-        public IActionResult Details(int? id)
+        public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+             if (id == null)
             {
                 return BadRequest("Promotion ID is mandatory!");
             }
-
-            var promotion = _dbContext.Promotions
-                .Where(p => p.Id == id)
-                .Select(p => new PromotionDetailsViewModel()
-                {
-                    Id = p.Id,
-                    Name = p.Name,
-                    StartDate = p.StartDate,
-                    EndDate = p.EndDate,
-                    PromotionType = p.PromotionType,
-                    ClientId = p.ClientId,
-                    ClientName = p.Client.Name,
-                    Countries = p.PromotionsCountries.Select(pc => pc.Country.Name).ToArray(),
-                    Products = p.Products.Select(pr => pr.Name).ToArray(),
-                    SubmissionCount = p.Submissions.Count,
-                    SubmissionStatuses = p.Submissions.Select(s => s.Status).ToList(),
-                    
-                })
-                .FirstOrDefault();  
-
-            if(promotion == null)
-            {
-                return NotFound($"Promotion with ID {id} not found!");
-            }
+             
+            var promotion = await _promotionService.GetPromotionDetailsAsync(id);
 
             return View(promotion);
         }

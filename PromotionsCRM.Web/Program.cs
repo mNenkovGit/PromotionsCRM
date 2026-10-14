@@ -1,5 +1,7 @@
-using PromotionsCRM.Data;
 using Microsoft.EntityFrameworkCore;
+using PromotionsCRM.Data;
+using PromotionsCRM.Services.Implementations;
+using PromotionsCRM.Services.Interfaces;
 
 namespace PromotionsCRM.Web
 {
@@ -16,6 +18,7 @@ namespace PromotionsCRM.Web
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddScoped<IPromotionService, PromotionService>();
 
             var app = builder.Build();
 
