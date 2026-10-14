@@ -24,7 +24,7 @@ namespace PromotionsCRM.ViewModels.Promotions
         [Range(1, int.MaxValue, ErrorMessage = "Please select a client!")]
         public int ClientId { get; set; } 
 
-        public IEnumerable<SelectListItem>? Clients { get; set; } = new List<SelectListItem>();
+        public string? ClientName { get; set; }
 
     }
     

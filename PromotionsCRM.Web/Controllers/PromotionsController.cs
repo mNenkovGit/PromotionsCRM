@@ -6,6 +6,7 @@ using PromotionsCRM.Data;
 using PromotionsCRM.Data.Models;
 using PromotionsCRM.Services.Interfaces;
 using PromotionsCRM.ViewModels.Promotions;
+using System.Threading.Tasks;
 
 namespace PromotionsCRM.Web.Controllers
 {
@@ -47,14 +48,26 @@ namespace PromotionsCRM.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create(int? clientId)
+        public async Task<IActionResult> Create(int clientId)
         {
+            if (clientId <= 0 )
+            {
+                return BadRequest("Invalid client Id!");
+            }
+           
+            var clientName = await _promotionService.GetClientNameAsync(clientId);
+           
+            if (clientName == null)
+            {
+                return NotFound("Client does not exist");
+            }
+
+
             var newPromotion = new PromotionCreateViewModel()
             {
-                Clients = (IEnumerable<SelectListItem>)LoadClients(),
-                ClientId = clientId ?? 0,
-                StartDate = DateTime.Today
-                
+                ClientId = clientId,
+                ClientName = clientName,
+                StartDate = DateTime.Today,
             };
             
             return View(newPromotion);
@@ -63,12 +76,12 @@ namespace PromotionsCRM.Web.Controllers
         [ValidateAntiForgeryToken]
         [HttpPost]
 
-        public IActionResult Create(PromotionCreateViewModel createPromotion)
+        public async Task<IActionResult> Create(PromotionCreateViewModel createPromotion)
         {
 
-            bool isClientValid = _dbContext.Clients.Any(c => c.Id == createPromotion.ClientId);
+            string? clientName = await _promotionService.GetClientNameAsync(createPromotion.ClientId) ;
 
-            if (!isClientValid)
+            if (string.IsNullOrEmpty(clientName))
             {
                 ModelState.AddModelError(nameof(createPromotion.ClientId), "Invalid client selected");
             }
@@ -103,23 +116,12 @@ namespace PromotionsCRM.Web.Controllers
 
             if (!ModelState.IsValid)
             {
-                createPromotion.Clients = (IEnumerable<SelectListItem>)LoadClients();
+                createPromotion.ClientName = clientName;
                 return View(createPromotion);
             }
-
             try
             {
-                Promotion newPromotion = new Promotion()
-                {
-                    Name = createPromotion.Name,
-                    StartDate = createPromotion.StartDate.Value,
-                    EndDate = createPromotion.EndDate.Value,
-                    PromotionType = createPromotion.PromotionType.Value,
-                    ClientId = createPromotion.ClientId
-                };
-
-                _dbContext.Promotions.Add(newPromotion);
-                _dbContext.SaveChanges();
+                await _promotionService.CreatePromotionAsync(createPromotion);
 
                 TempData["SuccessMessage"] = "Promotion created successfully!";
 
@@ -129,8 +131,7 @@ namespace PromotionsCRM.Web.Controllers
             {
                 _logger.LogError(ex, "An error occurred while creating the promotion");
 
-                createPromotion.Clients =   (IEnumerable<SelectListItem>)LoadClients();
-
+                createPromotion.ClientName = clientName;
                 TempData["ErrorMessage"] = "An error occurred while creating the promotion. Please try again later.";
 
                 return View(createPromotion);

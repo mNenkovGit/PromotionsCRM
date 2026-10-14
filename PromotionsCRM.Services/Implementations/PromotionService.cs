@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PromotionsCRM.Common.Enums;
 using PromotionsCRM.Data;
+using PromotionsCRM.Data.Models;
 using PromotionsCRM.Services.Interfaces;
 using PromotionsCRM.ViewModels.Promotions;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
@@ -13,6 +15,23 @@ namespace PromotionsCRM.Services.Implementations
         public PromotionService(PromotionsCrmDbContext dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        public async Task CreatePromotionAsync(PromotionCreateViewModel createPromotion)
+        {
+                Promotion newPromotion = new Promotion()
+                {
+                    Name = createPromotion.Name,
+                    StartDate = createPromotion.StartDate.Value,
+                    EndDate = createPromotion.EndDate.Value,
+                    PromotionType = createPromotion.PromotionType.Value,
+                    ClientId = createPromotion.ClientId
+                };
+
+                _dbContext.Promotions.Add(newPromotion);
+                await _dbContext.SaveChangesAsync();
+
+                
         }
 
         public async Task<IEnumerable<PromotionViewModel>> GetAllPromotionsAsync(string? name)
@@ -39,6 +58,17 @@ namespace PromotionsCRM.Services.Implementations
                     SubmissionCount = p.Submissions.Count
                 })
                 .ToListAsync();
+        }
+
+        public async Task<string?> GetClientNameAsync(int clientId)
+        {
+            var newPromotion = new PromotionCreateViewModel()
+            {
+                ClientName = await _dbContext.Clients.Where(c => c.Id == clientId).Select(c => c.Name).FirstOrDefaultAsync(),
+                ClientId = clientId,
+            };
+
+            return newPromotion.ClientName;
         }
 
         public async Task<PromotionDetailsViewModel?> GetPromotionDetailsAsync(int? promotionId)

@@ -42,12 +42,8 @@
             </div>
 
             <div class="mb-3">
-                <label asp-for="ClientId" class="form-label">Select Client</label>
-                <select asp-for="ClientId" class="form-select" aria-required="true"
-                        asp-items="Model.Clients">
-                    <option value="">Select Client...</option>
-                </select>
-                <span asp-validation-for="ClientId" class="text-danger"></span>
+                <input type="hidden" asp-for="ClientId" />
+                <p>Client: <strong>@Model.ClientName</strong></p>
             </div>
 
             <div class="mb-3">
