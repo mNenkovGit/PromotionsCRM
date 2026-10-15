@@ -13,7 +13,7 @@
         <p class="card-text mb-1"><strong>Promotion Name:</strong> @Model.Name</p>
         <p class="card-text mb-1"><strong>Start Date:</strong> @Model.StartDate.ToString("dd/MM/yyyy")</p>
         <p class="card-text mb-1"><strong>End Date:</strong> @Model.EndDate.ToString("dd/MM/yyyy")</p>
-        <p class="card-text mb-1"><strong>Promotion Status:</strong> @Model.PromotionStatus</p>
+        <p class="card-text mb-1"><strong>Promotion Status:</strong><partial name="_PromotionStatusBadge" model="Model.PromotionStatus" /></p>
         <p class="card-text mb-1"><strong>Promotion Type:</strong> @Model.PromotionType</p>
         <p class="card-text mb-1"><strong>Client Name:</strong> <a asp-controller="Clients" asp-action="Details" asp-route-id="@Model.ClientId">@Model.ClientName</a></p>
         <p class="card-text mb-1"><strong>Promotion Countries:</strong> @(string.Join(", ", Model.Countries))</p>

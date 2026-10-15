@@ -1,0 +1,13 @@
+﻿@model string
+
+@{
+    string cssClass = Model switch
+    {
+        "Ongoing" => "bg-success",
+        "Upcoming" => "bg-warning text-dark",
+        "Completed" => "bg-secondary",
+        _ => "bg-light text-dark"
+    };
+}
+
+<span class="badge @cssClass">@Model</span>
