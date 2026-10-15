@@ -18,7 +18,7 @@ namespace PromotionsCRM.ViewModels.Clients
 
         public string Country{ get; set; } = null!;
 
-        public string RegisteredOn { get; set; } = null!;
+        public DateTime RegisteredOn { get; set; }
 
         public ICollection<PromotionViewModel> Promotions { get; set; } = new List<PromotionViewModel>();
     }

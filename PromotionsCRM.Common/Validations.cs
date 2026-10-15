@@ -17,7 +17,8 @@
         public const int PhoneNumberLength = 15;
         public const string PhoneNumberRegEx = @"^\+\d{12}$";
 
-        public const int WebsiteMaxLen = 250;
+        public const int WebsiteMaxLen = 2048 ;
+        public const int WebsiteMinLen = 11;
 
         public const int FirstNameMinLen = 2;
         public const int FirstNameMaxlen = 50;

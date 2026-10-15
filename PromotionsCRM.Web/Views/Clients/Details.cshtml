@@ -10,9 +10,17 @@
         <p class="card-text mb-1"><strong>Address:</strong> @Model.Address</p>
         <p class="card-text mb-1"><strong>Email:</strong> @Model.Email</p>
         <p class="card-text mb-1"><strong>Phone Number:</strong> @Model.PhoneNumber</p>
-        <p class="card-text mb-1"><strong>Registered On:</strong> @Model.RegisteredOn</p>
+        <p class="card-text mb-1"><strong>Registered On:</strong> @Model.RegisteredOn.ToString("dd/MM/yyyy")</p>
         <p class="card-text mb-1"><strong>Website:</strong> <a href="@Model.Website" target="_blank">@Model.Website</a></p>
         <p class="card-text mb-1"><strong>Country:</strong> @Model.Country</p>
+
+        <a asp-controller="Clients"
+           asp-action="Edit"
+           asp-route-id="@Model.Id"
+           class="btn btn-info mt-2">
+            Edit Client Details
+        </a>
+        <p></p>
         <h5>Promotions: </h5>
 
 

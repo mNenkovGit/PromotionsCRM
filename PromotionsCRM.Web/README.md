@@ -79,7 +79,7 @@ Controllers do not access the database directly. They depend on service interfac
  Clone the repository:
 
    ```
-   git clone https://github.com/mnenkov83/PromotionsCRM.git
+   git clone https://github.com/mNenkovGit/PromotionsCRM.git
    ```
 
 2. Connection string

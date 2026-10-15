@@ -1,84 +1,114 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PromotionsCRM.Data;
-using PromotionsCRM.Data.Models;
+using PromotionsCRM.Services.Interfaces;
 using PromotionsCRM.ViewModels.Clients;
-using PromotionsCRM.ViewModels.Promotions;
 
 namespace PromotionsCRM.Web.Controllers
 {
     public class ClientsController : Controller
     {
-        private readonly PromotionsCrmDbContext _dbContext;
-        public ClientsController(PromotionsCrmDbContext dbContext)
+        private readonly IClientService _clientService;
+
+        private readonly ILogger<ClientsController> _logger;
+
+        public ClientsController( IClientService clientService, ILogger<ClientsController> logger)
         {
-            _dbContext = dbContext;
+            _clientService = clientService;
+            _logger = logger;
         }
 
 
         [HttpGet]
-        public IActionResult Index(string? name)
+        public async Task<IActionResult> Index(string? name)
         {
-            IQueryable<Client> query = _dbContext.Clients;
-
-            if (!string.IsNullOrWhiteSpace(name))
-            {
-                query = query.Where(c => c.Name.Contains(name));
-            }
-
-            var allClients = query
-                .OrderBy(c => c.Name)
-                .Select(c => new ClientViewModel()
-                {
-                    Id = c.Id,
-                    Name = c.Name,
-                    Email = c.Email,
-                    PhoneNumber = c.PhoneNumber,
-                    Website = c.Website,
-                    Country = c.Country.Name
-                })
-                .ToArray();
+            var allClients = await _clientService.GetAllClientsAsync(name);
 
             return View(allClients);
         }
 
-        public IActionResult Details(int? id)
+        [HttpGet]
+        public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+            if (id == null || id == null)
             {
-                return this.BadRequest("Client ID is mandatory!");
+                return BadRequest("Client ID is mandatory!");
             }
-            var client = _dbContext.Clients
-                .Where(c => c.Id == id)
-                .Select(c => new ClientDetailsViewModel()
-                {
-                    Id = c.Id, 
-                    Name = c.Name,
-                    Email = c.Email,
-                    Address = c.Address,
-                    Website = c.Website,
-                    PhoneNumber = c.PhoneNumber,
-                    RegisteredOn = c.RegisteredOn.ToString("dd/MM/yyyy"),
-                    Country = c.Country.Name,
-                    Promotions = c.Promotions
-                        .OrderByDescending(p => p.StartDate)
-                        .ThenBy(p => p.Name)
-                        .Select(p => new PromotionViewModel()
-                        {
-                            Id = p.Id,
-                            Name = p.Name,
-                            StartDate = p.StartDate,
-                            EndDate = p.EndDate,
-                            PromotionType = p.PromotionType,
-                        }).ToArray()
-                })
-                .SingleOrDefault();
+
+            var client = await _clientService.GetClientDetailsAsync(id.Value);
 
             if (client == null)
             {
-                return this.NotFound("Client not found!");
+                return NotFound("Client not found!");
             }
             
-            return this.View(client);
+            return View(client);
+        }
+
+        [HttpGet]
+
+        public async Task<IActionResult> Edit(int? clientId)
+        {
+            if (clientId == null || clientId <= 0)
+            {
+                return BadRequest("Client ID is mandatory!");
+            }
+            var clientToEdit = await _clientService.GetClientForEditAsync(clientId.Value);
+
+            if (clientToEdit == null)
+            {
+                return NotFound("Client not found!");
+            }
+
+            clientToEdit.Countries = await _clientService.GetCountriesForDropdownAsync();
+
+            return View(clientToEdit);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]   
+        public async Task<IActionResult> Edit(int id, ClientEditViewModel model)
+        {
+            if (id <= 0)
+            {
+                return BadRequest("Client Id is Mandatory!");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            if (!await _clientService.CountryExistsAsync(model.CountryId))
+            {
+                ModelState.AddModelError(nameof(model.CountryId), "Country not found!");
+            }
+            
+            if (!ModelState.IsValid)
+            {
+                model.Countries = await _clientService.GetCountriesForDropdownAsync();
+                return View(model);
+            }
+
+            try
+            {
+                var result = await _clientService.EditClientAsync(id, model);
+
+                if (!result)
+                {
+                    return NotFound("Client not found!");
+                }
+                TempData["SuccessMessage"]  = "Client Edited Successfully!";
+            }
+
+            catch (Exception ex)
+            {
+                _logger.LogError(ex,"Error occured while editing the Client! Try again later!");
+
+                TempData["ErrorMessage"] = "Unexpected error occured while editing the Client!";
+
+                return View(model);
+            }
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }
