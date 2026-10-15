@@ -8,9 +8,9 @@ namespace PromotionsCRM.Services.Interfaces
     {
         Task<IEnumerable<ClientViewModel>> GetAllClientsAsync(string? name);
 
-        Task<ClientDetailsViewModel?> GetClientDetailsAsync(int clientId);
+        Task<ClientDetailsViewModel?> GetClientDetailsAsync(int id, string? name);
 
-         Task<ClientEditViewModel?> GetClientForEditAsync(int clientId);
+         Task<ClientEditViewModel?> GetClientForEditAsync(int id);
 
         Task<bool> EditClientAsync(int clientId, ClientEditViewModel model);
 

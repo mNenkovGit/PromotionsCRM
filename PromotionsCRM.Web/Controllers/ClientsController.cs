@@ -26,14 +26,14 @@ namespace PromotionsCRM.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, string? name)
         {
-            if (id == null || id == null)
+            if (id == null || id <= 0)
             {
                 return BadRequest("Client ID is mandatory!");
             }
 
-            var client = await _clientService.GetClientDetailsAsync(id.Value);
+            var client = await _clientService.GetClientDetailsAsync(id.Value, name);
 
             if (client == null)
             {
@@ -45,13 +45,13 @@ namespace PromotionsCRM.Web.Controllers
 
         [HttpGet]
 
-        public async Task<IActionResult> Edit(int? clientId)
+        public async Task<IActionResult> Edit(int? id)
         {
-            if (clientId == null || clientId <= 0)
+            if (id == null || id <= 0)
             {
                 return BadRequest("Client ID is mandatory!");
             }
-            var clientToEdit = await _clientService.GetClientForEditAsync(clientId.Value);
+            var clientToEdit = await _clientService.GetClientForEditAsync(id.Value);
 
             if (clientToEdit == null)
             {

@@ -43,12 +43,12 @@ namespace PromotionsCRM.Services.Implementations
            
         }
 
-        public async Task<ClientDetailsViewModel?> GetClientDetailsAsync(int clientId)
+        public async Task<ClientDetailsViewModel?> GetClientDetailsAsync(int id, string? name)
         {
             
              return await _dbContext.Clients
                 .AsNoTracking()
-                .Where(c => c.Id == clientId)
+                .Where(c => c.Id == id)
                 .Select(c => new ClientDetailsViewModel()
                 {
                     Id = c.Id, 
@@ -60,6 +60,7 @@ namespace PromotionsCRM.Services.Implementations
                     RegisteredOn = c.RegisteredOn,
                     Country = c.Country.Name,
                     Promotions = c.Promotions
+                        .Where(p => name == null || p.Name.Contains(name))
                         .OrderByDescending(p => p.StartDate)
                         .ThenBy(p => p.Name)
                         .Select(p => new PromotionViewModel()

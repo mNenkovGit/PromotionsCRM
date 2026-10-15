@@ -19,10 +19,10 @@ namespace PromotionsCRM.Web.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? name)
         {
            
-            var allPromotions = await _promotionService.GetAllPromotionsAsync(null);
+            var allPromotions = await _promotionService.GetAllPromotionsAsync(name);
 
             return View(allPromotions);
         }
