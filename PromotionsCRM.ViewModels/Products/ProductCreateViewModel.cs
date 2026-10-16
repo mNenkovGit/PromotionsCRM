@@ -6,7 +6,7 @@ namespace PromotionsCRM.ViewModels.Products
     {
 
         [Required(ErrorMessage = "Product name is required.")]
-        [StringLength(ProductNameMaxlen, MinimumLength = ProductNameMinLen, ErrorMessage = "Product name must be between {2} and {1} characters long.")]
+        [StringLength(ProductNameMaxLen, MinimumLength = ProductNameMinLen, ErrorMessage = "Product name must be between {2} and {1} characters long.")]
         public string Name { get; set; } = null!;
 
 

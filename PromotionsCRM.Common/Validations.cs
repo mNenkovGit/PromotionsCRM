@@ -21,19 +21,19 @@
         public const int WebsiteMinLen = 11;
 
         public const int FirstNameMinLen = 2;
-        public const int FirstNameMaxlen = 50;
+        public const int FirstNameMaxLen = 50;
 
         public const int LastNameMinLen = 2;
-        public const int LastNameMaxlen = 50;
+        public const int LastNameMaxLen = 50;
 
         public const int PromotionNameMinLen = 5;
-        public const int PromotionNameMaxlen = 80;
+        public const int PromotionNameMaxLen = 80;
 
         public const int ProductNameMinLen = 2;
-        public const int ProductNameMaxlen = 50;
+        public const int ProductNameMaxLen = 50;
 
         public const int UserNameMinLen = 2;
-        public const int UsernameMaxlen = 50;
+        public const int UsernameMaxLen = 50;
 
         public const int PasswordMinLen = 6;
         public const int PasswordMaxLen = 50;

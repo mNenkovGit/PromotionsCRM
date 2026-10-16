@@ -9,7 +9,7 @@ namespace PromotionsCRM.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(ProductNameMaxlen)]
+        [MaxLength(ProductNameMaxLen)]
         public string Name { get; set; } = null!;
 
         [ForeignKey(nameof(Promotion))]

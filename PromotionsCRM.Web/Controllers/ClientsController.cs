@@ -44,7 +44,6 @@ namespace PromotionsCRM.Web.Controllers
         }
 
         [HttpGet]
-
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || id <= 0)
@@ -69,12 +68,12 @@ namespace PromotionsCRM.Web.Controllers
         {
             if (id <= 0)
             {
-                return BadRequest("Client Id is Mandatory!");
+                return BadRequest("Client Id is mandatory!");
             }
 
             if (!string.IsNullOrWhiteSpace(model.Name) && await _clientService.ClientNameExistsAsync(model.Name, id))
             {
-                ModelState.AddModelError(nameof(model.Name), "A client with this name already exists.");
+                ModelState.AddModelError(nameof(model.Name), "A client with this name already exists!");
             }
 
             if (!await _clientService.CountryExistsAsync(model.CountryId))
@@ -97,7 +96,7 @@ namespace PromotionsCRM.Web.Controllers
                 {
                     return NotFound("Client not found!");
                 }
-                TempData["SuccessMessage"] = "Client Edited Successfully!";
+                TempData["SuccessMessage"] = "Client edited successfully!";
             }
 
             catch (Exception ex)

@@ -13,7 +13,7 @@ namespace PromotionsCRM.Services.Interfaces
 
         Task<bool> EditClientAsync(int clientId, ClientEditViewModel model);
 
-        Task<IEnumerable<SelectListItem>?> GetCountriesForDropdownAsync();
+        Task<IEnumerable<SelectListItem>> GetCountriesForDropdownAsync();
 
         Task<bool> CountryExistsAsync(int countryId);
 

@@ -19,10 +19,10 @@
     <ProjectReference Include="..\PromotionsCRM.Data.Models\PromotionsCRM.Data.Models.csproj" />
     <ProjectReference Include="..\PromotionsCRM.Services\PromotionsCRM.Services.csproj" />
     <ProjectReference Include="..\PromotionsCRM.ViewModels\PromotionsCRM.ViewModels.csproj" />
-
   </ItemGroup>
+  
   <ItemGroup>
-    <None Include="wwwroot\README.md" />
+    <Folder Include="wwwroot\Images\" />
   </ItemGroup>
 
 </Project>

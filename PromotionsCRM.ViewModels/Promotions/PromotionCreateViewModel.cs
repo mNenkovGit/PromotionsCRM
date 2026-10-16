@@ -6,7 +6,7 @@ namespace PromotionsCRM.ViewModels.Promotions
     public class PromotionCreateViewModel
     {
         [Required(ErrorMessage = "Promotion name is required.")]
-        [StringLength(PromotionNameMaxlen, MinimumLength = PromotionNameMinLen, ErrorMessage = "Promotion name must be between {2} and {1} characters long.")]
+        [StringLength(PromotionNameMaxLen, MinimumLength = PromotionNameMinLen, ErrorMessage = "Promotion name must be between {2} and {1} characters long.")]
         public string Name { get; set; } = null!;
 
         [Required(ErrorMessage = "Start date is required.")]

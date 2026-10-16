@@ -17,10 +17,10 @@
         <a asp-controller="Clients"
            asp-action="Edit"
            asp-route-id="@Model.Id"
-           class="btn btn-info mt-2">
+           class="btn btn-info mt-3">
             Edit Client Details
         </a>
-        <p></p>
+        
         <h5>Promotions: </h5>
 
 
@@ -30,7 +30,7 @@
            class="btn btn-success mt-2">
             Add Promotion
         </a>
-        <p></p>
+    
         <form asp-controller="Clients" asp-action="Details" method="get" class="mb-3">
             <div class="input-group">
                 <input name="name" class="form-control" placeholder="Search by name (e.g. Promotion Name 123...)" />
@@ -69,7 +69,6 @@
                                     Details
                                 </a>
                             </td>
-                            
 
                         </tr>
                     }
@@ -78,7 +77,7 @@
         }
         else
         {
-            <span>No promotions available.</span>
+            <span>No promotions match your search.</span>
         }
 
     </div>

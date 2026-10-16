@@ -2,7 +2,14 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4 welcome-header">Welcome to Promotions CRM page!</h1>
-    <p></p>
-</div>
+<section class="row align-items-center py-5">
+    <div class="col-md-6">
+        <h1 class="display-5 fw-bold">Welcome to Promotions CRM page!</h1>
+        <p class="lead">PromotionsCRM is an ASP.NET Core MVC application for managing promotional campaigns. Client companies run promotions for their products in different countries, end customers register for these promotions after a purchase, and staff members process the submissions and track their status.</p>
+        <a asp-controller="Promotions" asp-action="Index" class="btn btn-primary btn-lg me-2">View Promotions</a>
+        <a asp-controller="Clients" asp-action="Index" class="btn btn-outline-secondary btn-lg">View Clients</a>
+    </div>
+    <div class="col-md-6 text-center mt-4 mt-md-0">
+        <img src="~/images/landing-image.jpeg" class="img-fluid" alt="Promotional Campaign Illustration" />
+    </div>
+</section>

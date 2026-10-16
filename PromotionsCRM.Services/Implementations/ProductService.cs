@@ -28,23 +28,17 @@ namespace PromotionsCRM.Services.Implementations
 
         public async Task<string?> GetPromotionNameAsync(int promotionId)
         {
-            var newPromotion = new ProductCreateViewModel()
-            {
-                PromotionName = await _dbContext.Promotions
-                   .Where(c => c.Id == promotionId)
+            return await _dbContext.Promotions
+                   .Where(p => p.Id == promotionId)
                    .Select(c => c.Name)
-                   .FirstOrDefaultAsync(),
-                PromotionId = promotionId,
-            };
-
-            return newPromotion.PromotionName;
-        }
+                   .FirstOrDefaultAsync();
+        } 
 
         public async Task<bool> ProductNameExistsAsync(int promotionId, string name)
         {
-            string productNameWhtoutSpaces = name.Replace(" ", "");
+            string productNameWithoutSpaces = name.Replace(" ", "");
 
-            return await _dbContext.Products.AnyAsync(p => p.Name.Replace(" ", "") == productNameWhtoutSpaces && p.PromotionId == promotionId);
+            return await _dbContext.Products.AnyAsync(p => p.Name.Replace(" ", "") == productNameWithoutSpaces && p.PromotionId == promotionId);
         }
     }
 }

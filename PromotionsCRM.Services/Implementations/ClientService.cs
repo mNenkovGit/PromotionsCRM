@@ -103,7 +103,7 @@ namespace PromotionsCRM.Services.Implementations
                 return false;
             }
 
-            clientForEdit.Name = model.Name;
+            clientForEdit.Name = model.Name.Trim();
             clientForEdit.Email = model.Email;
             clientForEdit.Address = model.Address;
             clientForEdit.Website = model.Website;

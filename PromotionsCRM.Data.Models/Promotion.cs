@@ -10,7 +10,7 @@ namespace PromotionsCRM.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(PromotionNameMaxlen)]
+        [MaxLength(PromotionNameMaxLen)]
         public string Name { get; set; } = null!;
 
         [Column(TypeName = "datetime2")]

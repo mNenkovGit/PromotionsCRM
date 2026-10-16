@@ -6,7 +6,7 @@ namespace PromotionsCRM.Services.Interfaces
     {
         Task<IEnumerable<PromotionViewModel>> GetAllPromotionsAsync(string? name);
 
-        Task<PromotionDetailsViewModel?> GetPromotionDetailsAsync(int? promotionId);
+        Task<PromotionDetailsViewModel?> GetPromotionDetailsAsync(int promotionId);
 
         Task<string?> GetClientNameAsync(int clientId);
 

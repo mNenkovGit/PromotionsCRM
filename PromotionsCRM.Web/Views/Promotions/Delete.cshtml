@@ -18,7 +18,7 @@
             <div class="card-footer text-center">
                 <form asp-action="Delete" method="post">
                     <input type="hidden" asp-for="Id" />
-                    @if (Model.HasSubmissions == true)
+                    @if (Model.HasSubmissions)
                     {
                         <p class="text-warning mt-3">
                             There are already submitted registrations for this promotion! Delete Action is denied!
@@ -43,7 +43,7 @@
                             Confirm Delete
                         </button>
 
-                        <a asp-action="Index" class="btn btn-secondary">
+                        <a asp-route-id="@Model.Id" asp-action="Details" class="btn btn-secondary">
                             Cancel
                         </a>
                     }

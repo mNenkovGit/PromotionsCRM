@@ -17,12 +17,11 @@ namespace PromotionsCRM.Web.Controllers
         }
 
         [HttpGet]
-
         public async Task<IActionResult> Create(int? promoId)
         {
             if (promoId == null || promoId <= 0)
             {
-                return BadRequest("Invalid promotion Id!");
+                return BadRequest("Invalid promotion ID!");
             }
 
             var promotionName = await _productService.GetPromotionNameAsync(promoId.Value);
@@ -49,12 +48,12 @@ namespace PromotionsCRM.Web.Controllers
 
             if (promotionName is null)
             {
-                return BadRequest("Invalid Promotion");
+                return BadRequest("Invalid promotion!");
             }
 
             if (!string.IsNullOrWhiteSpace(createModel.Name) && await _productService.ProductNameExistsAsync(createModel.PromotionId, createModel.Name))
             {
-                ModelState.AddModelError(nameof(createModel.Name), "This promotion already has a product with this name.");
+                ModelState.AddModelError(nameof(createModel.Name), "This promotion already has a product with this name!");
             }
 
             if (!ModelState.IsValid)
@@ -73,10 +72,10 @@ namespace PromotionsCRM.Web.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while creating the product");
+                _logger.LogError(ex, "An error occurred while creating the product!");
 
                 createModel.PromotionName = promotionName;
-                TempData["ErrorMessage"] = "An error occurred while creating the product. Please try again later.";
+                TempData["ErrorMessage"] = "An error occurred while creating the product. Please try again later!";
 
                 return View(createModel);
             }

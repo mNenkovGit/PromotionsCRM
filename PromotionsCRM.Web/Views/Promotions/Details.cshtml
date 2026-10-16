@@ -1,5 +1,4 @@
-﻿@using PromotionsCRM.Data.Models
-@using PromotionsCRM.ViewModels.Promotions
+﻿@using PromotionsCRM.ViewModels.Promotions
 @model PromotionDetailsViewModel
 
 
@@ -13,7 +12,7 @@
         <p class="card-text mb-1"><strong>Promotion Name:</strong> @Model.Name</p>
         <p class="card-text mb-1"><strong>Start Date:</strong> @Model.StartDate.ToString("dd/MM/yyyy")</p>
         <p class="card-text mb-1"><strong>End Date:</strong> @Model.EndDate.ToString("dd/MM/yyyy")</p>
-        <p class="card-text mb-1"><strong>Promotion Status:</strong><partial name="_PromotionStatusBadge" model="Model.PromotionStatus" /></p>
+        <p class="card-text mb-1"><strong>Promotion Status:</strong> <partial name="_PromotionStatusBadge" model="Model.PromotionStatus" /></p>
         <p class="card-text mb-1"><strong>Promotion Type:</strong> @Model.PromotionType</p>
         <p class="card-text mb-1"><strong>Client Name:</strong> <a asp-controller="Clients" asp-action="Details" asp-route-id="@Model.ClientId">@Model.ClientName</a></p>
         <p class="card-text mb-1"><strong>Promotion Countries:</strong> @(string.Join(", ", Model.Countries))</p>
@@ -52,20 +51,18 @@
                 <p>No submissions yet!</p>
             }
 
-        
-       
-    <a asp-controller="Promotions"
-       asp-action="Edit"
-       asp-route-id="@Model.Id"
-       class="btn btn-warning mt-3">
-        Edit
-    </a>
-    <a asp-controller="Promotions"
-       asp-action="Delete"
-       asp-route-id="@Model.Id"
-       class="btn btn-danger mt-3">
-        Delete
-    </a>
+        <a asp-controller="Promotions"
+           asp-action="Edit"
+           asp-route-id="@Model.Id"
+           class="btn btn-warning mt-3">
+            Edit
+        </a>
+        <a asp-controller="Promotions"
+           asp-action="Delete"
+           asp-route-id="@Model.Id"
+           class="btn btn-danger mt-3">
+            Delete
+        </a>
     </div>
 </div>
 

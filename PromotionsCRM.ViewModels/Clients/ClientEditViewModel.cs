@@ -21,7 +21,7 @@ namespace PromotionsCRM.ViewModels.Clients
         public string? Address { get; set; }
 
         [Required]
-        [RegularExpression(PhoneNumberRegEx, ErrorMessage = "Phone Number must match the following pattern \"+359888123456\" (plus sign followed by exactly 12 digits")]
+        [RegularExpression(PhoneNumberRegEx, ErrorMessage = "Phone Number must match the following pattern \"+359888123456\" (plus sign followed by exactly 12 digits)")]
         [StringLength(PhoneNumberLength)]
         public string PhoneNumber { get; set; } = null!;
 

@@ -19,7 +19,7 @@ namespace PromotionsCRM.Services.Implementations
         {
             Promotion newPromotion = new Promotion()
             {
-                Name = createPromotion.Name,
+                Name = createPromotion.Name.Trim(),
                 StartDate = createPromotion.StartDate.Value,
                 EndDate = createPromotion.EndDate.Value,
                 PromotionType = createPromotion.PromotionType.Value,
@@ -56,7 +56,7 @@ namespace PromotionsCRM.Services.Implementations
                 return false;
             }
 
-            promotionToEdit.Name = model.Name;
+            promotionToEdit.Name = model.Name.Trim();
             promotionToEdit.StartDate = model.StartDate.Value;
             promotionToEdit.EndDate = model.EndDate.Value;
             promotionToEdit.PromotionType = model.PromotionType.Value;
@@ -95,19 +95,13 @@ namespace PromotionsCRM.Services.Implementations
 
         public async Task<string?> GetClientNameAsync(int clientId)
         {
-            var newPromotion = new PromotionCreateViewModel()
-            {
-                ClientName = await _dbContext.Clients
-                        .Where(c => c.Id == clientId)
-                        .Select(c => c.Name)
-                        .FirstOrDefaultAsync(),
-                ClientId = clientId,
-            };
-
-            return newPromotion.ClientName;
+            return await _dbContext.Clients
+                         .Where(c => c.Id == clientId)
+                         .Select(c => c.Name)
+                         .FirstOrDefaultAsync();
         }
 
-        public async Task<PromotionDetailsViewModel?> GetPromotionDetailsAsync(int? promotionId)
+        public async Task<PromotionDetailsViewModel?> GetPromotionDetailsAsync(int promotionId)
         {
 
             return await _dbContext.Promotions
@@ -135,7 +129,7 @@ namespace PromotionsCRM.Services.Implementations
         {
             return await _dbContext.Promotions
                 .AsNoTracking()
-                .Where(x => x.Id == promotionId)
+                .Where(p => p.Id == promotionId)
                 .Select(p => new PromotionDeleteViewModel()
                 {
                     Id = p.Id,
@@ -153,7 +147,7 @@ namespace PromotionsCRM.Services.Implementations
 
         public async Task<PromotionEditViewModel?> GetPromotionForEditAsync(int promotionId)
         {
-            var promotionToEdit = await _dbContext.Promotions
+            return await _dbContext.Promotions
                 .AsNoTracking()
                 .Where(p => p.Id == promotionId)
                 .Select(p => new PromotionEditViewModel()
@@ -164,9 +158,7 @@ namespace PromotionsCRM.Services.Implementations
                     EndDate = p.EndDate,
                     PromotionType = p.PromotionType
                 })
-                .FirstOrDefaultAsync();
-
-            return promotionToEdit;
+                .FirstOrDefaultAsync(); 
         }
 
         public async Task<bool> HasSubmissionsAsync(int promotionId)

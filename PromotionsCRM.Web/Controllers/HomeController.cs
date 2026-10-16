@@ -23,11 +23,6 @@ namespace PromotionsCRM.Web.Controllers
         {
             return View();
         }
-        public IActionResult About()
-        {
-            ViewBag.Message = "This is my Promotion CRM Application";
-            return View();
-        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

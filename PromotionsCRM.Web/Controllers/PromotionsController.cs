@@ -28,7 +28,7 @@ namespace PromotionsCRM.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
             if (id == null || id <= 0)
             {
@@ -48,16 +48,16 @@ namespace PromotionsCRM.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Create(int? clientId)
         {
-            if (clientId <= 0 || clientId == null)
+            if (clientId == null || clientId <= 0)
             {
-                return BadRequest("Invalid client Id!");
+                return BadRequest("Invalid client ID!");
             }
 
             var clientName = await _promotionService.GetClientNameAsync(clientId.Value);
 
             if (clientName == null)
             {
-                return NotFound("Client does not exist");
+                return NotFound("Client does not exist!");
             }
 
 
@@ -71,9 +71,8 @@ namespace PromotionsCRM.Web.Controllers
             return View(newPromotion);
         }
 
-        [ValidateAntiForgeryToken]
         [HttpPost]
-
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(PromotionCreateViewModel createPromotion)
         {
 
@@ -81,12 +80,12 @@ namespace PromotionsCRM.Web.Controllers
 
             if (string.IsNullOrEmpty(clientName))
             {
-                ModelState.AddModelError(nameof(createPromotion.ClientId), "Invalid client selected");
+                ModelState.AddModelError(nameof(createPromotion.ClientId), "Invalid client selected!");
             }
 
             if (createPromotion.PromotionType.HasValue && !Enum.IsDefined(typeof(PromotionType), createPromotion.PromotionType.Value))
             {
-                ModelState.AddModelError(nameof(createPromotion.PromotionType), "Invalid promotion type selected");
+                ModelState.AddModelError(nameof(createPromotion.PromotionType), "Invalid promotion type selected!");
             }
             if (createPromotion.StartDate.HasValue && createPromotion.EndDate.HasValue)
             {
@@ -94,27 +93,27 @@ namespace PromotionsCRM.Web.Controllers
 
                 if (!isValidDateRange)
                 {
-                    ModelState.AddModelError(nameof(createPromotion.StartDate), "Start date must be before end date");
+                    ModelState.AddModelError(nameof(createPromotion.StartDate), "Start date must be before end date!");
                 }
 
                 bool isStartDateInFuture = createPromotion.StartDate >= DateTime.Today;
 
                 if (!isStartDateInFuture)
                 {
-                    ModelState.AddModelError(nameof(createPromotion.StartDate), "Start date must be today or in the future");
+                    ModelState.AddModelError(nameof(createPromotion.StartDate), "Start date must be today or in the future!");
                 }
 
                 bool isEndDateInFuture = createPromotion.EndDate >= DateTime.Today;
 
                 if (!isEndDateInFuture)
                 {
-                    ModelState.AddModelError(nameof(createPromotion.EndDate), "End date must be today or in the future");
+                    ModelState.AddModelError(nameof(createPromotion.EndDate), "End date must be today or in the future!");
                 }
             }
 
             if (!string.IsNullOrWhiteSpace(createPromotion.Name) && await _promotionService.PromotionNameExistsAsync(createPromotion.ClientId, createPromotion.Name))
             {
-                ModelState.AddModelError(nameof(createPromotion.Name), "This client already has a promotion with this name.");
+                ModelState.AddModelError(nameof(createPromotion.Name), "This client already has a promotion with this name!");
             }
 
             if (!ModelState.IsValid)
@@ -132,40 +131,37 @@ namespace PromotionsCRM.Web.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while creating the promotion");
+                _logger.LogError(ex, "An error occurred while creating the promotion!");
 
                 createPromotion.ClientName = clientName;
-                TempData["ErrorMessage"] = "An error occurred while creating the promotion. Please try again later.";
+                TempData["ErrorMessage"] = "An error occurred while creating the promotion. Please try again later!";
 
                 return View(createPromotion);
             }
 
         }
 
-
         [HttpGet]
-
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id <= 0 || id == null)
+            if (id == null || id <= 0)
             {
-                return BadRequest("Invalid Promotion Id!");
+                return BadRequest("Invalid Promotion ID!");
             }
 
             var promotionForEdit = await _promotionService.GetPromotionForEditAsync(id.Value);
 
             if (promotionForEdit == null)
             {
-                return NotFound("Promotion not found");
+                return NotFound("Promotion not found!");
             }
 
 
             return View(promotionForEdit);
         }
 
-        [ValidateAntiForgeryToken]
         [HttpPost]
-
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, PromotionEditViewModel model)
         {
 
@@ -183,12 +179,12 @@ namespace PromotionsCRM.Web.Controllers
 
             if (!string.IsNullOrWhiteSpace(model.Name) && await _promotionService.PromotionNameExistsAsync(clientId.Value, model.Name, id))
             {
-                ModelState.AddModelError(nameof(model.Name), "This client already has a promotion with this name.");
+                ModelState.AddModelError(nameof(model.Name), "This client already has a promotion with this name!");
             }
 
             if (model.PromotionType.HasValue && !Enum.IsDefined(typeof(PromotionType), model.PromotionType.Value))
             {
-                ModelState.AddModelError(nameof(model.PromotionType), "Invalid promotion type selected");
+                ModelState.AddModelError(nameof(model.PromotionType), "Invalid promotion type selected!");
             }
 
             if (model.StartDate.HasValue && model.EndDate.HasValue)
@@ -197,7 +193,7 @@ namespace PromotionsCRM.Web.Controllers
 
                 if (!isValidDateRange)
                 {
-                    ModelState.AddModelError(nameof(model.StartDate), "Start date must be before end date");
+                    ModelState.AddModelError(nameof(model.StartDate), "Start date must be before end date!");
                 }
             }
 
@@ -211,10 +207,10 @@ namespace PromotionsCRM.Web.Controllers
 
                 if (!isEdited)
                 {
-                    return NotFound("Promotion not found or could not be edited");
+                    return NotFound("Promotion not found or could not be edited!");
                 }
 
-                TempData["SuccessMessage"] = "Promotion Edited Successfully!";
+                TempData["SuccessMessage"] = "Promotion edited successfully!";
             }
 
             catch (Exception ex)
@@ -231,32 +227,30 @@ namespace PromotionsCRM.Web.Controllers
         }
 
         [HttpGet]
-
         public async Task<IActionResult> Delete(int id)
         {
             if (id <= 0)
             {
-                return BadRequest("Invalid Promotion Id!");
+                return BadRequest("Invalid Promotion ID!");
             }
             var promotion = await _promotionService.GetPromotionForDeletionAsync(id);
 
             if (promotion == null)
             {
-                return NotFound("Promotion not found");
+                return NotFound("Promotion not found!");
             }
 
             return View(promotion);
         }
 
-        [ValidateAntiForgeryToken]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [ActionName("Delete")]
-
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (id <= 0)
             {
-                return BadRequest("Invalid Promotion Id!");
+                return BadRequest("Invalid Promotion ID!");
             }
             bool hasSubmissions = await _promotionService.HasSubmissionsAsync(id);
 
@@ -264,7 +258,7 @@ namespace PromotionsCRM.Web.Controllers
             {
                 _logger.LogWarning("There are already submitted registrations for this promotion! Delete Action is denied!");
 
-                TempData["ErrorMessage"] = "This promotion has submissions and cannot be deleted.";
+                TempData["ErrorMessage"] = "This promotion has submissions and cannot be deleted!";
                 return RedirectToAction(nameof(Details), new { id });
             }
 
@@ -273,7 +267,7 @@ namespace PromotionsCRM.Web.Controllers
                 var isDeleted = await _promotionService.DeletePromotionAsync(id);
                 if (!isDeleted)
                 {
-                    return NotFound("Promotion not found or could not be deleted");
+                    return NotFound("Promotion not found or could not be deleted!");
                 }
 
                 TempData["SuccessMessage"] = "Promotion deleted successfully!";
@@ -281,7 +275,7 @@ namespace PromotionsCRM.Web.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogCritical(ex, "Error occurred while deleting a valid promotional data! Check the logs!");
+                _logger.LogError(ex, "Error occurred while deleting a valid promotional data! Check the logs!");
                 TempData["ErrorMessage"] = "Unexpected error occurred while deleting promotion! Try again later!";
 
                 return RedirectToAction(nameof(Details), new { id });
