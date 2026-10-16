@@ -18,7 +18,7 @@ namespace PromotionsCRM.Services.Implementations
         {
             Product newProduct = new Product()
             {
-                Name = createProduct.Name,
+                Name = createProduct.Name.Trim(),
                 PromotionId = createProduct.PromotionId
             };
 
@@ -38,6 +38,13 @@ namespace PromotionsCRM.Services.Implementations
             };
 
             return newPromotion.PromotionName;
+        }
+
+        public async Task<bool> ProductNameExistsAsync(int promotionId, string name)
+        {
+            string productNameWhtoutSpaces = name.Replace(" ", "");
+
+            return await _dbContext.Products.AnyAsync(p => p.Name.Replace(" ", "") == productNameWhtoutSpaces && p.PromotionId == promotionId);
         }
     }
 }

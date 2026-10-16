@@ -7,5 +7,7 @@ namespace PromotionsCRM.Services.Interfaces
         Task CreateProductAsync(ProductCreateViewModel createProduct);
 
         Task<string?> GetPromotionNameAsync(int promotionId);
+
+        Task<bool> ProductNameExistsAsync(int promotionId, string name);
     }
 }

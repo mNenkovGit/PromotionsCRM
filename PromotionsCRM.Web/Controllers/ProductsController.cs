@@ -52,11 +52,17 @@ namespace PromotionsCRM.Web.Controllers
                 return BadRequest("Invalid Promotion");
             }
 
+            if (!string.IsNullOrWhiteSpace(createModel.Name) && await _productService.ProductNameExistsAsync(createModel.PromotionId, createModel.Name))
+            {
+                ModelState.AddModelError(nameof(createModel.Name), "This promotion already has a product with this name.");
+            }
+
             if (!ModelState.IsValid)
             {
                 createModel.PromotionName = promotionName;
                 return View(createModel);
             }
+
             try
             {
                 await _productService.CreateProductAsync(createModel);
