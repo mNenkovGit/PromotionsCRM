@@ -75,9 +75,13 @@
                 </tbody>
             </table>
         }
-        else
+        else if (!string.IsNullOrWhiteSpace(Context.Request.Query["name"]))
         {
             <span>No promotions match your search.</span>
+        }
+        else
+        {
+            <span>No promotions available.</span>
         }
 
     </div>

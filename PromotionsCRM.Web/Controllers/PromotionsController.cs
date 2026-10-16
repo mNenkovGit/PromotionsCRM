@@ -30,7 +30,7 @@ namespace PromotionsCRM.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            if (id == null || id <= 0)
+            if (id <= 0)
             {
                 return BadRequest("Promotion ID is mandatory!");
             }
@@ -215,7 +215,7 @@ namespace PromotionsCRM.Web.Controllers
 
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error occurred while editing the promotion! Try again later!");
+                _logger.LogError(ex, "Error occurred while editing the promotion!");
 
                 TempData["ErrorMessage"] = "Unexpected error occurred while editing the promotion!";
 
@@ -275,7 +275,7 @@ namespace PromotionsCRM.Web.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error occurred while deleting a valid promotional data! Check the logs!");
+                _logger.LogError(ex, "Error occurred while deleting promotion {PromotionId}", id);
                 TempData["ErrorMessage"] = "Unexpected error occurred while deleting promotion! Try again later!";
 
                 return RedirectToAction(nameof(Details), new { id });

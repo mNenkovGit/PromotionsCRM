@@ -30,9 +30,9 @@ namespace PromotionsCRM.Services.Implementations
         {
             return await _dbContext.Promotions
                    .Where(p => p.Id == promotionId)
-                   .Select(c => c.Name)
+                   .Select(p => p.Name)
                    .FirstOrDefaultAsync();
-        } 
+        }
 
         public async Task<bool> ProductNameExistsAsync(int promotionId, string name)
         {
