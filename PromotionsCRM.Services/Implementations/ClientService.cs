@@ -133,5 +133,12 @@ namespace PromotionsCRM.Services.Implementations
             return await _dbContext.Countries
                 .AnyAsync(c => c.Id == countryId);
         }
+
+        public async Task<bool> ClientNameExistsAsync(string name, int excludedClientId)
+        {
+            string clientNameWithoutSpaces = name.Replace(" ", "");
+
+            return await _dbContext.Clients.AnyAsync(c => c.Name.Replace(" ", "") == clientNameWithoutSpaces && c.Id != excludedClientId);
+        }
     }
 }

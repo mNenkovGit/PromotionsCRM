@@ -72,9 +72,9 @@ namespace PromotionsCRM.Web.Controllers
                 return BadRequest("Client Id is Mandatory!");
             }
 
-            if (!ModelState.IsValid)
+            if (!string.IsNullOrWhiteSpace(model.Name) && await _clientService.ClientNameExistsAsync(model.Name, id))
             {
-                return View(model);
+                ModelState.AddModelError(nameof(model.Name), "A client with this name already exists.");
             }
 
             if (!await _clientService.CountryExistsAsync(model.CountryId))
@@ -101,9 +101,9 @@ namespace PromotionsCRM.Web.Controllers
 
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error occured while editing the Client! Try again later!");
+                _logger.LogError(ex, "Error occurred while editing the Client! Try again later!");
 
-                TempData["ErrorMessage"] = "Unexpected error occured while editing the Client!";
+                TempData["ErrorMessage"] = "Unexpected error occurred while editing the Client!";
 
                 return View(model);
             }

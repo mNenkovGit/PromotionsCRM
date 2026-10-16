@@ -1,37 +1,36 @@
 # PromotionsCRM
 
-ASP.NET Core CRM for managing client promotions and customer submissions.
-
-## Description
-
-PromotionsCRM is a web application for managing promotional campaigns. Clients (companies) create promotions with products across different countries. End customers register for promotions after making a purchase, while staff members process the submissions and track their status.
+PromotionsCRM is an ASP.NET Core MVC application for managing promotional campaigns. Client companies run promotions for their products in different countries, end customers register for these promotions after a purchase, and staff members process the submissions and track their status.
 
 ## Main Features
 
-**Clients**
+- **Clients**
   - List of all clients with search by name
   - Client details page with contact information and all promotions of the client
+  - Search within the promotions of a specific client
+  - Edit client details, with the country selected from a dropdown list
 - **Promotions**
   - List of all promotions with search by name, sorted by client, start date and name
   - Promotion details: client, countries, products, number of submissions and a breakdown of submissions by status
   - Create a promotion directly from the client's details page (the client is preselected)
   - Edit a promotion
   - Delete a promotion with confirmation; promotions that already have submissions cannot be deleted
-  - Automatic promotion status (Upcoming / Ongoing / Completed) based on the start and end dates
+  - Automatic promotion status (Upcoming / Ongoing / Completed) based on the start and end dates, displayed as a colored badge
+- **Products**
+  - Add products to a promotion directly from the promotion's details page (the promotion is preselected)
 - **Validation**
   - Server-side validation with data annotations and business rules (e.g. the start date must be before the end date, a new promotion cannot start in the past)
+  - Duplicate prevention: client names must be unique, a client cannot have two promotions with the same name, and a promotion cannot have two products with the same name (the comparison ignores letter case and spaces)
   - Client-side validation in all forms
 - **User feedback**
   - Success and error messages after create, edit and delete operations
-  
 
-  ## Planned Features (ASP.NET Advanced)
+## Planned Features (ASP.NET Advanced)
 
-- Managing products and countries for each promotion
+- Editing and deleting products, and managing the countries of each promotion
 - Customer registrations (submissions) for promotions
 - Submission processing by staff members
 - ASP.NET Core Identity with user roles
-
 
 ## Architecture
 
@@ -67,7 +66,7 @@ Controllers do not access the database directly. They depend on service interfac
 - Razor views with layout, partial views and sections
 - Bootstrap 5
 
-## Setup and Installation
+## Setup Instructions
 
 ### Requirements
 
@@ -76,7 +75,7 @@ Controllers do not access the database directly. They depend on service interfac
 
 ### Steps
 
- Clone the repository:
+1. Clone the repository:
 
    ```
    git clone https://github.com/mNenkovGit/PromotionsCRM.git
@@ -128,4 +127,3 @@ The database is seeded with sample data (countries, clients, promotions, product
 ## Project Status
 
 In development. Created as part of the ASP.NET Fundamentals course at SoftUni and will be extended during the ASP.NET Advanced course.
-

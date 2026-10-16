@@ -16,5 +16,7 @@ namespace PromotionsCRM.Services.Interfaces
         Task<IEnumerable<SelectListItem>?> GetCountriesForDropdownAsync();
 
         Task<bool> CountryExistsAsync(int countryId);
+
+        Task<bool> ClientNameExistsAsync(string name, int excludedClientId);
     }
 }
