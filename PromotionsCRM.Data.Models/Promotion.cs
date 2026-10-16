@@ -19,7 +19,7 @@ namespace PromotionsCRM.Data.Models
         [Column(TypeName = "datetime2")]
         public DateTime EndDate { get; set; }
 
-       public PromotionType PromotionType { get; set; }
+        public PromotionType PromotionType { get; set; }
 
         [ForeignKey(nameof(Client))]
         public int ClientId { get; set; }
@@ -29,6 +29,6 @@ namespace PromotionsCRM.Data.Models
 
         public virtual ICollection<Product> Products { get; set; } = new List<Product>();
 
-        public virtual ICollection<Submission> Submissions { get; set; }  = new List<Submission>();
+        public virtual ICollection<Submission> Submissions { get; set; } = new List<Submission>();
     }
 }

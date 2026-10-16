@@ -27,7 +27,7 @@ namespace PromotionsCRM.Data.Models
 
         [ForeignKey(nameof(User))]
         public int? UserId { get; set; }
-        public virtual User? User { get; set; } 
+        public virtual User? User { get; set; }
 
 
         [Column(TypeName = "datetime2")]

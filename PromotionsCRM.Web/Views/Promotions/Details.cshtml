@@ -18,6 +18,12 @@
         <p class="card-text mb-1"><strong>Client Name:</strong> <a asp-controller="Clients" asp-action="Details" asp-route-id="@Model.ClientId">@Model.ClientName</a></p>
         <p class="card-text mb-1"><strong>Promotion Countries:</strong> @(string.Join(", ", Model.Countries))</p>
         <p class="card-text mb-1"><strong>Promotion Products:</strong> @string.Join(", ", Model.Products)</p>
+        <a asp-controller="Products"
+           asp-action="Create"
+           asp-route-promoId="@Model.Id"
+           class="btn btn-success mt-3">
+            Add Product
+        </a>
         <h5 class="mt-4">
             Submission Statuses:</h5>
             @if (Model.SubmissionsByStatus.Any())

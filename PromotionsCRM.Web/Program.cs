@@ -20,6 +20,7 @@ namespace PromotionsCRM.Web
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<IPromotionService, PromotionService>();
             builder.Services.AddScoped<IClientService, ClientService>();
+            builder.Services.AddScoped<IProductService, ProductService>();
 
             var app = builder.Build();
 

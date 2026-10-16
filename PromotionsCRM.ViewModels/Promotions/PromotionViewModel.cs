@@ -28,9 +28,9 @@ namespace PromotionsCRM.ViewModels.Promotions
                 else
                 {
                     return "Completed";
-                }         
+                }
             }
-           
+
         }
 
         public PromotionType PromotionType { get; set; }

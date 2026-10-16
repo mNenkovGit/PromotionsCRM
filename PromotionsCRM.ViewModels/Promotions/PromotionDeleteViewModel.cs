@@ -3,7 +3,7 @@ namespace PromotionsCRM.ViewModels.Promotions
 {
     public class PromotionDeleteViewModel : PromotionViewModel
     {
-      public bool HasSubmissions { get; set; }
+        public bool HasSubmissions { get; set; }
 
         public int ProductsCount { get; set; }
 

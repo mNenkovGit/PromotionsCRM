@@ -16,7 +16,7 @@ namespace PromotionsCRM.ViewModels.Clients
 
         public string? Website { get; set; }
 
-        public string Country{ get; set; } = null!;
+        public string Country { get; set; } = null!;
 
         public DateTime RegisteredOn { get; set; }
 

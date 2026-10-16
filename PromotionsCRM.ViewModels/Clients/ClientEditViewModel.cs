@@ -31,6 +31,6 @@ namespace PromotionsCRM.ViewModels.Clients
         [Range(1, int.MaxValue, ErrorMessage = "Please select a country!")]
         public int CountryId { get; set; }
 
-        public IEnumerable<SelectListItem>? Countries { get; set; } 
+        public IEnumerable<SelectListItem>? Countries { get; set; }
     }
 }

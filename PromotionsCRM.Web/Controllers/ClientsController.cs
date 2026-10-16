@@ -10,7 +10,7 @@ namespace PromotionsCRM.Web.Controllers
 
         private readonly ILogger<ClientsController> _logger;
 
-        public ClientsController( IClientService clientService, ILogger<ClientsController> logger)
+        public ClientsController(IClientService clientService, ILogger<ClientsController> logger)
         {
             _clientService = clientService;
             _logger = logger;
@@ -39,7 +39,7 @@ namespace PromotionsCRM.Web.Controllers
             {
                 return NotFound("Client not found!");
             }
-            
+
             return View(client);
         }
 
@@ -64,7 +64,7 @@ namespace PromotionsCRM.Web.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]   
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, ClientEditViewModel model)
         {
             if (id <= 0)
@@ -81,7 +81,7 @@ namespace PromotionsCRM.Web.Controllers
             {
                 ModelState.AddModelError(nameof(model.CountryId), "Country not found!");
             }
-            
+
             if (!ModelState.IsValid)
             {
                 model.Countries = await _clientService.GetCountriesForDropdownAsync();
@@ -96,12 +96,12 @@ namespace PromotionsCRM.Web.Controllers
                 {
                     return NotFound("Client not found!");
                 }
-                TempData["SuccessMessage"]  = "Client Edited Successfully!";
+                TempData["SuccessMessage"] = "Client Edited Successfully!";
             }
 
             catch (Exception ex)
             {
-                _logger.LogError(ex,"Error occured while editing the Client! Try again later!");
+                _logger.LogError(ex, "Error occured while editing the Client! Try again later!");
 
                 TempData["ErrorMessage"] = "Unexpected error occured while editing the Client!";
 

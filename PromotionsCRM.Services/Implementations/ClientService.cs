@@ -20,7 +20,7 @@ namespace PromotionsCRM.Services.Implementations
 
         public async Task<IEnumerable<ClientViewModel>> GetAllClientsAsync(string? name)
         {
-            IQueryable<Client> query =  _dbContext.Clients.AsNoTracking();
+            IQueryable<Client> query = _dbContext.Clients.AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(name))
             {
@@ -40,39 +40,39 @@ namespace PromotionsCRM.Services.Implementations
                 })
                 .ToArrayAsync();
 
-           
+
         }
 
         public async Task<ClientDetailsViewModel?> GetClientDetailsAsync(int id, string? name)
         {
-            
-             return await _dbContext.Clients
-                .AsNoTracking()
-                .Where(c => c.Id == id)
-                .Select(c => new ClientDetailsViewModel()
-                {
-                    Id = c.Id, 
-                    Name = c.Name,
-                    Email = c.Email,
-                    Address = c.Address,
-                    Website = c.Website,
-                    PhoneNumber = c.PhoneNumber,
-                    RegisteredOn = c.RegisteredOn,
-                    Country = c.Country.Name,
-                    Promotions = c.Promotions
-                        .Where(p => name == null || p.Name.Contains(name))
-                        .OrderByDescending(p => p.StartDate)
-                        .ThenBy(p => p.Name)
-                        .Select(p => new PromotionViewModel()
-                        {
-                            Id = p.Id,
-                            Name = p.Name,
-                            StartDate = p.StartDate,
-                            EndDate = p.EndDate,
-                            PromotionType = p.PromotionType,
-                        }).ToArray()
-                })
-                .SingleOrDefaultAsync();
+
+            return await _dbContext.Clients
+               .AsNoTracking()
+               .Where(c => c.Id == id)
+               .Select(c => new ClientDetailsViewModel()
+               {
+                   Id = c.Id,
+                   Name = c.Name,
+                   Email = c.Email,
+                   Address = c.Address,
+                   Website = c.Website,
+                   PhoneNumber = c.PhoneNumber,
+                   RegisteredOn = c.RegisteredOn,
+                   Country = c.Country.Name,
+                   Promotions = c.Promotions
+                       .Where(p => name == null || p.Name.Contains(name))
+                       .OrderByDescending(p => p.StartDate)
+                       .ThenBy(p => p.Name)
+                       .Select(p => new PromotionViewModel()
+                       {
+                           Id = p.Id,
+                           Name = p.Name,
+                           StartDate = p.StartDate,
+                           EndDate = p.EndDate,
+                           PromotionType = p.PromotionType,
+                       }).ToArray()
+               })
+               .SingleOrDefaultAsync();
         }
 
         public async Task<ClientEditViewModel?> GetClientForEditAsync(int clientId)
@@ -80,7 +80,7 @@ namespace PromotionsCRM.Services.Implementations
             return await _dbContext.Clients
                 .AsNoTracking()
                 .Where(c => c.Id == clientId)
-                .Select (c => new ClientEditViewModel()
+                .Select(c => new ClientEditViewModel()
                 {
                     Id = c.Id,
                     Name = c.Name,
@@ -90,7 +90,7 @@ namespace PromotionsCRM.Services.Implementations
                     PhoneNumber = c.PhoneNumber,
                     CountryId = c.CountryId,
                 }
-                ) .FirstOrDefaultAsync();
+                ).FirstOrDefaultAsync();
 
         }
 
@@ -110,7 +110,7 @@ namespace PromotionsCRM.Services.Implementations
             clientForEdit.PhoneNumber = model.PhoneNumber;
             clientForEdit.CountryId = model.CountryId;
 
-             await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
             return true;
         }

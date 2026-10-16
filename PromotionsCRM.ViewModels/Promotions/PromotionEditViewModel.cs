@@ -6,7 +6,7 @@ namespace PromotionsCRM.ViewModels.Promotions
     public class PromotionEditViewModel
     {
         public int Id { get; set; }
-        
+
         [Required(ErrorMessage = "Promotion name is required.")]
         [StringLength(PromotionNameMaxlen, MinimumLength = PromotionNameMinLen, ErrorMessage = "Promotion name must be between {2} and {1} characters long.")]
         public string Name { get; set; } = null!;
@@ -22,5 +22,5 @@ namespace PromotionsCRM.ViewModels.Promotions
         [Required(ErrorMessage = "Please select a promotion type")]
         public PromotionType? PromotionType { get; set; }
     }
-    
+
 }

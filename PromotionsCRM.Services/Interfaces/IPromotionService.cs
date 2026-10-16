@@ -1,7 +1,4 @@
-﻿
-
-using Microsoft.AspNetCore.Mvc.Rendering;
-using PromotionsCRM.ViewModels.Promotions;
+﻿using PromotionsCRM.ViewModels.Promotions;
 
 namespace PromotionsCRM.Services.Interfaces
 {
@@ -21,8 +18,8 @@ namespace PromotionsCRM.Services.Interfaces
 
         Task<PromotionDeleteViewModel?> GetPromotionForDeletionAsync(int promotionId);
 
-        Task<bool> DeletePromotionAsync( int promotionId);
+        Task<bool> DeletePromotionAsync(int promotionId);
 
-        Task<bool> HasSubmissions(int promotionId);
+        Task<bool> HasSubmissionsAsync(int promotionId);
     }
 }

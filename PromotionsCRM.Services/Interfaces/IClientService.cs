@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using PromotionsCRM.ViewModels.Clients;
-using PromotionsCRM.ViewModels.Promotions;
 
 namespace PromotionsCRM.Services.Interfaces
 {
@@ -10,7 +9,7 @@ namespace PromotionsCRM.Services.Interfaces
 
         Task<ClientDetailsViewModel?> GetClientDetailsAsync(int id, string? name);
 
-         Task<ClientEditViewModel?> GetClientForEditAsync(int id);
+        Task<ClientEditViewModel?> GetClientForEditAsync(int id);
 
         Task<bool> EditClientAsync(int clientId, ClientEditViewModel model);
 

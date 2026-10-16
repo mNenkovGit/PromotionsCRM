@@ -5,6 +5,6 @@
         Cashback = 0,
         GiftCard = 1,
         Discount = 2,
-       
+
     }
 }

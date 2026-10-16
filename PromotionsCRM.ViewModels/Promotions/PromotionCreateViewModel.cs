@@ -1,7 +1,6 @@
 ﻿using PromotionsCRM.Common.Enums;
 using System.ComponentModel.DataAnnotations;
 using static PromotionsCRM.Common.Validations;
-using Microsoft.AspNetCore.Mvc.Rendering;
 namespace PromotionsCRM.ViewModels.Promotions
 {
     public class PromotionCreateViewModel
@@ -22,10 +21,10 @@ namespace PromotionsCRM.ViewModels.Promotions
         public PromotionType? PromotionType { get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = "Please select a client!")]
-        public int ClientId { get; set; } 
+        public int ClientId { get; set; }
 
         public string? ClientName { get; set; }
 
     }
-    
+
 }

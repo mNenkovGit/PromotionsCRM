@@ -11,7 +11,7 @@ namespace PromotionsCRM.Web.Controllers
 
         private readonly IPromotionService _promotionService;
 
-        public PromotionsController(ILogger<PromotionsController> logger,  IPromotionService promotionService)
+        public PromotionsController(ILogger<PromotionsController> logger, IPromotionService promotionService)
         {
             _logger = logger;
             _promotionService = promotionService;
@@ -21,7 +21,7 @@ namespace PromotionsCRM.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(string? name)
         {
-           
+
             var allPromotions = await _promotionService.GetAllPromotionsAsync(name);
 
             return View(allPromotions);
@@ -30,11 +30,11 @@ namespace PromotionsCRM.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int? id)
         {
-             if (id == null)
+            if (id == null)
             {
                 return BadRequest("Promotion ID is mandatory!");
             }
-             
+
             var promotion = await _promotionService.GetPromotionDetailsAsync(id);
 
             return View(promotion);
@@ -43,13 +43,13 @@ namespace PromotionsCRM.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Create(int? clientId)
         {
-            if (clientId <= 0 )
+            if (clientId <= 0 || clientId == null)
             {
                 return BadRequest("Invalid client Id!");
             }
-           
+
             var clientName = await _promotionService.GetClientNameAsync(clientId.Value);
-           
+
             if (clientName == null)
             {
                 return NotFound("Client does not exist");
@@ -62,7 +62,7 @@ namespace PromotionsCRM.Web.Controllers
                 ClientName = clientName,
                 StartDate = DateTime.Today,
             };
-            
+
             return View(newPromotion);
         }
 
@@ -72,7 +72,7 @@ namespace PromotionsCRM.Web.Controllers
         public async Task<IActionResult> Create(PromotionCreateViewModel createPromotion)
         {
 
-            string? clientName = await _promotionService.GetClientNameAsync(createPromotion.ClientId) ;
+            string? clientName = await _promotionService.GetClientNameAsync(createPromotion.ClientId);
 
             if (string.IsNullOrEmpty(clientName))
             {
@@ -148,7 +148,7 @@ namespace PromotionsCRM.Web.Controllers
             {
                 return NotFound("Promotion not found");
             }
-            
+
 
             return View(promotionForEdit);
         }
@@ -163,7 +163,7 @@ namespace PromotionsCRM.Web.Controllers
             {
                 return BadRequest("There was an error while editing the promtoion! Please try again!");
             }
- 
+
             if (model.PromotionType.HasValue && !Enum.IsDefined(typeof(PromotionType), model.PromotionType.Value))
             {
                 ModelState.AddModelError(nameof(model.PromotionType), "Invalid promotion type selected");
@@ -178,7 +178,7 @@ namespace PromotionsCRM.Web.Controllers
                     ModelState.AddModelError(nameof(model.StartDate), "Start date must be before end date");
                 }
             }
-         
+
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -193,12 +193,12 @@ namespace PromotionsCRM.Web.Controllers
                     return NotFound("Promotion not found or could not be edited");
                 }
 
-                TempData["SuccessMessage"]  = "Promotion Edited Successfully!";
+                TempData["SuccessMessage"] = "Promotion Edited Successfully!";
             }
 
             catch (Exception ex)
             {
-                _logger.LogError(ex,"Error occured while editing the promtoion! Try again later!");
+                _logger.LogError(ex, "Error occured while editing the promtoion! Try again later!");
 
                 TempData["ErrorMessage"] = "Unexpected error occured while editing the promotion!";
 
@@ -217,7 +217,7 @@ namespace PromotionsCRM.Web.Controllers
             {
                 return BadRequest("Invalid Promotion Id!");
             }
-            var promotion = await _promotionService.GetPromotionForDeletionAsync(id );
+            var promotion = await _promotionService.GetPromotionForDeletionAsync(id);
 
             if (promotion == null)
             {
@@ -237,11 +237,11 @@ namespace PromotionsCRM.Web.Controllers
             {
                 return BadRequest("Invalid Promotion Id!");
             }
-            bool hasSubmissions = await _promotionService.HasSubmissions(id);
+            bool hasSubmissions = await _promotionService.HasSubmissionsAsync(id);
 
             if (hasSubmissions)
             {
-                _logger.LogWarning ("There are already submited registrations for this promotion! Delete Action is denied!");
+                _logger.LogWarning("There are already submited registrations for this promotion! Delete Action is denied!");
 
                 TempData["ErrorMessage"] = "This promotion has submissions and cannot be deleted.";
                 return RedirectToAction(nameof(Details), new { id });
@@ -258,11 +258,11 @@ namespace PromotionsCRM.Web.Controllers
                 TempData["SuccessMessage"] = "Promotion deleted successfully!";
                 return RedirectToAction(nameof(PromotionsController.Index), "Promotions");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogCritical(ex, "Error occured while deleting a valid promotional data! Check the logs!");
                 TempData["ErrorMessage"] = "Unexpected error occured while deleting promtoion! Try again later!";
-                
+
                 return RedirectToAction(nameof(Details), new { id });
             }
 

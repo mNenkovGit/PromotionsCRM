@@ -1,10 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PromotionsCRM.Common.Enums;
 using PromotionsCRM.Data;
 using PromotionsCRM.Data.Models;
 using PromotionsCRM.Services.Interfaces;
 using PromotionsCRM.ViewModels.Promotions;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace PromotionsCRM.Services.Implementations
 {
@@ -19,19 +17,19 @@ namespace PromotionsCRM.Services.Implementations
 
         public async Task CreatePromotionAsync(PromotionCreateViewModel createPromotion)
         {
-                Promotion newPromotion = new Promotion()
-                {
-                    Name = createPromotion.Name,
-                    StartDate = createPromotion.StartDate.Value,
-                    EndDate = createPromotion.EndDate.Value,
-                    PromotionType = createPromotion.PromotionType.Value,
-                    ClientId = createPromotion.ClientId
-                };
+            Promotion newPromotion = new Promotion()
+            {
+                Name = createPromotion.Name,
+                StartDate = createPromotion.StartDate.Value,
+                EndDate = createPromotion.EndDate.Value,
+                PromotionType = createPromotion.PromotionType.Value,
+                ClientId = createPromotion.ClientId
+            };
 
-                _dbContext.Promotions.Add(newPromotion);
-                await _dbContext.SaveChangesAsync();
+            _dbContext.Promotions.Add(newPromotion);
+            await _dbContext.SaveChangesAsync();
 
-                
+
         }
 
         public async Task<bool> DeletePromotionAsync(int promotionId)
@@ -67,7 +65,7 @@ namespace PromotionsCRM.Services.Implementations
             return true;
         }
 
-       
+
 
         public async Task<IEnumerable<PromotionViewModel>> GetAllPromotionsAsync(string? name)
         {
@@ -99,7 +97,10 @@ namespace PromotionsCRM.Services.Implementations
         {
             var newPromotion = new PromotionCreateViewModel()
             {
-                ClientName = await _dbContext.Clients.Where(c => c.Id == clientId).Select(c => c.Name).FirstOrDefaultAsync(),
+                ClientName = await _dbContext.Clients
+                        .Where(c => c.Id == clientId)
+                        .Select(c => c.Name)
+                        .FirstOrDefaultAsync(),
                 ClientId = clientId,
             };
 
@@ -168,7 +169,7 @@ namespace PromotionsCRM.Services.Implementations
             return promotionToEdit;
         }
 
-        public async Task<bool> HasSubmissions(int promotionId)
+        public async Task<bool> HasSubmissionsAsync(int promotionId)
         {
             var hasSubmissions = await _dbContext.Submissions.AnyAsync(s => s.PromotionId == promotionId);
 
