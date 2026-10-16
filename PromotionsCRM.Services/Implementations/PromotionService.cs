@@ -175,5 +175,22 @@ namespace PromotionsCRM.Services.Implementations
 
             return hasSubmissions;
         }
+
+        public async Task<bool> PromotionNameExistsAsync(int clientId, string name, int? excludedPromotionId = null)
+        {
+            string promotoionNameWithoutSpaces = name.Replace(" ", "");
+
+            return await _dbContext.Promotions.AnyAsync(p => p.Name.Replace(" ", "") == promotoionNameWithoutSpaces
+                            && p.ClientId == clientId 
+                            && (excludedPromotionId == null || p.Id != excludedPromotionId));
+        }
+
+        public async Task<int?> GetPromotionClientIdAsync(int promotionId)
+        {
+            return await _dbContext.Promotions
+                .Where(p => p.Id == promotionId)
+                .Select(p => (int?)p.ClientId )
+                .FirstOrDefaultAsync();
+        }
     }
 }

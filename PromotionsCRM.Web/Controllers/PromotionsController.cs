@@ -107,6 +107,11 @@ namespace PromotionsCRM.Web.Controllers
                 }
             }
 
+            if (!string.IsNullOrWhiteSpace(createPromotion.Name) && await _promotionService.PromotionNameExistsAsync(createPromotion.ClientId, createPromotion.Name))
+            {
+                ModelState.AddModelError(nameof(createPromotion.Name), "This client already has a promotion with this name.");
+            }
+
             if (!ModelState.IsValid)
             {
                 createPromotion.ClientName = clientName;
@@ -164,6 +169,18 @@ namespace PromotionsCRM.Web.Controllers
                 return BadRequest("There was an error while editing the promtoion! Please try again!");
             }
 
+            int? clientId = await _promotionService.GetPromotionClientIdAsync(id);
+
+            if (clientId == null)
+            {
+                return NotFound("Promotion not found!");
+            }
+
+            if (!string.IsNullOrWhiteSpace(model.Name) && await _promotionService.PromotionNameExistsAsync(clientId.Value, model.Name, id))
+            {
+                ModelState.AddModelError(nameof(model.Name), "This client already has a promotion with this name.");
+            }
+
             if (model.PromotionType.HasValue && !Enum.IsDefined(typeof(PromotionType), model.PromotionType.Value))
             {
                 ModelState.AddModelError(nameof(model.PromotionType), "Invalid promotion type selected");
@@ -185,7 +202,6 @@ namespace PromotionsCRM.Web.Controllers
             }
             try
             {
-
                 bool isEdited = await _promotionService.EditPromotionAsync(id, model);
 
                 if (!isEdited)

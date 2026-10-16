@@ -21,5 +21,9 @@ namespace PromotionsCRM.Services.Interfaces
         Task<bool> DeletePromotionAsync(int promotionId);
 
         Task<bool> HasSubmissionsAsync(int promotionId);
+
+        Task<bool> PromotionNameExistsAsync(int clientId, string name, int? excludedPromotionId = null);
+
+        Task<int?> GetPromotionClientIdAsync(int promotionId);
     }
 }
