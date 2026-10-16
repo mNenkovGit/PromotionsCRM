@@ -178,10 +178,10 @@ namespace PromotionsCRM.Services.Implementations
 
         public async Task<bool> PromotionNameExistsAsync(int clientId, string name, int? excludedPromotionId = null)
         {
-            string promotoionNameWithoutSpaces = name.Replace(" ", "");
+            string promotionNameWithoutSpaces = name.Replace(" ", "");
 
-            return await _dbContext.Promotions.AnyAsync(p => p.Name.Replace(" ", "") == promotoionNameWithoutSpaces
-                            && p.ClientId == clientId 
+            return await _dbContext.Promotions.AnyAsync(p => p.Name.Replace(" ", "") == promotionNameWithoutSpaces
+                            && p.ClientId == clientId
                             && (excludedPromotionId == null || p.Id != excludedPromotionId));
         }
 
@@ -189,7 +189,7 @@ namespace PromotionsCRM.Services.Implementations
         {
             return await _dbContext.Promotions
                 .Where(p => p.Id == promotionId)
-                .Select(p => (int?)p.ClientId )
+                .Select(p => (int?)p.ClientId)
                 .FirstOrDefaultAsync();
         }
     }

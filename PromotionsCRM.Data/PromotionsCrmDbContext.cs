@@ -24,9 +24,5 @@ namespace PromotionsCRM.Data
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(PromotionsCrmDbContext).Assembly);
         }
 
-        public async Task SaveChangesasync()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

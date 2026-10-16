@@ -22,7 +22,7 @@
 
   </ItemGroup>
   <ItemGroup>
-  <FrameworkReference Include="Microsoft.AspNetCore.App" />
-</ItemGroup>
+    <None Include="wwwroot\README.md" />
+  </ItemGroup>
 
 </Project>

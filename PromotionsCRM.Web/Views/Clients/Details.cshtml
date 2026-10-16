@@ -57,8 +57,8 @@
                     {
                         <tr>
                             <td>@promotion.Name</td>
-                            <td>@promotion.StartDate.ToString("dd-MM-yyyy")</td>
-                            <td>@promotion.EndDate.ToString("dd-MM-yyyy")</td>
+                            <td>@promotion.StartDate.ToString("dd/MM/yyyy")</td>
+                            <td>@promotion.EndDate.ToString("dd/MM/yyyy")</td>
                             <td><partial name="_PromotionStatusBadge" model="promotion.PromotionStatus" /></td>
                             <td>@promotion.PromotionType</td>
                             <td>

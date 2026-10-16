@@ -85,6 +85,7 @@ namespace PromotionsCRM.Web.Controllers
             if (!ModelState.IsValid)
             {
                 model.Countries = await _clientService.GetCountriesForDropdownAsync();
+
                 return View(model);
             }
 
@@ -104,6 +105,8 @@ namespace PromotionsCRM.Web.Controllers
                 _logger.LogError(ex, "Error occurred while editing the Client! Try again later!");
 
                 TempData["ErrorMessage"] = "Unexpected error occurred while editing the Client!";
+
+                model.Countries = await _clientService.GetCountriesForDropdownAsync();
 
                 return View(model);
             }

@@ -30,12 +30,17 @@ namespace PromotionsCRM.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+            if (id == null || id <= 0)
             {
                 return BadRequest("Promotion ID is mandatory!");
             }
 
             var promotion = await _promotionService.GetPromotionDetailsAsync(id);
+
+            if (promotion == null)
+            {
+                return NotFound("Promotion not found!");
+            }
 
             return View(promotion);
         }
@@ -166,7 +171,7 @@ namespace PromotionsCRM.Web.Controllers
 
             if (id <= 0)
             {
-                return BadRequest("There was an error while editing the promtoion! Please try again!");
+                return BadRequest("There was an error while editing the promotion! Please try again!");
             }
 
             int? clientId = await _promotionService.GetPromotionClientIdAsync(id);
@@ -214,9 +219,9 @@ namespace PromotionsCRM.Web.Controllers
 
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error occured while editing the promtoion! Try again later!");
+                _logger.LogError(ex, "Error occurred while editing the promotion! Try again later!");
 
-                TempData["ErrorMessage"] = "Unexpected error occured while editing the promotion!";
+                TempData["ErrorMessage"] = "Unexpected error occurred while editing the promotion!";
 
 
                 return View(model);
@@ -257,7 +262,7 @@ namespace PromotionsCRM.Web.Controllers
 
             if (hasSubmissions)
             {
-                _logger.LogWarning("There are already submited registrations for this promotion! Delete Action is denied!");
+                _logger.LogWarning("There are already submitted registrations for this promotion! Delete Action is denied!");
 
                 TempData["ErrorMessage"] = "This promotion has submissions and cannot be deleted.";
                 return RedirectToAction(nameof(Details), new { id });
@@ -276,8 +281,8 @@ namespace PromotionsCRM.Web.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogCritical(ex, "Error occured while deleting a valid promotional data! Check the logs!");
-                TempData["ErrorMessage"] = "Unexpected error occured while deleting promtoion! Try again later!";
+                _logger.LogCritical(ex, "Error occurred while deleting a valid promotional data! Check the logs!");
+                TempData["ErrorMessage"] = "Unexpected error occurred while deleting promotion! Try again later!";
 
                 return RedirectToAction(nameof(Details), new { id });
             }
