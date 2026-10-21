@@ -56,14 +56,14 @@ namespace PromotionsCRM.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Website")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Clients", (string)null);
+                    b.ToTable("Clients");
 
                     b.HasData(
                         new
@@ -116,7 +116,7 @@ namespace PromotionsCRM.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries", (string)null);
+                    b.ToTable("Countries");
 
                     b.HasData(
                         new
@@ -309,7 +309,7 @@ namespace PromotionsCRM.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Customers", (string)null);
+                    b.ToTable("Customers");
 
                     b.HasData(
                         new
@@ -384,7 +384,7 @@ namespace PromotionsCRM.Migrations
 
                     b.HasIndex("PromotionId");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
 
                     b.HasData(
                         new
@@ -526,7 +526,7 @@ namespace PromotionsCRM.Migrations
 
                     b.HasIndex("ClientId");
 
-                    b.ToTable("Promotions", (string)null);
+                    b.ToTable("Promotions");
 
                     b.HasData(
                         new
@@ -678,7 +678,7 @@ namespace PromotionsCRM.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("PromotionsCountries", (string)null);
+                    b.ToTable("PromotionsCountries");
 
                     b.HasData(
                         new
@@ -880,7 +880,7 @@ namespace PromotionsCRM.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Submissions", (string)null);
+                    b.ToTable("Submissions");
 
                     b.HasData(
                         new
@@ -1028,7 +1028,7 @@ namespace PromotionsCRM.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("PromotionsCRM.Data.Models.Client", b =>
