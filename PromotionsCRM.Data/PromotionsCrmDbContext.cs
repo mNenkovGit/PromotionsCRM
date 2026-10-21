@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using PromotionsCRM.Data.Models;
 
 namespace PromotionsCRM.Data
 {
-    public class PromotionsCrmDbContext : DbContext
+    public class PromotionsCrmDbContext : IdentityDbContext<IdentityUser>
     {
         public virtual DbSet<Client> Clients { get; set; } = null!;
         public virtual DbSet<Country> Countries { get; set; } = null!;
@@ -21,6 +23,7 @@ namespace PromotionsCRM.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(PromotionsCrmDbContext).Assembly);
         }
 

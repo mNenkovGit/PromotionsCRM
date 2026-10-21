@@ -158,7 +158,7 @@ namespace PromotionsCRM.Services.Implementations
                     EndDate = p.EndDate,
                     PromotionType = p.PromotionType
                 })
-                .FirstOrDefaultAsync(); 
+                .FirstOrDefaultAsync();
         }
 
         public async Task<bool> HasSubmissionsAsync(int promotionId)
