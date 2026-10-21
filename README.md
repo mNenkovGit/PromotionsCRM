@@ -4,6 +4,12 @@ PromotionsCRM is an ASP.NET Core MVC application for managing promotional campai
 
 ## Main Features
 
+- **Authentication and authorization**
+  - User registration, login and logout with ASP.NET Core Identity
+  - All pages require a logged-in user; anonymous visitors are redirected to the login page and returned to the requested page after logging in
+  - Custom-styled login and registration pages
+- **Home page**
+  - Landing page with a short description of the application
 - **Clients**
   - List of all clients with search by name
   - Client details page with contact information and all promotions of the client
@@ -30,7 +36,7 @@ PromotionsCRM is an ASP.NET Core MVC application for managing promotional campai
 - Editing and deleting products, and managing the countries of each promotion
 - Customer registrations (submissions) for promotions
 - Submission processing by staff members
-- ASP.NET Core Identity with user roles
+- User roles (e.g. administrators and staff members) with different permissions
 
 ## Architecture
 
@@ -42,8 +48,8 @@ The solution follows a layered architecture:
 | `PromotionsCRM.Data.Models` | Entity classes |
 | `PromotionsCRM.Data` | `DbContext`, entity configurations, seed data and migrations |
 | `PromotionsCRM.ViewModels` | View models used by the controllers and views |
-| `PromotionsCRM.Services.Core` | Service interfaces and implementations containing the business logic and database access |
-| `PromotionsCRM.Web` | ASP.NET Core MVC project: controllers, views and configuration |
+| `PromotionsCRM.Services` | Service interfaces and implementations containing the business logic and database access |
+| `PromotionsCRM.Web` | ASP.NET Core MVC project: controllers, views, Identity pages and configuration |
 
 Controllers do not access the database directly. They depend on service interfaces, which are registered in the dependency injection container in `Program.cs`. All database operations are asynchronous.
 
@@ -62,6 +68,7 @@ Controllers do not access the database directly. They depend on service interfac
 
 - ASP.NET Core MVC (.NET 8)
 - Entity Framework Core 8
+- ASP.NET Core Identity
 - SQL Server / LocalDB
 - Razor views with layout, partial views and sections
 - Bootstrap 5
@@ -95,7 +102,7 @@ Controllers do not access the database directly. They depend on service interfac
    Server=.;Database=PromotionsCrmDb;Trusted_Connection=True;TrustServerCertificate=True
    ```
 
-   No other credentials or environment variables are required.
+   No other credentials or environment variables are required. User accounts are created through the registration page (see step 5).
 
 3. Apply the migrations
 
@@ -112,7 +119,7 @@ Controllers do not access the database directly. They depend on service interfac
    **.NET CLI:**
 
    ```
-   dotnet tool install --global dotnet-ef
+   dotnet tool install --global dotnet-ef --version 8.0.*
    dotnet ef database update --project PromotionsCRM.Data --startup-project PromotionsCRM.Web
    ```
 
@@ -121,6 +128,16 @@ Controllers do not access the database directly. They depend on service interfac
    ```
    dotnet run --project PromotionsCRM.Web
    ```
+
+5. Create a user account
+
+   The application requires a logged-in user. On first launch you will be redirected to the login page. Click **Register as a new user** and create an account. No email confirmation is required.
+
+   Password requirements:
+   - at least 6 characters
+   - at least 2 different characters (e.g. `aaaaaa` is not accepted)
+
+   Example of a valid password: `test12`
 
 The database is seeded with sample data (countries, clients, promotions, products and submissions), so all pages display data immediately after the migrations are applied.
 

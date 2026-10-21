@@ -20,12 +20,14 @@ namespace PromotionsCRM.Web.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         [Route("/privacy-policy")]
         public IActionResult Privacy()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

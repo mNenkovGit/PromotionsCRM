@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using PromotionsCRM.Data;
 using PromotionsCRM.Services.Implementations;
@@ -25,7 +26,10 @@ namespace PromotionsCRM.Web
                 .AddEntityFrameworkStores<PromotionsCrmDbContext>();
 
             // Add services to the container.
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add(new AuthorizeFilter());
+            });
             builder.Services.AddScoped<IPromotionService, PromotionService>();
             builder.Services.AddScoped<IClientService, ClientService>();
             builder.Services.AddScoped<IProductService, ProductService>();
