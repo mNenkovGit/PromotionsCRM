@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PromotionsCRM.Common.Enums;
 using PromotionsCRM.Services.Interfaces;
 using PromotionsCRM.ViewModels.Promotions;
 
 namespace PromotionsCRM.Web.Controllers
 {
+    [Authorize]
     public class PromotionsController : Controller
     {
         private readonly ILogger<PromotionsController> _logger;

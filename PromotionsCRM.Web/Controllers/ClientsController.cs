@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PromotionsCRM.Services.Interfaces;
 using PromotionsCRM.ViewModels.Clients;
 
 namespace PromotionsCRM.Web.Controllers
 {
+    [Authorize]
     public class ClientsController : Controller
     {
         private readonly IClientService _clientService;
