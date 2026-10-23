@@ -67,7 +67,7 @@ namespace PromotionsCRM.Web
                 configuration.GetValue<bool>("Identity:Password:RequireDigit");
 
             options.Password.RequireUppercase =
-                configuration.GetValue<bool>("Identity:Password:RequireUppecase");
+                configuration.GetValue<bool>("Identity:Password:RequireUppercase");
 
             options.Password.RequireLowercase =
                 configuration.GetValue<bool>("Identity:Password:RequireLowercase");

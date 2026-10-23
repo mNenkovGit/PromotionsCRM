@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PromotionsCRM.Data.Models;
 
-namespace PromotionsCRM.Web.Data.Configurations
+namespace PromotionsCRM.Data
 {
     public class ProductConfiguration : IEntityTypeConfiguration<Product>
     {

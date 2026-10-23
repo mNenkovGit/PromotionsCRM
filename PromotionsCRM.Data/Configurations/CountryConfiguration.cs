@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PromotionsCRM.Data.Models;
 
-namespace PromotionsCRM.Web.Data.Configurations
+namespace PromotionsCRM.Data
 {
     public class CountryConfiguration : IEntityTypeConfiguration<Country>
     {
