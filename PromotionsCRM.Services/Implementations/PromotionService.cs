@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PromotionsCRM.Data;
 using PromotionsCRM.Data.Models;
+using PromotionsCRM.Data.Repository.Contracts;
 using PromotionsCRM.Services.Interfaces;
 using PromotionsCRM.ViewModels.Promotions;
 
@@ -8,11 +9,15 @@ namespace PromotionsCRM.Services.Implementations
 {
     public class PromotionService : IPromotionService
     {
-        private readonly PromotionsCrmDbContext _dbContext;
+        private readonly IPromotionRepository _promotionRepository;
+        private readonly IClientRepository _clientRepository;
+        private readonly ISubmissionRepository _submissionRepository;
 
-        public PromotionService(PromotionsCrmDbContext dbContext)
+        public PromotionService(IPromotionRepository promotionRepository, IClientRepository clientRepository, ISubmissionRepository submissionRepository)
         {
-            _dbContext = dbContext;
+            _promotionRepository = promotionRepository;
+            _clientRepository = clientRepository;
+            _submissionRepository = submissionRepository;
         }
 
         public async Task CreatePromotionAsync(PromotionCreateViewModel createPromotion)
@@ -26,30 +31,30 @@ namespace PromotionsCRM.Services.Implementations
                 ClientId = createPromotion.ClientId
             };
 
-            _dbContext.Promotions.Add(newPromotion);
-            await _dbContext.SaveChangesAsync();
+            await _promotionRepository.AddAsync(newPromotion);
+            await _promotionRepository.SaveChangesAsync();
 
 
         }
 
         public async Task<bool> DeletePromotionAsync(int promotionId)
         {
-            var promotionToDelete = await _dbContext.Promotions.FindAsync(promotionId);
+            var promotionToDelete = await _promotionRepository.FindByIdAsync(promotionId);
 
             if (promotionToDelete == null)
             {
                 return false;
             }
 
-            _dbContext.Promotions.Remove(promotionToDelete);
+            _promotionRepository.Remove(promotionToDelete);
 
-            await _dbContext.SaveChangesAsync();
+            await _promotionRepository.SaveChangesAsync();
             return true;
         }
 
         public async Task<bool> EditPromotionAsync(int promotionId, PromotionEditViewModel model)
         {
-            var promotionToEdit = await _dbContext.Promotions.FindAsync(promotionId);
+            var promotionToEdit = await _promotionRepository.FindByIdAsync(promotionId);
 
             if (promotionToEdit == null)
             {
@@ -57,11 +62,11 @@ namespace PromotionsCRM.Services.Implementations
             }
 
             promotionToEdit.Name = model.Name.Trim();
-            promotionToEdit.StartDate = model.StartDate.Value;
-            promotionToEdit.EndDate = model.EndDate.Value;
-            promotionToEdit.PromotionType = model.PromotionType.Value;
+            promotionToEdit.StartDate = model.StartDate!.Value;
+            promotionToEdit.EndDate = model.EndDate!.Value;
+            promotionToEdit.PromotionType = model.PromotionType!.Value;
 
-            await _dbContext.SaveChangesAsync();
+            await _promotionRepository.SaveChangesAsync();
             return true;
         }
 
@@ -69,7 +74,7 @@ namespace PromotionsCRM.Services.Implementations
 
         public async Task<IEnumerable<PromotionViewModel>> GetAllPromotionsAsync(string? name)
         {
-            var query = _dbContext.Promotions.AsNoTracking();
+            var query = _promotionRepository.AllAsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(name))
             {
@@ -95,7 +100,7 @@ namespace PromotionsCRM.Services.Implementations
 
         public async Task<string?> GetClientNameAsync(int clientId)
         {
-            return await _dbContext.Clients
+            return await _clientRepository.AllAsNoTracking()
                          .Where(c => c.Id == clientId)
                          .Select(c => c.Name)
                          .FirstOrDefaultAsync();
@@ -104,8 +109,7 @@ namespace PromotionsCRM.Services.Implementations
         public async Task<PromotionDetailsViewModel?> GetPromotionDetailsAsync(int promotionId)
         {
 
-            return await _dbContext.Promotions
-                 .AsNoTracking()
+            return await _promotionRepository.AllAsNoTracking()
                  .Where(p => p.Id == promotionId)
                  .Select(p => new PromotionDetailsViewModel()
                  {
@@ -127,8 +131,7 @@ namespace PromotionsCRM.Services.Implementations
 
         public async Task<PromotionDeleteViewModel?> GetPromotionForDeletionAsync(int promotionId)
         {
-            return await _dbContext.Promotions
-                .AsNoTracking()
+            return await _promotionRepository.AllAsNoTracking()
                 .Where(p => p.Id == promotionId)
                 .Select(p => new PromotionDeleteViewModel()
                 {
@@ -147,8 +150,7 @@ namespace PromotionsCRM.Services.Implementations
 
         public async Task<PromotionEditViewModel?> GetPromotionForEditAsync(int promotionId)
         {
-            return await _dbContext.Promotions
-                .AsNoTracking()
+            return await _promotionRepository.AllAsNoTracking()
                 .Where(p => p.Id == promotionId)
                 .Select(p => new PromotionEditViewModel()
                 {
@@ -163,7 +165,7 @@ namespace PromotionsCRM.Services.Implementations
 
         public async Task<bool> HasSubmissionsAsync(int promotionId)
         {
-            var hasSubmissions = await _dbContext.Submissions.AnyAsync(s => s.PromotionId == promotionId);
+            var hasSubmissions = await _submissionRepository.AllAsNoTracking().AnyAsync(s => s.PromotionId == promotionId);
 
             return hasSubmissions;
         }
@@ -172,14 +174,14 @@ namespace PromotionsCRM.Services.Implementations
         {
             string promotionNameWithoutSpaces = name.Replace(" ", "");
 
-            return await _dbContext.Promotions.AnyAsync(p => p.Name.Replace(" ", "") == promotionNameWithoutSpaces
+            return await _promotionRepository.AllAsNoTracking().AnyAsync(p => p.Name.Replace(" ", "") == promotionNameWithoutSpaces
                             && p.ClientId == clientId
                             && (excludedPromotionId == null || p.Id != excludedPromotionId));
         }
 
         public async Task<int?> GetPromotionClientIdAsync(int promotionId)
         {
-            return await _dbContext.Promotions
+            return await _promotionRepository.AllAsNoTracking()
                 .Where(p => p.Id == promotionId)
                 .Select(p => (int?)p.ClientId)
                 .FirstOrDefaultAsync();
