@@ -19,14 +19,25 @@ namespace PromotionsCRM.Web.Controllers
             _promotionService = promotionService;
         }
 
-
         [HttpGet]
         public async Task<IActionResult> Index(string? name)
         {
+            var allPromotionsResponseDto = await _promotionService.GetAllPromotionsAsync(name);
 
-            var allPromotions = await _promotionService.GetAllPromotionsAsync(name);
+            var allPromotionsViewModel = allPromotionsResponseDto
+                .Select(p => new PromotionViewModel()
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    ClientName = p.ClientName,
+                    StartDate = p.StartDate,
+                    EndDate = p.EndDate,
+                    PromotionType = p.PromotionType,
+                    SubmissionCount = p.SubmissionCount
+                })
+                .ToList();
 
-            return View(allPromotions);
+            return View(allPromotionsViewModel);
         }
 
         [HttpGet]
@@ -37,14 +48,28 @@ namespace PromotionsCRM.Web.Controllers
                 return BadRequest("Promotion ID is mandatory!");
             }
 
-            var promotion = await _promotionService.GetPromotionDetailsAsync(id);
+            var promotionDetailsResponseDto = await _promotionService.GetPromotionDetailsAsync(id);
 
-            if (promotion == null)
+            if (promotionDetailsResponseDto == null)
             {
                 return NotFound("Promotion not found!");
             }
+            var promotionDetailsViewModel = new PromotionDetailsViewModel()
+            {
+                Id = promotionDetailsResponseDto.Id,
+                Name = promotionDetailsResponseDto.Name,
+                StartDate = promotionDetailsResponseDto.StartDate,
+                EndDate = promotionDetailsResponseDto.EndDate,
+                PromotionType = promotionDetailsResponseDto.PromotionType,
+                ClientName = promotionDetailsResponseDto.ClientName,
+                ClientId = promotionDetailsResponseDto.ClientId,
+                Countries = promotionDetailsResponseDto.Countries,
+                Products = promotionDetailsResponseDto.Products,
+                SubmissionCount = promotionDetailsResponseDto.SubmissionCount,
+                SubmissionStatuses = promotionDetailsResponseDto.SubmissionStatuses,
+            };
 
-            return View(promotion);
+            return View(promotionDetailsViewModel);
         }
 
         [HttpGet]
@@ -151,15 +176,23 @@ namespace PromotionsCRM.Web.Controllers
                 return BadRequest("Invalid Promotion ID!");
             }
 
-            var promotionForEdit = await _promotionService.GetPromotionForEditAsync(id.Value);
+            var promotionForEditDto = await _promotionService.GetPromotionForEditAsync(id.Value);
 
-            if (promotionForEdit == null)
+            if (promotionForEditDto == null)
             {
                 return NotFound("Promotion not found!");
             }
 
+            var promotionViewModel = new PromotionEditViewModel()
+            {
+                Id = promotionForEditDto.Id,
+                Name = promotionForEditDto.Name,
+                StartDate = promotionForEditDto.StartDate,
+                EndDate = promotionForEditDto.EndDate,
+                PromotionType = promotionForEditDto.PromotionType,
+            };
 
-            return View(promotionForEdit);
+            return View(promotionViewModel);
         }
 
         [HttpPost]
@@ -235,14 +268,26 @@ namespace PromotionsCRM.Web.Controllers
             {
                 return BadRequest("Invalid Promotion ID!");
             }
-            var promotion = await _promotionService.GetPromotionForDeletionAsync(id);
+            var promotionDto = await _promotionService.GetPromotionForDeletionAsync(id);
 
-            if (promotion == null)
+            if (promotionDto == null)
             {
                 return NotFound("Promotion not found!");
             }
 
-            return View(promotion);
+            var promotionViewModel = new PromotionDeleteViewModel()
+            {
+                Id = promotionDto.Id,
+                Name = promotionDto.Name,
+                StartDate = promotionDto.StartDate,
+                EndDate = promotionDto.EndDate,
+                PromotionType = promotionDto.PromotionType,
+                ClientName = promotionDto.ClientName,
+                HasSubmissions = promotionDto.HasSubmissions,
+                ProductsCount = promotionDto.ProductsCount
+            };
+
+            return View(promotionViewModel);
         }
 
         [HttpPost]

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PromotionsCRM.Data.Models;
 using PromotionsCRM.Data.Repository.Contracts;
+using PromotionsCRM.Services.DTOs.Promotion.Response;
 using PromotionsCRM.Services.Interfaces;
 using PromotionsCRM.ViewModels.Promotions;
 
@@ -67,7 +68,7 @@ namespace PromotionsCRM.Services.Implementations
             return true;
         }
 
-        public async Task<IEnumerable<PromotionViewModel>> GetAllPromotionsAsync(string? name)
+        public async Task<IEnumerable<PromotionListItemResponseDto>> GetAllPromotionsAsync(string? name)
         {
             var query = _promotionRepository.AllAsNoTracking();
 
@@ -80,7 +81,7 @@ namespace PromotionsCRM.Services.Implementations
                 .OrderBy(p => p.Client.Name)
                 .ThenByDescending(p => p.StartDate)
                 .ThenBy(p => p.Name)
-                .Select(p => new PromotionViewModel()
+                .Select(p => new PromotionListItemResponseDto()
                 {
                     Id = p.Id,
                     Name = p.Name,
@@ -101,11 +102,11 @@ namespace PromotionsCRM.Services.Implementations
                          .FirstOrDefaultAsync();
         }
 
-        public async Task<PromotionDetailsViewModel?> GetPromotionDetailsAsync(int promotionId)
+        public async Task<PromotionDetailsResponseDto?> GetPromotionDetailsAsync(int promotionId)
         {
             return await _promotionRepository.AllAsNoTracking()
                  .Where(p => p.Id == promotionId)
-                 .Select(p => new PromotionDetailsViewModel()
+                 .Select(p => new PromotionDetailsResponseDto()
                  {
                      Id = p.Id,
                      Name = p.Name,
@@ -123,11 +124,11 @@ namespace PromotionsCRM.Services.Implementations
                  .FirstOrDefaultAsync();
         }
 
-        public async Task<PromotionDeleteViewModel?> GetPromotionForDeletionAsync(int promotionId)
+        public async Task<PromotionForDeleteResponseDto?> GetPromotionForDeletionAsync(int promotionId)
         {
             return await _promotionRepository.AllAsNoTracking()
                 .Where(p => p.Id == promotionId)
-                .Select(p => new PromotionDeleteViewModel()
+                .Select(p => new PromotionForDeleteResponseDto()
                 {
                     Id = p.Id,
                     Name = p.Name,
@@ -141,11 +142,11 @@ namespace PromotionsCRM.Services.Implementations
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<PromotionEditViewModel?> GetPromotionForEditAsync(int promotionId)
+        public async Task<PromotionForEditResponseDto?> GetPromotionForEditAsync(int promotionId)
         {
             return await _promotionRepository.AllAsNoTracking()
                 .Where(p => p.Id == promotionId)
-                .Select(p => new PromotionEditViewModel()
+                .Select(p => new PromotionForEditResponseDto()
                 {
                     Id = p.Id,
                     Name = p.Name,

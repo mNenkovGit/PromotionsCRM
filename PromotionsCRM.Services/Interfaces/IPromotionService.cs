@@ -1,22 +1,23 @@
-﻿using PromotionsCRM.ViewModels.Promotions;
+﻿using PromotionsCRM.Services.DTOs.Promotion.Response;
+using PromotionsCRM.ViewModels.Promotions;
 
 namespace PromotionsCRM.Services.Interfaces
 {
     public interface IPromotionService
     {
-        Task<IEnumerable<PromotionViewModel>> GetAllPromotionsAsync(string? name);
+        Task<IEnumerable<PromotionListItemResponseDto>> GetAllPromotionsAsync(string? name);
 
-        Task<PromotionDetailsViewModel?> GetPromotionDetailsAsync(int promotionId);
+        Task<PromotionDetailsResponseDto?> GetPromotionDetailsAsync(int promotionId);
 
         Task<string?> GetClientNameAsync(int clientId);
 
         Task CreatePromotionAsync(PromotionCreateViewModel createPromotion);
 
-        Task<PromotionEditViewModel?> GetPromotionForEditAsync(int promotionId);
+        Task<PromotionForEditResponseDto?> GetPromotionForEditAsync(int promotionId);
 
         Task<bool> EditPromotionAsync(int promotionId, PromotionEditViewModel model);
 
-        Task<PromotionDeleteViewModel?> GetPromotionForDeletionAsync(int promotionId);
+        Task<PromotionForDeleteResponseDto?> GetPromotionForDeletionAsync(int promotionId);
 
         Task<bool> DeletePromotionAsync(int promotionId);
 
