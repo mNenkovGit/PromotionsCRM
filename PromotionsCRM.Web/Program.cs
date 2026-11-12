@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using PromotionsCRM.Data;
 using PromotionsCRM.Services.Implementations;
 using PromotionsCRM.Services.Interfaces;
-
+using PromotionsCRM.Web.Infrastructure.Extensions;
 
 namespace PromotionsCRM.Web
 {
@@ -33,6 +33,7 @@ namespace PromotionsCRM.Web
             builder.Services.AddScoped<IPromotionService, PromotionService>();
             builder.Services.AddScoped<IClientService, ClientService>();
             builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.RegisterRepositoriesFromAssembly(typeof(PromotionsCrmDbContext).Assembly);
 
             var app = builder.Build();
 
