@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PromotionsCRM.Data;
 using PromotionsCRM.Data.Models;
 using PromotionsCRM.Data.Repository.Contracts;
 using PromotionsCRM.Services.Interfaces;
@@ -25,16 +24,14 @@ namespace PromotionsCRM.Services.Implementations
             Promotion newPromotion = new Promotion()
             {
                 Name = createPromotion.Name.Trim(),
-                StartDate = createPromotion.StartDate.Value,
-                EndDate = createPromotion.EndDate.Value,
-                PromotionType = createPromotion.PromotionType.Value,
+                StartDate = createPromotion.StartDate!.Value,
+                EndDate = createPromotion.EndDate!.Value,
+                PromotionType = createPromotion.PromotionType!.Value,
                 ClientId = createPromotion.ClientId
             };
 
             await _promotionRepository.AddAsync(newPromotion);
             await _promotionRepository.SaveChangesAsync();
-
-
         }
 
         public async Task<bool> DeletePromotionAsync(int promotionId)
@@ -69,8 +66,6 @@ namespace PromotionsCRM.Services.Implementations
             await _promotionRepository.SaveChangesAsync();
             return true;
         }
-
-
 
         public async Task<IEnumerable<PromotionViewModel>> GetAllPromotionsAsync(string? name)
         {
@@ -108,7 +103,6 @@ namespace PromotionsCRM.Services.Implementations
 
         public async Task<PromotionDetailsViewModel?> GetPromotionDetailsAsync(int promotionId)
         {
-
             return await _promotionRepository.AllAsNoTracking()
                  .Where(p => p.Id == promotionId)
                  .Select(p => new PromotionDetailsViewModel()
@@ -123,8 +117,8 @@ namespace PromotionsCRM.Services.Implementations
                      Countries = p.PromotionsCountries.Select(pc => pc.Country.Name).ToArray(),
                      Products = p.Products.Select(pr => pr.Name).ToArray(),
                      SubmissionCount = p.Submissions.Count,
-                     SubmissionStatuses = p.Submissions.Select(s => s.Status).ToArray(),
-
+                     SubmissionStatuses = p.Submissions.Select(s => s.Status)
+                     .ToArray(),
                  })
                  .FirstOrDefaultAsync();
         }
@@ -145,7 +139,6 @@ namespace PromotionsCRM.Services.Implementations
                     ProductsCount = p.Products.Count(),
                 })
                 .FirstOrDefaultAsync();
-
         }
 
         public async Task<PromotionEditViewModel?> GetPromotionForEditAsync(int promotionId)

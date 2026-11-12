@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PromotionsCRM.Data;
 using PromotionsCRM.Data.Models;
 using PromotionsCRM.Data.Repository.Contracts;
 using PromotionsCRM.Services.Interfaces;
