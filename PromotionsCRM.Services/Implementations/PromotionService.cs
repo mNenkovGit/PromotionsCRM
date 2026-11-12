@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PromotionsCRM.Data.Models;
 using PromotionsCRM.Data.Repository.Contracts;
+using PromotionsCRM.Services.DTOs.Promotion.Request;
 using PromotionsCRM.Services.DTOs.Promotion.Response;
 using PromotionsCRM.Services.Interfaces;
 using PromotionsCRM.ViewModels.Promotions;
@@ -20,14 +21,14 @@ namespace PromotionsCRM.Services.Implementations
             _submissionRepository = submissionRepository;
         }
 
-        public async Task CreatePromotionAsync(PromotionCreateViewModel createPromotion)
+        public async Task CreatePromotionAsync(CreatePromotionRequestDto createPromotion)
         {
             Promotion newPromotion = new Promotion()
             {
                 Name = createPromotion.Name.Trim(),
-                StartDate = createPromotion.StartDate!.Value,
-                EndDate = createPromotion.EndDate!.Value,
-                PromotionType = createPromotion.PromotionType!.Value,
+                StartDate = createPromotion.StartDate,
+                EndDate = createPromotion.EndDate,
+                PromotionType = createPromotion.PromotionType,
                 ClientId = createPromotion.ClientId
             };
 
@@ -50,7 +51,7 @@ namespace PromotionsCRM.Services.Implementations
             return true;
         }
 
-        public async Task<bool> EditPromotionAsync(int promotionId, PromotionEditViewModel model)
+        public async Task<bool> EditPromotionAsync(int promotionId, EditPromotionRequestDto model)
         {
             var promotionToEdit = await _promotionRepository.FindByIdAsync(promotionId);
 
@@ -60,9 +61,9 @@ namespace PromotionsCRM.Services.Implementations
             }
 
             promotionToEdit.Name = model.Name.Trim();
-            promotionToEdit.StartDate = model.StartDate!.Value;
-            promotionToEdit.EndDate = model.EndDate!.Value;
-            promotionToEdit.PromotionType = model.PromotionType!.Value;
+            promotionToEdit.StartDate = model.StartDate;
+            promotionToEdit.EndDate = model.EndDate;
+            promotionToEdit.PromotionType = model.PromotionType;
 
             await _promotionRepository.SaveChangesAsync();
             return true;

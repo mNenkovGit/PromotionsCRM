@@ -1,5 +1,5 @@
-﻿using PromotionsCRM.Services.DTOs.Promotion.Response;
-using PromotionsCRM.ViewModels.Promotions;
+﻿using PromotionsCRM.Services.DTOs.Promotion.Request;
+using PromotionsCRM.Services.DTOs.Promotion.Response;
 
 namespace PromotionsCRM.Services.Interfaces
 {
@@ -11,11 +11,11 @@ namespace PromotionsCRM.Services.Interfaces
 
         Task<string?> GetClientNameAsync(int clientId);
 
-        Task CreatePromotionAsync(PromotionCreateViewModel createPromotion);
+        Task CreatePromotionAsync(CreatePromotionRequestDto createPromotion);
 
         Task<PromotionForEditResponseDto?> GetPromotionForEditAsync(int promotionId);
 
-        Task<bool> EditPromotionAsync(int promotionId, PromotionEditViewModel model);
+        Task<bool> EditPromotionAsync(int promotionId, EditPromotionRequestDto model);
 
         Task<PromotionForDeleteResponseDto?> GetPromotionForDeletionAsync(int promotionId);
 

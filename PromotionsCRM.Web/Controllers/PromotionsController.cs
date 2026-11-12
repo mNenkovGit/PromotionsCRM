@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PromotionsCRM.Common.Enums;
+using PromotionsCRM.Services.DTOs.Promotion.Request;
 using PromotionsCRM.Services.Interfaces;
 using PromotionsCRM.ViewModels.Promotions;
 
@@ -150,7 +151,16 @@ namespace PromotionsCRM.Web.Controllers
             }
             try
             {
-                await _promotionService.CreatePromotionAsync(createPromotion);
+                var promotionDto = new CreatePromotionRequestDto()
+                {
+                    Name = createPromotion.Name,
+                    StartDate = createPromotion.StartDate!.Value,
+                    EndDate = createPromotion.EndDate!.Value,
+                    PromotionType = createPromotion.PromotionType!.Value,
+                    ClientId = createPromotion.ClientId
+                };
+
+                await _promotionService.CreatePromotionAsync(promotionDto);
 
                 TempData["SuccessMessage"] = "Promotion created successfully!";
 
@@ -165,7 +175,6 @@ namespace PromotionsCRM.Web.Controllers
 
                 return View(createPromotion);
             }
-
         }
 
         [HttpGet]
@@ -199,7 +208,6 @@ namespace PromotionsCRM.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, PromotionEditViewModel model)
         {
-
             if (id <= 0)
             {
                 return BadRequest("There was an error while editing the promotion! Please try again!");
@@ -238,7 +246,14 @@ namespace PromotionsCRM.Web.Controllers
             }
             try
             {
-                bool isEdited = await _promotionService.EditPromotionAsync(id, model);
+                var promotionDto = new EditPromotionRequestDto()
+                {
+                    Name = model.Name,
+                    StartDate = model.StartDate!.Value,
+                    EndDate = model.EndDate!.Value,
+                    PromotionType = model.PromotionType!.Value
+                };
+                bool isEdited = await _promotionService.EditPromotionAsync(id, promotionDto);
 
                 if (!isEdited)
                 {
