@@ -10,4 +10,8 @@
     <ProjectReference Include="..\PromotionsCRM.Common\PromotionsCRM.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Product\Response\" />
+  </ItemGroup>
+
 </Project>

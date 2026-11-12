@@ -1,10 +1,11 @@
-﻿using PromotionsCRM.ViewModels.Products;
+﻿using PromotionsCRM.Services.DTOs.Product.Request;
+using PromotionsCRM.ViewModels.Products;
 
 namespace PromotionsCRM.Services.Interfaces
 {
     public interface IProductService
     {
-        Task CreateProductAsync(ProductCreateViewModel createProduct);
+        Task CreateProductAsync(CreateProductRequestDto createProduct);
 
         Task<string?> GetPromotionNameAsync(int promotionId);
 

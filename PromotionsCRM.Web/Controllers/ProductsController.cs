@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PromotionsCRM.Services.DTOs.Product.Request;
 using PromotionsCRM.Services.Interfaces;
 using PromotionsCRM.ViewModels.Products;
 
 namespace PromotionsCRM.Web.Controllers
 {
-    [Authorize]
     public class ProductsController : Controller
     {
         private readonly IProductService _productService;
@@ -66,7 +66,12 @@ namespace PromotionsCRM.Web.Controllers
 
             try
             {
-                await _productService.CreateProductAsync(createModel);
+                var creatProductDto = new CreateProductRequestDto()
+                {
+                    Name = createModel.Name,
+                    PromotionId = createModel.PromotionId
+                };
+                await _productService.CreateProductAsync(creatProductDto);
 
                 TempData["SuccessMessage"] = "Product added successfully!";
 

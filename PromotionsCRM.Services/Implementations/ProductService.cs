@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PromotionsCRM.Data.Models;
 using PromotionsCRM.Data.Repository.Contracts;
+using PromotionsCRM.Services.DTOs.Product.Request;
 using PromotionsCRM.Services.Interfaces;
-using PromotionsCRM.ViewModels.Products;
 
 namespace PromotionsCRM.Services.Implementations
 {
@@ -17,7 +17,7 @@ namespace PromotionsCRM.Services.Implementations
             _promotionRepository = promotionRepository;
         }
 
-        public async Task CreateProductAsync(ProductCreateViewModel createProduct)
+        public async Task CreateProductAsync(CreateProductRequestDto createProduct)
         {
             Product newProduct = new Product()
             {
