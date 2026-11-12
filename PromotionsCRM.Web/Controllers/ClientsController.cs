@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using PromotionsCRM.Services.DTOs.Client.Request;
 using PromotionsCRM.Services.Interfaces;
 using PromotionsCRM.ViewModels.Clients;
+using PromotionsCRM.ViewModels.Promotions;
 
 namespace PromotionsCRM.Web.Controllers
 {
@@ -22,9 +25,22 @@ namespace PromotionsCRM.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(string? name)
         {
-            var allClients = await _clientService.GetAllClientsAsync(name);
+            var allClientsResponseDto = await _clientService.GetAllClientsAsync(name);
 
-            return View(allClients);
+            var allClientsViewModel = allClientsResponseDto
+                .Select(c => new ClientViewModel()
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Email = c.Email,
+                    Address = c.Address,
+                    PhoneNumber = c.PhoneNumber,
+                    Website = c.Website,
+                    Country = c.Country
+                })
+                .ToList();
+
+            return View(allClientsViewModel);
         }
 
         [HttpGet]
@@ -35,14 +51,37 @@ namespace PromotionsCRM.Web.Controllers
                 return BadRequest("Client ID is mandatory!");
             }
 
-            var client = await _clientService.GetClientDetailsAsync(id.Value, name);
-
-            if (client == null)
+            var clientResponseDto = await _clientService.GetClientDetailsAsync(id.Value, name);
+            
+            if (clientResponseDto == null)
             {
                 return NotFound("Client not found!");
             }
 
-            return View(client);
+            var clientViewModel = new ClientDetailsViewModel()
+            {
+                Id = clientResponseDto.Id,
+                Name = clientResponseDto.Name,
+                Email = clientResponseDto.Email,
+                Address = clientResponseDto.Address,
+                PhoneNumber = clientResponseDto.PhoneNumber,
+                Website = clientResponseDto.Website,
+                Country = clientResponseDto.Country,
+                RegisteredOn = clientResponseDto.RegisteredOn,
+                Promotions = clientResponseDto.Promotions
+                    .Select(p => new PromotionViewModel()
+                    {
+                        Id = p.Id,
+                        Name = p.Name,
+                        StartDate = p.StartDate,
+                        EndDate = p.EndDate,
+                        PromotionType = p.PromotionType
+                    })
+                    .ToList()
+            };
+
+
+            return View(clientViewModel);
         }
 
         [HttpGet]
@@ -52,16 +91,27 @@ namespace PromotionsCRM.Web.Controllers
             {
                 return BadRequest("Client ID is mandatory!");
             }
-            var clientToEdit = await _clientService.GetClientForEditAsync(id.Value);
+            var editClientDto = await _clientService.GetClientForEditAsync(id.Value);
 
-            if (clientToEdit == null)
+            if (editClientDto == null)
             {
                 return NotFound("Client not found!");
             }
 
-            clientToEdit.Countries = await _clientService.GetCountriesForDropdownAsync();
+            var clientEditViewModel = new ClientEditViewModel()
+            {
+                Id = editClientDto.Id,
+                Name = editClientDto.Name,
+                Email = editClientDto.Email,
+                Address = editClientDto.Address,
+                PhoneNumber = editClientDto.PhoneNumber,
+                Website = editClientDto.Website,
+                CountryId = editClientDto.CountryId
+            };
 
-            return View(clientToEdit);
+            clientEditViewModel.Countries = await LoadCountriesAsync();
+
+            return View(clientEditViewModel);
         }
 
         [HttpPost]
@@ -85,14 +135,24 @@ namespace PromotionsCRM.Web.Controllers
 
             if (!ModelState.IsValid)
             {
-                model.Countries = await _clientService.GetCountriesForDropdownAsync();
+                model.Countries = await LoadCountriesAsync();
 
                 return View(model);
             }
 
             try
             {
-                var result = await _clientService.EditClientAsync(id, model);
+                var requestDto = new EditClientRequestData()
+                {
+                    Name = model.Name,
+                    Email = model.Email,
+                    Address = model.Address,
+                    PhoneNumber = model.PhoneNumber,
+                    Website = model.Website,
+                    CountryId = model.CountryId
+                };
+
+                var result = await _clientService.EditClientAsync(id, requestDto);
 
                 if (!result)
                 {
@@ -107,12 +167,23 @@ namespace PromotionsCRM.Web.Controllers
 
                 TempData["ErrorMessage"] = "Unexpected error occurred while editing the Client!";
 
-                model.Countries = await _clientService.GetCountriesForDropdownAsync();
+                model.Countries = await LoadCountriesAsync();
 
                 return View(model);
             }
 
             return RedirectToAction(nameof(Index));
+        }
+
+        private async Task<IEnumerable<SelectListItem>> LoadCountriesAsync()
+        {
+            var countries = await _clientService.GetCountriesForDropdownAsync();
+
+            return countries.Select(c => new SelectListItem
+            {
+                Value = c.Id.ToString(),
+                Text = c.Name
+            });
         }
     }
 }

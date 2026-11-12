@@ -43,8 +43,8 @@
                 <input asp-for="Website" class="form-control" aria-required="true" />
                 <span asp-validation-for="Website" class="text-danger"></span>
             </div>
-
-            <select asp-for="CountryId" asp-items="Model.Countries" class="form-select">
+            <label asp-for="CountryId" class="form-label">Country</label>
+            <select asp-for="CountryId" asp-items="Model.Countries" class="form-select mb-3">
                 <option value="">-- Select country --</option>
             </select>
 

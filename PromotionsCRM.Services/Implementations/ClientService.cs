@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PromotionsCRM.Data.Models;
 using PromotionsCRM.Data.Repository.Contracts;
+using PromotionsCRM.Services.DTOs.Client.Request;
+using PromotionsCRM.Services.DTOs.Client.Response;
 using PromotionsCRM.Services.Interfaces;
-using PromotionsCRM.ViewModels.Clients;
-using PromotionsCRM.ViewModels.Promotions;
 
 namespace PromotionsCRM.Services.Implementations
 {
@@ -19,7 +18,7 @@ namespace PromotionsCRM.Services.Implementations
             _countryRepository = countryRepository;
         }
 
-        public async Task<IEnumerable<ClientViewModel>> GetAllClientsAsync(string? name)
+        public async Task<IEnumerable<ClientResponseDto>> GetAllClientsAsync(string? name)
         {
             IQueryable<Client> query = _clientRepository.AllAsNoTracking();
 
@@ -30,23 +29,24 @@ namespace PromotionsCRM.Services.Implementations
 
             return await query
                 .OrderBy(c => c.Name)
-                .Select(c => new ClientViewModel()
+                .Select(c => new ClientResponseDto()
                 {
                     Id = c.Id,
                     Name = c.Name,
                     Email = c.Email,
                     PhoneNumber = c.PhoneNumber,
+                    Address = c.Address,
                     Website = c.Website,
                     Country = c.Country.Name
                 })
                 .ToArrayAsync();
         }
 
-        public async Task<ClientDetailsViewModel?> GetClientDetailsAsync(int id, string? name)
+        public async Task<ClientDetailsResponseDto?> GetClientDetailsAsync(int id, string? name)
         {
             return await _clientRepository.AllAsNoTracking()
                .Where(c => c.Id == id)
-               .Select(c => new ClientDetailsViewModel()
+               .Select(c => new ClientDetailsResponseDto()
                {
                    Id = c.Id,
                    Name = c.Name,
@@ -60,23 +60,23 @@ namespace PromotionsCRM.Services.Implementations
                        .Where(p => name == null || p.Name.Contains(name))
                        .OrderByDescending(p => p.StartDate)
                        .ThenBy(p => p.Name)
-                       .Select(p => new PromotionViewModel()
+                       .Select(p => new ClientPromotionResponseDto()
                        {
                            Id = p.Id,
                            Name = p.Name,
                            StartDate = p.StartDate,
                            EndDate = p.EndDate,
-                           PromotionType = p.PromotionType,
+                           PromotionType = p.PromotionType
                        }).ToArray()
                })
                .SingleOrDefaultAsync();
         }
 
-        public async Task<ClientEditViewModel?> GetClientForEditAsync(int clientId)
+        public async Task<ClientForEditResponseDto?> GetClientForEditAsync(int clientId)
         {
             return await _clientRepository.AllAsNoTracking()
                 .Where(c => c.Id == clientId)
-                .Select(c => new ClientEditViewModel()
+                .Select(c => new ClientForEditResponseDto()
                 {
                     Id = c.Id,
                     Name = c.Name,
@@ -89,35 +89,35 @@ namespace PromotionsCRM.Services.Implementations
                 ).FirstOrDefaultAsync();
         }
 
-        public async Task<bool> EditClientAsync(int clientId, ClientEditViewModel model)
+        public async Task<bool> EditClientAsync(int clientId, EditClientRequestData model)
         {
-            var clientForEdit = await _clientRepository.FindByIdAsync(clientId);
+            var clientToEdit = await _clientRepository.FindByIdAsync(clientId);
 
-            if (clientForEdit is null)
+            if (clientToEdit is null)
             {
                 return false;
             }
 
-            clientForEdit.Name = model.Name.Trim();
-            clientForEdit.Email = model.Email;
-            clientForEdit.Address = model.Address;
-            clientForEdit.Website = model.Website;
-            clientForEdit.PhoneNumber = model.PhoneNumber;
-            clientForEdit.CountryId = model.CountryId;
+            clientToEdit.Name = model.Name.Trim();
+            clientToEdit.Email = model.Email;
+            clientToEdit.Address = model.Address;
+            clientToEdit.Website = model.Website;
+            clientToEdit.PhoneNumber = model.PhoneNumber;
+            clientToEdit.CountryId = model.CountryId;
 
             await _clientRepository.SaveChangesAsync();
 
             return true;
         }
 
-        public async Task<IEnumerable<SelectListItem>> GetCountriesForDropdownAsync()
+        public async Task<IEnumerable<CountryResponseDto>> GetCountriesForDropdownAsync()
         {
             return await _countryRepository.AllAsNoTracking()
                 .OrderBy(c => c.Name)
-                .Select(c => new SelectListItem()
+                .Select(c => new CountryResponseDto()
                 {
-                    Value = c.Id.ToString(),
-                    Text = c.Name
+                   Id = c.Id,
+                   Name = c.Name
                 })
                 .ToArrayAsync();
         }

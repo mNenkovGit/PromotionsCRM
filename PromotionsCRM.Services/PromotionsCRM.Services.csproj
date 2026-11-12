@@ -10,6 +10,7 @@
     <ProjectReference Include="..\PromotionsCRM.Common\PromotionsCRM.Common.csproj" />
     <ProjectReference Include="..\PromotionsCRM.Data.Models\PromotionsCRM.Data.Models.csproj" />
     <ProjectReference Include="..\PromotionsCRM.Data\PromotionsCRM.Data.csproj" />
+    <ProjectReference Include="..\PromotionsCRM.Services.DTOs\PromotionsCRM.Services.DTOs.csproj" />
     <ProjectReference Include="..\PromotionsCRM.ViewModels\PromotionsCRM.ViewModels.csproj" />
   </ItemGroup>
 

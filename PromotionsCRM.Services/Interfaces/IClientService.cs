@@ -1,19 +1,19 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using PromotionsCRM.ViewModels.Clients;
+﻿using PromotionsCRM.Services.DTOs.Client.Request;
+using PromotionsCRM.Services.DTOs.Client.Response;
 
 namespace PromotionsCRM.Services.Interfaces
 {
     public interface IClientService
     {
-        Task<IEnumerable<ClientViewModel>> GetAllClientsAsync(string? name);
+        Task<IEnumerable<ClientResponseDto>> GetAllClientsAsync(string? name);
 
-        Task<ClientDetailsViewModel?> GetClientDetailsAsync(int id, string? name);
+        Task<ClientDetailsResponseDto?> GetClientDetailsAsync(int id, string? name);
 
-        Task<ClientEditViewModel?> GetClientForEditAsync(int id);
+        Task<ClientForEditResponseDto?> GetClientForEditAsync(int id);
 
-        Task<bool> EditClientAsync(int clientId, ClientEditViewModel model);
+        Task<bool> EditClientAsync(int clientId, EditClientRequestData model);
 
-        Task<IEnumerable<SelectListItem>> GetCountriesForDropdownAsync();
+        Task<IEnumerable<CountryResponseDto>> GetCountriesForDropdownAsync();
 
         Task<bool> CountryExistsAsync(int countryId);
 
