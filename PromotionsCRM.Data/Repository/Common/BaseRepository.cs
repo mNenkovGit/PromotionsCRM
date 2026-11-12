@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace PromotionsCRM.Data.Repository.Common
 {
-    public abstract class BaseRepository<TEntity> : IRepository<TEntity>, IDisposable
+    public abstract class BaseRepository<TEntity> : IRepository<TEntity>
         where TEntity : class
     {
   
@@ -68,9 +68,9 @@ namespace PromotionsCRM.Data.Repository.Common
             DbSet.RemoveRange(entityCollection);
         }
 
-        public int SaveChanges()
+        public async Task<TEntity?> FindByIdAsync(int id)
         {
-            return DbContext.SaveChanges();
+            return await DbSet.FindAsync(id);
         }
 
         public async Task<int> SaveChangesAsync()
@@ -78,9 +78,5 @@ namespace PromotionsCRM.Data.Repository.Common
             return await DbContext.SaveChangesAsync();
         }
 
-        public void Dispose()
-        {
-            DbContext.Dispose();
-        }
     }
 }

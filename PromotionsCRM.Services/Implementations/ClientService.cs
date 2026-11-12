@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using PromotionsCRM.Data;
 using PromotionsCRM.Data.Models;
+using PromotionsCRM.Data.Repository.Contracts;
 using PromotionsCRM.Services.Interfaces;
 using PromotionsCRM.ViewModels.Clients;
 using PromotionsCRM.ViewModels.Promotions;
@@ -10,17 +10,18 @@ namespace PromotionsCRM.Services.Implementations
 {
     public class ClientService : IClientService
     {
-        private readonly PromotionsCrmDbContext _dbContext;
+        private readonly IClientRepository _clientRepository;
+        private readonly ICountryRepository _countryRepository;
 
-        public ClientService(PromotionsCrmDbContext dbContext)
-        {
-            _dbContext = dbContext;
+        public ClientService(IClientRepository clientRepository, ICountryRepository countryRepository)
+        {      
+            _clientRepository = clientRepository;
+            _countryRepository = countryRepository;
         }
-
 
         public async Task<IEnumerable<ClientViewModel>> GetAllClientsAsync(string? name)
         {
-            IQueryable<Client> query = _dbContext.Clients.AsNoTracking();
+            IQueryable<Client> query = _clientRepository.AllAsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(name))
             {
@@ -39,15 +40,11 @@ namespace PromotionsCRM.Services.Implementations
                     Country = c.Country.Name
                 })
                 .ToArrayAsync();
-
-
         }
 
         public async Task<ClientDetailsViewModel?> GetClientDetailsAsync(int id, string? name)
         {
-
-            return await _dbContext.Clients
-               .AsNoTracking()
+            return await _clientRepository.AllAsNoTracking()
                .Where(c => c.Id == id)
                .Select(c => new ClientDetailsViewModel()
                {
@@ -77,8 +74,7 @@ namespace PromotionsCRM.Services.Implementations
 
         public async Task<ClientEditViewModel?> GetClientForEditAsync(int clientId)
         {
-            return await _dbContext.Clients
-                .AsNoTracking()
+            return await _clientRepository.AllAsNoTracking()
                 .Where(c => c.Id == clientId)
                 .Select(c => new ClientEditViewModel()
                 {
@@ -91,12 +87,11 @@ namespace PromotionsCRM.Services.Implementations
                     CountryId = c.CountryId,
                 }
                 ).FirstOrDefaultAsync();
-
         }
 
         public async Task<bool> EditClientAsync(int clientId, ClientEditViewModel model)
         {
-            var clientForEdit = await _dbContext.Clients.FindAsync(clientId);
+            var clientForEdit = await _clientRepository.FindByIdAsync(clientId);
 
             if (clientForEdit is null)
             {
@@ -110,15 +105,14 @@ namespace PromotionsCRM.Services.Implementations
             clientForEdit.PhoneNumber = model.PhoneNumber;
             clientForEdit.CountryId = model.CountryId;
 
-            await _dbContext.SaveChangesAsync();
+            await _clientRepository.SaveChangesAsync();
 
             return true;
         }
 
         public async Task<IEnumerable<SelectListItem>> GetCountriesForDropdownAsync()
         {
-            return await _dbContext.Countries
-                .AsNoTracking()
+            return await _countryRepository.AllAsNoTracking()
                 .OrderBy(c => c.Name)
                 .Select(c => new SelectListItem()
                 {
@@ -130,7 +124,7 @@ namespace PromotionsCRM.Services.Implementations
 
         public async Task<bool> CountryExistsAsync(int countryId)
         {
-            return await _dbContext.Countries
+            return await _countryRepository.AllAsNoTracking()
                 .AnyAsync(c => c.Id == countryId);
         }
 
@@ -138,7 +132,8 @@ namespace PromotionsCRM.Services.Implementations
         {
             string clientNameWithoutSpaces = name.Replace(" ", "");
 
-            return await _dbContext.Clients.AnyAsync(c => c.Name.Replace(" ", "") == clientNameWithoutSpaces && c.Id != excludedClientId);
+            return await _clientRepository.AllAsNoTracking()
+                .AnyAsync(c => c.Name.Replace(" ", "") == clientNameWithoutSpaces && c.Id != excludedClientId);
         }
     }
 }

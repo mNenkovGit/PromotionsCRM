@@ -19,11 +19,11 @@
 
         void UpdateRange(IEnumerable<TEntity> entityCollection);
 
+        Task<TEntity?> FindByIdAsync(int id);
+
         void Remove(TEntity entity);
 
         void RemoveRange(IEnumerable<TEntity> entityCollection);
-
-        int SaveChanges();
 
         Task<int> SaveChangesAsync();
     }
