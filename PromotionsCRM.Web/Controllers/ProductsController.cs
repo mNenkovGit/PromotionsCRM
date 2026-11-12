@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PromotionsCRM.Services.DTOs.Product.Request;
 using PromotionsCRM.Services.Interfaces;
 using PromotionsCRM.ViewModels.Products;

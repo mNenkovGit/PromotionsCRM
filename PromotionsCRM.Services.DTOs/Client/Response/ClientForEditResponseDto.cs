@@ -3,7 +3,7 @@
     public class ClientForEditResponseDto
     {
         public int Id { get; set; }
-                
+
         public string Name { get; set; } = null!;
 
         public string Email { get; set; } = null!;
@@ -17,6 +17,6 @@
         public int CountryId { get; set; }
 
         public IEnumerable<CountryResponseDto>? Countries { get; set; }
-    
+
     }
 }

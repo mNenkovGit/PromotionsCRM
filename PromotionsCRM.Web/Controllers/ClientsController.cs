@@ -52,7 +52,7 @@ namespace PromotionsCRM.Web.Controllers
             }
 
             var clientResponseDto = await _clientService.GetClientDetailsAsync(id.Value, name);
-            
+
             if (clientResponseDto == null)
             {
                 return NotFound("Client not found!");

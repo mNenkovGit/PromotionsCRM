@@ -1,5 +1,4 @@
 ﻿using PromotionsCRM.Services.DTOs.Product.Request;
-using PromotionsCRM.ViewModels.Products;
 
 namespace PromotionsCRM.Services.Interfaces
 {

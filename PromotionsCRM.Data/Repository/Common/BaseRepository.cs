@@ -1,12 +1,12 @@
-﻿using PromotionsCRM.Data.Repository.Contracts.Common;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using PromotionsCRM.Data.Repository.Contracts.Common;
 
 namespace PromotionsCRM.Data.Repository.Common
 {
     public abstract class BaseRepository<TEntity> : IRepository<TEntity>
         where TEntity : class
     {
-  
+
         protected BaseRepository(PromotionsCrmDbContext dbContext)
         {
             DbContext = dbContext;
@@ -20,21 +20,21 @@ namespace PromotionsCRM.Data.Repository.Common
         {
             return DbSet.AsQueryable();
         }
-        
+
         public IQueryable<TEntity> AllAsNoTracking()
         {
             return DbSet.AsNoTracking()
                     .AsQueryable();
         }
-     
+
         public void Add(TEntity entity)
         {
-           DbSet.Add(entity);
+            DbSet.Add(entity);
         }
 
         public async Task AddAsync(TEntity entity)
         {
-           await DbSet.AddAsync(entity);
+            await DbSet.AddAsync(entity);
         }
 
         public void AddRange(IEnumerable<TEntity> entityCollection)

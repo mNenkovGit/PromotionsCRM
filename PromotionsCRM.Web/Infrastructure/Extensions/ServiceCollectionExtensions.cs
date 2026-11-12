@@ -13,7 +13,7 @@ namespace PromotionsCRM.Web.Infrastructure.Extensions
                 .Where(t => t.BaseType != null &&
                 t.BaseType.IsGenericType &&
                 t.IsAbstract == false &&
-                (t.BaseType.GetGenericTypeDefinition() == typeof(BaseRepository<>) ))
+                (t.BaseType.GetGenericTypeDefinition() == typeof(BaseRepository<>)))
                 .ToArray();
 
             foreach (Type repositoryImplementationType in repositoryImplementationTypes)
@@ -21,8 +21,8 @@ namespace PromotionsCRM.Web.Infrastructure.Extensions
                 Type? interfaceType = repositoryImplementationType.GetInterfaces()
                     .Where(it => !it.IsGenericType &&
                     it.GetInterfaces().Any(bit => bit.IsGenericType &&
-                                                   (bit.GetGenericTypeDefinition() == typeof(IRepository<>) 
-                                                   ))) 
+                                                   (bit.GetGenericTypeDefinition() == typeof(IRepository<>)
+                                                   )))
                              .SingleOrDefault();
 
                 if (interfaceType != null)

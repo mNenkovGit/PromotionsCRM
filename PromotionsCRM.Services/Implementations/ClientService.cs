@@ -13,7 +13,7 @@ namespace PromotionsCRM.Services.Implementations
         private readonly ICountryRepository _countryRepository;
 
         public ClientService(IClientRepository clientRepository, ICountryRepository countryRepository)
-        {      
+        {
             _clientRepository = clientRepository;
             _countryRepository = countryRepository;
         }
@@ -116,8 +116,8 @@ namespace PromotionsCRM.Services.Implementations
                 .OrderBy(c => c.Name)
                 .Select(c => new CountryResponseDto()
                 {
-                   Id = c.Id,
-                   Name = c.Name
+                    Id = c.Id,
+                    Name = c.Name
                 })
                 .ToArrayAsync();
         }

@@ -2,7 +2,7 @@
 
 namespace PromotionsCRM.Services.DTOs.Promotion.Response
 {
-    public class PromotionForDeleteResponseDto 
+    public class PromotionForDeleteResponseDto
     {
         public int Id { get; set; }
 

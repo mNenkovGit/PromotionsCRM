@@ -5,6 +5,6 @@ namespace PromotionsCRM.Data.Repository.Contracts
 {
     public interface IClientRepository : IRepository<Client>
     {
-        
+
     }
 }

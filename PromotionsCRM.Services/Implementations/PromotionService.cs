@@ -4,7 +4,6 @@ using PromotionsCRM.Data.Repository.Contracts;
 using PromotionsCRM.Services.DTOs.Promotion.Request;
 using PromotionsCRM.Services.DTOs.Promotion.Response;
 using PromotionsCRM.Services.Interfaces;
-using PromotionsCRM.ViewModels.Promotions;
 
 namespace PromotionsCRM.Services.Implementations
 {
