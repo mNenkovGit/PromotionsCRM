@@ -102,9 +102,11 @@ Controllers do not access the database directly. They depend on service interfac
    Server=.;Database=PromotionsCrmDb;Trusted_Connection=True;TrustServerCertificate=True
    ```
 
+   In appsettings.json the backslash must be escaped: (localdb)\\MSSQLLocalDB
+   
    No other credentials or environment variables are required. User accounts are created through the registration page (see step 5).
 
-3. Apply the migrations
+4. Apply the migrations
 
    **Visual Studio (Package Manager Console):**
 
@@ -123,13 +125,13 @@ Controllers do not access the database directly. They depend on service interfac
    dotnet ef database update --project PromotionsCRM.Data --startup-project PromotionsCRM.Web
    ```
 
-4. Run the application with F5 in Visual Studio or with:
+5. Run the application with F5 in Visual Studio or with:
 
    ```
    dotnet run --project PromotionsCRM.Web
    ```
 
-5. Create a user account
+6. Create a user account
 
    The application requires a logged-in user. On first launch you will be redirected to the login page. Click **Register as a new user** and create an account. No email confirmation is required.
 
