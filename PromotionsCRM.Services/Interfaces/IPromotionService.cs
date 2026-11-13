@@ -1,4 +1,5 @@
-﻿using PromotionsCRM.Services.DTOs.Promotion.Request;
+﻿using PromotionsCRM.Services.DTOs.Client.Response;
+using PromotionsCRM.Services.DTOs.Promotion.Request;
 using PromotionsCRM.Services.DTOs.Promotion.Response;
 
 namespace PromotionsCRM.Services.Interfaces
@@ -26,5 +27,7 @@ namespace PromotionsCRM.Services.Interfaces
         Task<bool> PromotionNameExistsAsync(int clientId, string name, int? excludedPromotionId = null);
 
         Task<int?> GetPromotionClientIdAsync(int promotionId);
+
+        Task<IEnumerable<CountryResponseDto>> GetCountriesForDropdownAsync();
     }
 }

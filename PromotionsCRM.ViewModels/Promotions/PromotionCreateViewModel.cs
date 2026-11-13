@@ -1,4 +1,5 @@
-﻿using PromotionsCRM.Common.Enums;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using PromotionsCRM.Common.Enums;
 using System.ComponentModel.DataAnnotations;
 using static PromotionsCRM.Common.Validations;
 namespace PromotionsCRM.ViewModels.Promotions
@@ -25,6 +26,8 @@ namespace PromotionsCRM.ViewModels.Promotions
 
         public string? ClientName { get; set; }
 
-    }
+        public List<int> SelectedCountryIds { get; set; } = new List<int>();
 
+        public IEnumerable<SelectListItem>? Countries { get; set; }
+    }
 }

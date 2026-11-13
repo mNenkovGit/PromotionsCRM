@@ -41,6 +41,19 @@
             </div>
 
             <div class="mb-3">
+                <label class="form-label">Countries</label>
+            @foreach (var country in Model.Countries!)
+            {
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="SelectedCountryIds" value="@country.Value" id="country-@country.Value"
+                           @(Model.SelectedCountryIds.Contains(int.Parse(country.Value)) ? "checked" : "") />
+                    <label class="form-check-label" for="country-@country.Value">@country.Text</label>
+                </div>
+            }
+                <span asp-validation-for="SelectedCountryIds" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
                 <input type="hidden" asp-for="ClientId" />
                 <p>Client: <strong>@Model.ClientName</strong></p>
             </div>

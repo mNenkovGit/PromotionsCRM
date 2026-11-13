@@ -30,7 +30,6 @@ namespace PromotionsCRM.ViewModels.Promotions
                     return "Completed";
                 }
             }
-
         }
 
         public PromotionType PromotionType { get; set; }

@@ -13,5 +13,7 @@ namespace PromotionsCRM.Services.DTOs.Promotion.Request
         public PromotionType PromotionType { get; set; }
 
         public int ClientId { get; set; }
+
+        public IEnumerable<int> CountryIds { get; set; } = new List<int>();
     }
 }

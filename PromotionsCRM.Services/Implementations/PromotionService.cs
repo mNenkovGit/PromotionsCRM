@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PromotionsCRM.Data.Models;
 using PromotionsCRM.Data.Repository.Contracts;
+using PromotionsCRM.Services.DTOs.Client.Response;
 using PromotionsCRM.Services.DTOs.Promotion.Request;
 using PromotionsCRM.Services.DTOs.Promotion.Response;
 using PromotionsCRM.Services.Interfaces;
@@ -12,12 +13,16 @@ namespace PromotionsCRM.Services.Implementations
         private readonly IPromotionRepository _promotionRepository;
         private readonly IClientRepository _clientRepository;
         private readonly ISubmissionRepository _submissionRepository;
+        private readonly ICountryRepository _countryRepository;
 
-        public PromotionService(IPromotionRepository promotionRepository, IClientRepository clientRepository, ISubmissionRepository submissionRepository)
+
+        public PromotionService(IPromotionRepository promotionRepository, IClientRepository clientRepository, ISubmissionRepository submissionRepository, ICountryRepository countryRepository)
         {
             _promotionRepository = promotionRepository;
             _clientRepository = clientRepository;
             _submissionRepository = submissionRepository;
+            _countryRepository = countryRepository;
+         
         }
 
         public async Task CreatePromotionAsync(CreatePromotionRequestDto createPromotion)
@@ -28,7 +33,14 @@ namespace PromotionsCRM.Services.Implementations
                 StartDate = createPromotion.StartDate,
                 EndDate = createPromotion.EndDate,
                 PromotionType = createPromotion.PromotionType,
-                ClientId = createPromotion.ClientId
+                ClientId = createPromotion.ClientId,
+                PromotionsCountries = createPromotion.CountryIds
+                        .Distinct()
+                        .Select(countryId => new PromotionCountry()
+                        {
+                            CountryId = countryId
+                        })
+                        .ToList() 
             };
 
             await _promotionRepository.AddAsync(newPromotion);
@@ -179,6 +191,18 @@ namespace PromotionsCRM.Services.Implementations
                 .Where(p => p.Id == promotionId)
                 .Select(p => (int?)p.ClientId)
                 .FirstOrDefaultAsync();
+        }
+
+              public async Task<IEnumerable<CountryResponseDto>> GetCountriesForDropdownAsync()
+        {
+            return await _countryRepository.AllAsNoTracking()
+                .OrderBy(c => c.Name)
+                .Select(c => new CountryResponseDto()
+                {
+                    Id = c.Id,
+                    Name = c.Name
+                })
+                .ToArrayAsync();
         }
     }
 }

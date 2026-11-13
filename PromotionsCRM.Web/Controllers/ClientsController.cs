@@ -150,6 +150,7 @@ namespace PromotionsCRM.Web.Controllers
                     PhoneNumber = model.PhoneNumber,
                     Website = model.Website,
                     CountryId = model.CountryId
+                    
                 };
 
                 var result = await _clientService.EditClientAsync(id, requestDto);

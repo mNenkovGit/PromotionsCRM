@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using PromotionsCRM.Common.Enums;
 using PromotionsCRM.Services.DTOs.Promotion.Request;
+using PromotionsCRM.Services.Implementations;
 using PromotionsCRM.Services.Interfaces;
 using PromotionsCRM.ViewModels.Promotions;
 
@@ -35,6 +37,7 @@ namespace PromotionsCRM.Web.Controllers
                     EndDate = p.EndDate,
                     PromotionType = p.PromotionType,
                     SubmissionCount = p.SubmissionCount
+
                 })
                 .ToList();
 
@@ -94,7 +97,10 @@ namespace PromotionsCRM.Web.Controllers
                 ClientId = clientId.Value,
                 ClientName = clientName,
                 StartDate = DateTime.Today,
+                
             };
+            
+            newPromotion.Countries = await LoadCountriesAsync();
 
             return View(newPromotion);
         }
@@ -144,11 +150,18 @@ namespace PromotionsCRM.Web.Controllers
                 ModelState.AddModelError(nameof(createPromotion.Name), "This client already has a promotion with this name!");
             }
 
+            if (createPromotion.SelectedCountryIds == null || !createPromotion.SelectedCountryIds.Any())
+            {
+                ModelState.AddModelError(nameof(createPromotion.SelectedCountryIds), "At least one country must be selected!");
+            }
+
             if (!ModelState.IsValid)
             {
                 createPromotion.ClientName = clientName;
+                createPromotion.Countries = await LoadCountriesAsync();
                 return View(createPromotion);
             }
+
             try
             {
                 var promotionDto = new CreatePromotionRequestDto()
@@ -157,7 +170,8 @@ namespace PromotionsCRM.Web.Controllers
                     StartDate = createPromotion.StartDate!.Value,
                     EndDate = createPromotion.EndDate!.Value,
                     PromotionType = createPromotion.PromotionType!.Value,
-                    ClientId = createPromotion.ClientId
+                    ClientId = createPromotion.ClientId,
+                    CountryIds = createPromotion.SelectedCountryIds ?? new List<int>()
                 };
 
                 await _promotionService.CreatePromotionAsync(promotionDto);
@@ -172,6 +186,8 @@ namespace PromotionsCRM.Web.Controllers
 
                 createPromotion.ClientName = clientName;
                 TempData["ErrorMessage"] = "An error occurred while creating the promotion. Please try again later!";
+
+                createPromotion.Countries = await LoadCountriesAsync();
 
                 return View(createPromotion);
             }
@@ -343,6 +359,16 @@ namespace PromotionsCRM.Web.Controllers
                 return RedirectToAction(nameof(Details), new { id });
             }
 
+        }
+         private async Task<IEnumerable<SelectListItem>> LoadCountriesAsync()
+        {
+            var countries = await _promotionService.GetCountriesForDropdownAsync();
+
+            return countries.Select(c => new SelectListItem
+            {
+                Value = c.Id.ToString(),
+                Text = c.Name
+            });
         }
 
     }
