@@ -14,6 +14,29 @@ namespace PromotionsCRM.Services.Implementations
             _promotionRepository = promotionRepository;
         }
 
+        public async Task<CampaignDetailsResponseDto?> GetActiveCampaignDetailsAsync(int promotionId)
+        {
+            var today = DateTime.Today;
+            return await _promotionRepository.AllAsNoTracking()
+                .Where(p => p.Id == promotionId && p.StartDate <= today && p.EndDate >= today)
+                .Select(p => new CampaignDetailsResponseDto
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    StartDate = p.StartDate,
+                    EndDate = p.EndDate,
+                    PromotionType = p.PromotionType,
+                    ClientName = p.Client.Name,
+                    Countries = p.PromotionsCountries
+                            .Select(pc => pc.Country.Name)
+                            .ToArray(),
+                    Products = p.Products
+                            .Select(pr => pr.Name)
+                            .ToArray()
+                })
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<IEnumerable<ActiveCampaignResponseDto>> GetActiveCampaignsAsync(string? name)
         {
             var today = DateTime.Today;
