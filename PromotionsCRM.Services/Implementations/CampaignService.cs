@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PromotionsCRM.Data.Repository.Contracts;
 using PromotionsCRM.Services.DTOs.Campaign.Response;
+using PromotionsCRM.Services.DTOs.Client.Response;
 using PromotionsCRM.Services.Interfaces;
 
 namespace PromotionsCRM.Services.Implementations
@@ -67,6 +68,35 @@ namespace PromotionsCRM.Services.Implementations
                 })
                 .OrderBy(p => p.EndDate)
                 .ToArrayAsync();
+        }
+
+        public async Task<CampaignRegistrationFormResponseDto?> GetRegistrationFormDataAsync(int promotionId)
+        {
+            var today = DateTime.Today;
+
+            return await _promotionRepository.AllAsNoTracking()
+                 .Where(p => p.Id == promotionId && p.StartDate <= today && p.EndDate >= today)
+                 .Select(p => new CampaignRegistrationFormResponseDto()
+                 {
+                     PromotionId = p.Id,
+                     PromotionName = p.Name,
+                     StartDate = p.StartDate,
+                     EndDate = p.EndDate,
+                     Countries = p.PromotionsCountries
+                             .Select(pc => new CountryResponseDto()
+                             {
+                                 Id = pc.Country.Id,
+                                 Name = pc.Country.Name
+                             })
+                             .ToArray(),
+                     Products = p.Products
+                             .Select(pr => new ProductResponseDto
+                             {
+                                 Id = pr.Id,
+                                 Name = pr.Name
+                             })
+                             .ToArray()
+                 }).FirstOrDefaultAsync();
         }
     }
 }
