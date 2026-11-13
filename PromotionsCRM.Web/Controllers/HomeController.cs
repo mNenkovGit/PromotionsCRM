@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace PromotionsCRM.Web.Controllers
 {
-    [Authorize]
+    
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -15,8 +15,14 @@ namespace PromotionsCRM.Web.Controllers
             _logger = logger;
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
+            if (User.Identity?.IsAuthenticated != true)
+            {
+                return RedirectToAction("Index", "Campaigns");
+            }
+
             return View();
         }
 

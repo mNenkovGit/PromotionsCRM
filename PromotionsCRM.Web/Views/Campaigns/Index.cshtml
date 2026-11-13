@@ -6,8 +6,7 @@
 
 <h2 class="text-center">Campaigns</h2>
 
-<div class="text-center" mt-3>
-</div>
+
 <form asp-controller="Campaigns" asp-action="Index" method="get" class="mb-3">
     <div class="input-group">
         <input name="name" class="form-control" placeholder="Search by name (e.g. Campaign Name 123...)" />
@@ -32,8 +31,8 @@
                     </div>
 
                     <ul class="list-unstyled small mb-0">
-                        <li><strong>Start: </strong> @ev.StartDate</li>
-                        <li><strong>End: </strong> @ev.EndDate</li>
+                        <li><strong>Start: </strong> @ev.StartDate.ToString("dd/MM/yyyy")</li>
+                        <li><strong>End: </strong> @ev.EndDate.ToString("dd/MM/yyyy")</li>
                         <li><strong>Days Left: </strong> @ev.DaysLeft</li>
                         <li><strong>Client Name: </strong> @ev.ClientName</li>
                         <li><strong>Countries: </strong> @string.Join(", ", ev.Countries)</li>
