@@ -154,6 +154,10 @@ namespace PromotionsCRM.Web.Controllers
             {
                 ModelState.AddModelError(nameof(createPromotion.SelectedCountryIds), "At least one country must be selected!");
             }
+            else if (!await _promotionService.CountriesExistAsync(createPromotion.SelectedCountryIds))
+            {
+                ModelState.AddModelError(nameof(createPromotion.SelectedCountryIds), "Invalid country selected!");
+            }
 
             if (!ModelState.IsValid)
             {

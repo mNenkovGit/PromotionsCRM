@@ -204,5 +204,15 @@ namespace PromotionsCRM.Services.Implementations
                 })
                 .ToArrayAsync();
         }
+
+        public async Task<bool> CountriesExistAsync(IEnumerable<int> countryIds)
+        {
+            var distinctCountryIds = countryIds.Distinct().ToList();
+
+            var existingCountryCount = await _countryRepository.AllAsNoTracking()
+                .CountAsync(c => distinctCountryIds.Contains(c.Id));
+
+            return existingCountryCount == distinctCountryIds.Count;
+        }
     }
 }
