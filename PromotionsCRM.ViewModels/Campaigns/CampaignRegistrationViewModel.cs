@@ -44,9 +44,9 @@ namespace PromotionsCRM.ViewModels.Campaigns
         
         public DateTime EndDate { get; set; }
 
-        [Required]
+        
         [StringLength(PromotionNameMaxLen, MinimumLength = PromotionNameMinLen)]
-        public string PromotionName { get; set; } = null!;
+        public string? PromotionName { get; set; }
 
 
     }

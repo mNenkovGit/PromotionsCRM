@@ -1,6 +1,5 @@
 ﻿using PromotionsCRM.Services.DTOs.Campaign.Request;
 using PromotionsCRM.Services.DTOs.Campaign.Response;
-using PromotionsCRM.Services.DTOs.Promotion.Response;
 
 namespace PromotionsCRM.Services.Interfaces
 {
@@ -10,7 +9,10 @@ namespace PromotionsCRM.Services.Interfaces
 
         Task<CampaignDetailsResponseDto?> GetActiveCampaignDetailsAsync(int promotionId);
 
-        
         Task<CampaignRegistrationFormResponseDto> GetRegistrationFormDataAsync(int promotionId);
+
+        Task RegisterAsync(CampaignRegistrationRequestDto registration);
+
+        Task<bool> SubmissionExistsAsync(string email, int promotionId, int productId);
     }
 }
