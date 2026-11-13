@@ -1,0 +1,64 @@
+﻿@using PromotionsCRM.ViewModels.Campaign
+@model IEnumerable<ActiveCampaignViewModel>
+@{
+    ViewBag.Title = "Campaigns";
+}
+
+<h2 class="text-center">Campaigns</h2>
+
+<div class="text-center" mt-3>
+</div>
+<form asp-controller="Campaigns" asp-action="Index" method="get" class="mb-3">
+    <div class="input-group">
+        <input name="name" class="form-control" placeholder="Search by name (e.g. Campaign Name 123...)" />
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
+
+@if (!Model.Any())
+{
+    <p>No campaigns found.</p>
+}
+
+<div class="row g-3">
+    @foreach (var ev in Model)
+    {
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <h5 class="card-title mb-1">@ev.Name</h5>
+                        <span class="badge bg-secondary">@ev.PromotionType</span>
+                    </div>
+
+                    <ul class="list-unstyled small mb-0">
+                        <li><strong>Start: </strong> @ev.StartDate</li>
+                        <li><strong>End: </strong> @ev.EndDate</li>
+                        <li><strong>Days Left: </strong> @ev.DaysLeft</li>
+                        <li><strong>Client Name: </strong> @ev.ClientName</li>
+                        <li><strong>Countries: </strong> @string.Join(", ", ev.Countries)</li>
+                        <li><strong>Products: </strong>  @string.Join(", ", ev.Products)</li>
+                    </ul>
+                </div>
+
+                <div class="card-footer bg-white border-0 pt-0">
+                    <div class="d-flex gap-2">
+                        <a class="btn btn-outline-primary w-100"
+                           asp-controller="Campaigns"
+                           asp-action="Details"
+                           asp-route-id="@ev.Id">
+                            Details
+                        </a>
+
+                        <a class="btn btn-outline-success w-100"
+                           asp-controller="Registrations"
+                           asp-action="Register"
+                           asp-route-campaignId="@ev.Id">
+                            Register
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

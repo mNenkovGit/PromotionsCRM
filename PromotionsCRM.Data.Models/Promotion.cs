@@ -30,5 +30,6 @@ namespace PromotionsCRM.Data.Models
         public virtual ICollection<Product> Products { get; set; } = new List<Product>();
 
         public virtual ICollection<Submission> Submissions { get; set; } = new List<Submission>();
+        
     }
 }

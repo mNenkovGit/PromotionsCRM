@@ -1,0 +1,49 @@
+﻿using Microsoft.EntityFrameworkCore;
+using PromotionsCRM.Data.Repository.Contracts;
+using PromotionsCRM.Services.DTOs.Campaign.Response;
+using PromotionsCRM.Services.Interfaces;
+
+namespace PromotionsCRM.Services.Implementations
+{
+    public class CampaignService : ICampaignService
+    {
+        private readonly IPromotionRepository _promotionRepository;
+
+        public CampaignService(IPromotionRepository promotionRepository)
+        {
+            _promotionRepository = promotionRepository;
+        }
+
+        public async Task<IEnumerable<ActiveCampaignResponseDto>> GetActiveCampaignsAsync(string? name)
+        {
+            var today = DateTime.Today;
+
+            var query = _promotionRepository.AllAsNoTracking();
+
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                query = query.Where(p => p.Name.Contains(name));
+            }
+
+            return await query
+                .Where(p => p.StartDate <= today && p.EndDate >= today)
+                .Select(p => new ActiveCampaignResponseDto
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    StartDate = p.StartDate,
+                    EndDate = p.EndDate,
+                    PromotionType = p.PromotionType,
+                    ClientName = p.Client.Name,
+                    Countries = p.PromotionsCountries
+                            .Select(pc => pc.Country.Name)
+                            .ToArray(),
+                    Products = p.Products
+                            .Select(pr => pr.Name)
+                            .ToArray()
+                })
+                .OrderBy(p => p.EndDate)
+                .ToArrayAsync();
+        }
+    }
+}
