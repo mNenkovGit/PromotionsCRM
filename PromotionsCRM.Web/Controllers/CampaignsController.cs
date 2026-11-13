@@ -157,8 +157,8 @@ namespace PromotionsCRM.Web.Controllers
 
                 await _campaignService.RegisterAsync(campaignDto);
 
-                TempData["SuccessMessage"] = "Your registration is submitted successfully!";
-                return RedirectToAction(nameof(Index));
+                TempData["RegisteredCampaign"]  = formData.PromotionName;
+                return RedirectToAction(nameof(RegistrationConfirmation));
             }
             catch (Exception ex)
             {
@@ -191,6 +191,21 @@ namespace PromotionsCRM.Web.Controllers
                     Value = p.Id.ToString(),
                     Text = p.Name
                 });
+        }
+
+        [HttpGet]
+        public IActionResult RegistrationConfirmation()
+        {
+            string? campaignName = TempData["RegisteredCampaign"] as string;
+
+            if (campaignName == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            ViewBag.CampaignName = campaignName;
+
+            return View();
         }
     }
 }

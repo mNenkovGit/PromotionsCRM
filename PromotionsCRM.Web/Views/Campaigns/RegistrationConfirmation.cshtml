@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "Registration Submitted";
+}
+
+<div class="row justify-content-center py-5">
+    <div class="col-12 col-md-10 col-lg-8 col-xl-6">
+        <div class="card shadow-sm border-0 text-center p-4">
+            <div class="card-body">
+
+                <div class="display-4 text-success mb-3">&#10003;</div>
+
+                <h2 class="fw-bold mb-3">Thank you for your registration!</h2>
+
+                <p class="lead mb-2">
+                    Your registration for <strong>@ViewBag.CampaignName</strong> has been submitted successfully.
+                </p>
+
+                <p class="text-muted mb-4">
+                    Our team will review it shortly. The status of your registration is currently
+                    <span class="badge bg-warning text-dark">Being processed</span>.
+                </p>
+
+                <a asp-controller="Campaigns" asp-action="Index" class="btn btn-primary btn-lg">
+                    Back to Current Offers
+                </a>
+
+            </div>
+        </div>
+    </div>
+</div>
