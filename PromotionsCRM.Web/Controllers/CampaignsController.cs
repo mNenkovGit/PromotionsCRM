@@ -13,7 +13,7 @@ using PromotionsCRM.ViewModels.Promotions;
 namespace PromotionsCRM.Web.Controllers
 {
     [AllowAnonymous]
-    public class CampaignsController : Controller
+    public class CampaignsController : BaseController
     {
 
         private readonly ICampaignService _campaignService;

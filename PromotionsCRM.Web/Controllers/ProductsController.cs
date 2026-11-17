@@ -5,7 +5,7 @@ using PromotionsCRM.ViewModels.Products;
 
 namespace PromotionsCRM.Web.Controllers
 {
-    public class ProductsController : Controller
+    public class ProductsController : BaseController
     {
         private readonly IProductService _productService;
 

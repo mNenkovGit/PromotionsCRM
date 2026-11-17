@@ -10,7 +10,7 @@ using PromotionsCRM.ViewModels.Promotions;
 namespace PromotionsCRM.Web.Controllers
 {
     [Authorize]
-    public class PromotionsController : Controller
+    public class PromotionsController : BaseController
     {
         private readonly ILogger<PromotionsController> _logger;
 

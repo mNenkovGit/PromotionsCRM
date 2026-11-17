@@ -8,8 +8,7 @@ using PromotionsCRM.ViewModels.Promotions;
 
 namespace PromotionsCRM.Web.Controllers
 {
-    [Authorize]
-    public class ClientsController : Controller
+    public class ClientsController : BaseController
     {
         private readonly IClientService _clientService;
 
