@@ -2,41 +2,69 @@
 
 PromotionsCRM is an ASP.NET Core MVC application for managing promotional campaigns. Client companies run promotions for their products in different countries, end customers register for these promotions after a purchase, and staff members process the submissions and track their status.
 
+The application has two parts:
+
+- a **public part**, where visitors browse the current offers and register for them without an account;
+- a **staff part**, available after login, where staff members manage clients, promotions and products.
+
 ## Main Features
 
-- **Authentication and authorization**
+### Public part (no login required)
+
+- **Current offers**
+  - List of all currently active promotions (between their start and end date), with search by name
+  - Each offer shows the client, the promotion type and period, the days left, the participating products and countries
+  - Offer details page
+- **Registration for an offer**
+  - Registration form with personal details (name, email, phone, country) and purchase details (product, purchase date)
+  - The product and country dropdowns contain only the products and countries of the selected promotion
+  - The purchase date picker is limited to the promotion period
+  - Returning customers are recognized by their email address; their existing data is not changed
+  - Confirmation page after a successful registration (Post/Redirect/Get, so refreshing the page does not submit the form again)
+
+### Staff part (login required)
+
+- **Authentication**
   - User registration, login and logout with ASP.NET Core Identity
-  - All pages require a logged-in user; anonymous visitors are redirected to the login page and returned to the requested page after logging in
   - Custom-styled login and registration pages
-- **Home page**
-  - Landing page with a short description of the application
+  - Anonymous visitors who open a staff page are redirected to the login page and returned to the requested page after logging in
 - **Clients**
   - List of all clients with search by name
-  - Client details page with contact information and all promotions of the client
-  - Search within the promotions of a specific client
+  - Client details with contact information and all promotions of the client, with search within these promotions
   - Edit client details, with the country selected from a dropdown list
 - **Promotions**
   - List of all promotions with search by name, sorted by client, start date and name
   - Promotion details: client, countries, products, number of submissions and a breakdown of submissions by status
-  - Create a promotion directly from the client's details page (the client is preselected)
+  - Create a promotion from the client's details page (the client is preselected), with selection of one or more countries
   - Edit a promotion
   - Delete a promotion with confirmation; promotions that already have submissions cannot be deleted
-  - Automatic promotion status (Upcoming / Ongoing / Completed) based on the start and end dates, displayed as a colored badge
+  - Automatic promotion status (Upcoming / Ongoing / Completed) based on the dates, displayed as a colored badge
 - **Products**
-  - Add products to a promotion directly from the promotion's details page (the promotion is preselected)
-- **Validation**
-  - Server-side validation with data annotations and business rules (e.g. the start date must be before the end date, a new promotion cannot start in the past)
-  - Duplicate prevention: client names must be unique, a client cannot have two promotions with the same name, and a promotion cannot have two products with the same name (the comparison ignores letter case and spaces)
-  - Client-side validation in all forms
-- **User feedback**
-  - Success and error messages after create, edit and delete operations
+  - Add products to a promotion from the promotion's details page (the promotion is preselected)
 
-## Planned Features (ASP.NET Advanced)
+## Validation and Business Rules
 
-- Editing and deleting products, and managing the countries of each promotion
-- Customer registrations (submissions) for promotions
-- Submission processing by staff members
-- User roles (e.g. administrators and staff members) with different permissions
+All rules are checked on the server. Client-side validation is enabled in all forms for a better user experience.
+
+- **Promotions:** the start date must be before the end date; a new promotion cannot start or end in the past; at least one country must be selected and all selected countries must exist
+- **Registrations:**
+  - the promotion must be active
+  - the product must belong to the promotion
+  - the country must be one of the promotion's countries
+  - the purchase date must be within the promotion period and cannot be in the future
+  - the same customer (email) cannot register the same product for the same promotion twice
+- **Duplicate prevention:** client names must be unique, a client cannot have two promotions with the same name, and a promotion cannot have two products with the same name (the comparison ignores letter case and spaces)
+- **Database level:** required fields, maximum lengths and relationships are enforced by the entity configurations
+
+## Security
+
+| Vulnerability | Protection |
+|---|---|
+| SQL Injection | All queries go through Entity Framework Core, which generates parameterized SQL. No raw SQL is used. |
+| XSS | Razor HTML-encodes all output. `Html.Raw` is not used. |
+| CSRF | All forms include an antiforgery token (form tag helpers), and `[AutoValidateAntiforgeryToken]` on the base controller validates it for every POST request. |
+| Parameter tampering | Every value that comes from the browser is validated on the server: hidden fields (client and promotion IDs), dropdown values, selected countries, dates and the promotion status. The ID of an edited entity is taken from the route, not from a hidden field. |
+| Unauthorized access | All staff pages require authentication through a global authorization filter and `[Authorize]` on the base controller. Only the public pages are marked with `[AllowAnonymous]`. |
 
 ## Architecture
 
@@ -46,12 +74,44 @@ The solution follows a layered architecture:
 |---|---|
 | `PromotionsCRM.Common` | Validation constants and shared enums |
 | `PromotionsCRM.Data.Models` | Entity classes |
-| `PromotionsCRM.Data` | `DbContext`, entity configurations, seed data and migrations |
-| `PromotionsCRM.ViewModels` | View models used by the controllers and views |
-| `PromotionsCRM.Services` | Service interfaces and implementations containing the business logic and database access |
+| `PromotionsCRM.Data` | `DbContext`, entity configurations, seed data, migrations and repositories |
+| `PromotionsCRM.Services.DTOs` | Request and response DTOs used between the controllers and the services |
+| `PromotionsCRM.Services` | Service interfaces and implementations containing the business logic |
+| `PromotionsCRM.ViewModels` | View models used by the controllers and views, including validation attributes |
 | `PromotionsCRM.Web` | ASP.NET Core MVC project: controllers, views, Identity pages and configuration |
 
-Controllers do not access the database directly. They depend on service interfaces, which are registered in the dependency injection container in `Program.cs`. All database operations are asynchronous.
+### Design decisions
+
+- **Repository pattern.** A generic `IRepository<T>` / `BaseRepository<T>` provides the common data access operations. Each entity has its own repository interface and implementation, which are registered automatically in the DI container through reflection.
+- **DTOs.** Services receive request DTOs and return response DTOs. They do not depend on view models or on ASP.NET Core MVC types. Controllers map DTOs to view models and back.
+- **Thin controllers.** Controllers validate the input, call the services, map the results and choose the response. All database access and business logic is in the services.
+- **Base controller.** All controllers inherit `BaseController`, which applies authorization and antiforgery validation and provides helpers for the current user.
+- **Separate public and staff logic.** The public offers are served by `CampaignsController` and `CampaignService`, separately from the staff `PromotionsController` and `PromotionService`, so that internal data is never exposed to anonymous visitors.
+- **Asynchronous processing.** All database operations are asynchronous.
+
+### Services
+
+| Service | Responsibility |
+|---|---|
+| `ClientService` | Client list and search, client details with their promotions, client editing, country list, duplicate client name check |
+| `PromotionService` | Promotion list and search, details, create (with countries), edit and delete, business rule checks (duplicate names, existing countries, existing submissions) |
+| `ProductService` | Adding products to a promotion, duplicate product name check |
+| `CampaignService` | Public part: active offers and their details, registration form data, duplicate registration check, and registration of a customer for an offer |
+
+### Repositories
+
+Each entity used by the services has its own repository (`ClientRepository`, `CountryRepository`, `CustomerRepository`, `ProductRepository`, `PromotionRepository`, `SubmissionRepository`), built on the generic `BaseRepository<T>`. They provide queries with and without change tracking, finding an entity by ID, adding, updating and removing entities, and saving changes.
+
+### DTOs
+
+DTOs are grouped by service (`Client`, `Product`, `Promotion`, `Campaign`), and each group is split into:
+
+- **Request DTOs** – data sent from a controller to a service (e.g. `CreatePromotionRequestDto`, `CampaignRegistrationRequestDto`)
+- **Response DTOs** – data returned from a service to a controller (e.g. `PromotionDetailsResponseDto`, `ActiveCampaignResponseDto`)
+
+### Registration flow
+
+When a visitor registers for an offer, `CampaignService` looks for an existing customer by email. If none is found, a new customer is created; otherwise the existing customer is used without changing their data. A new submission is then created with the status *Being processed*. The customer and the submission are saved in a single transaction.
 
 ## Data Model
 
@@ -60,9 +120,13 @@ Controllers do not access the database directly. They depend on service interfac
 - **Product** – products included in a promotion
 - **Country** – countries
 - **PromotionCountry** – many-to-many relation between promotions and countries
-- **Customer** – end customers
+- **Customer** – end customers who register for promotions
 - **Submission** – a customer's registration for a promotion
 - **User** – staff members processing submissions
+
+## Seeding
+
+The database is seeded with sample countries, clients, promotions, products, customers and submissions, so all pages display data immediately after the migrations are applied.
 
 ## Technologies
 
@@ -102,11 +166,11 @@ Controllers do not access the database directly. They depend on service interfac
    Server=.;Database=PromotionsCrmDb;Trusted_Connection=True;TrustServerCertificate=True
    ```
 
-   In appsettings.json the backslash must be escaped: (localdb)\\MSSQLLocalDB
-   
+   In `appsettings.json` the backslash must be escaped: `(localdb)\\MSSQLLocalDB`.
+
    No other credentials or environment variables are required. User accounts are created through the registration page (see step 5).
 
-4. Apply the migrations
+3. Apply the migrations
 
    **Visual Studio (Package Manager Console):**
 
@@ -125,15 +189,17 @@ Controllers do not access the database directly. They depend on service interfac
    dotnet ef database update --project PromotionsCRM.Data --startup-project PromotionsCRM.Web
    ```
 
-5. Run the application with F5 in Visual Studio or with:
+4. Run the application with F5 in Visual Studio or with:
 
    ```
    dotnet run --project PromotionsCRM.Web
    ```
 
-6. Create a user account
+   On first launch you will see the current offers. They are available without an account.
 
-   The application requires a logged-in user. On first launch you will be redirected to the login page. Click **Register as a new user** and create an account. No email confirmation is required.
+5. Create a staff account
+
+   To access the staff part, click **Register** in the navigation bar and create an account. No email confirmation is required.
 
    Password requirements:
    - at least 6 characters
@@ -141,8 +207,13 @@ Controllers do not access the database directly. They depend on service interfac
 
    Example of a valid password: `test12`
 
-The database is seeded with sample data (countries, clients, promotions, products and submissions), so all pages display data immediately after the migrations are applied.
+## Planned Features
+
+- Processing of submissions by staff members: list with filtering and pagination, details and status changes
+- User roles (User and Administrator) and an administration area
+- Custom 404 and 500 error pages
+- Unit tests for the services
 
 ## Project Status
 
-In development. Created as part of the ASP.NET Fundamentals course at SoftUni and will be extended during the ASP.NET Advanced course.
+In development. Created during the ASP.NET Fundamentals course at SoftUni and extended during the ASP.NET Advanced course.
