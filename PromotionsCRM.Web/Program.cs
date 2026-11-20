@@ -10,7 +10,7 @@ namespace PromotionsCRM.Web
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +23,7 @@ namespace PromotionsCRM.Web
             {
                 ConfigureIdentityOptions(options, builder.Configuration);
             })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<PromotionsCrmDbContext>();
 
             // Add services to the container.
@@ -37,6 +38,8 @@ namespace PromotionsCRM.Web
             builder.Services.RegisterRepositoriesFromAssembly(typeof(PromotionsCrmDbContext).Assembly);
 
             var app = builder.Build();
+
+            await app.SeedIdentityAsync();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -61,7 +64,7 @@ namespace PromotionsCRM.Web
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
-            app.Run();
+            await app.RunAsync();
         }
         private static void ConfigureIdentityOptions(IdentityOptions options, ConfigurationManager configuration)
         {
