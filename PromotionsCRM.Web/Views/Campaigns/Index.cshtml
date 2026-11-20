@@ -1,46 +1,29 @@
-﻿@using PromotionsCRM.ViewModels.Campaign
-@model IEnumerable<ActiveCampaignViewModel>
-@{
-    ViewBag.Title = "Campaigns";
-}
-
-<h2 class="text-center">Campaigns</h2>
-
-
-<form asp-controller="Campaigns" asp-action="Index" method="get" class="mb-3">
-    <div class="input-group">
-        <input name="name" class="form-control" placeholder="Search by name (e.g. Campaign Name 123...)" />
-        <button type="submit" class="btn btn-primary">Search</button>
-    </div>
-</form>
-
-@if (!Model.Any())
-{
-    <p>No campaigns found.</p>
-}
-
-<div class="row g-3">
+﻿<div class="row g-3">
     @foreach (var ev in Model)
     {
         <div class="col-12 col-md-6 col-lg-4">
-            <div class="card h-100 shadow-sm">
+            <div class="card h-100 shadow-sm offer-card">
                 <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <h5 class="card-title mb-1">@ev.Name</h5>
-                        <span class="badge bg-secondary">@ev.PromotionType</span>
+
+                    <div class="offer-client">@ev.ClientName</div>
+
+                    <div class="d-flex justify-content-between align-items-start gap-2">
+                        <h5 class="card-title">@ev.Name</h5>
+
+                        <span class="offer-days" data-days-left="@ev.DaysLeft">
+                            @(ev.DaysLeft == 0 ? "Last day" : $"{ev.DaysLeft} days left")
+                        </span>
                     </div>
 
-                    <ul class="list-unstyled small mb-0">
-                        <li><strong>Start: </strong> @ev.StartDate.ToString("dd/MM/yyyy")</li>
-                        <li><strong>End: </strong> @ev.EndDate.ToString("dd/MM/yyyy")</li>
-                        <li><strong>Days Left: </strong> @ev.DaysLeft</li>
-                        <li><strong>Client Name: </strong> @ev.ClientName</li>
-                        <li><strong>Countries: </strong> @string.Join(", ", ev.Countries)</li>
-                        <li><strong>Products: </strong>  @string.Join(", ", ev.Products)</li>
+                    <ul class="list-unstyled offer-facts">
+                        <li><strong>Type:</strong> @ev.PromotionType</li>
+                        <li><strong>Period:</strong> @ev.StartDate.ToString("dd/MM/yyyy") – @ev.EndDate.ToString("dd/MM/yyyy")</li>
+                        <li><strong>Countries:</strong> @string.Join(", ", ev.Countries)</li>
+                        <li><strong>Products:</strong> @string.Join(", ", ev.Products)</li>
                     </ul>
                 </div>
 
-                <div class="card-footer bg-white border-0 pt-0">
+                <div class="card-footer">
                     <div class="d-flex gap-2">
                         <a class="btn btn-outline-primary w-100"
                            asp-controller="Campaigns"
@@ -49,7 +32,7 @@
                             Details
                         </a>
 
-                        <a class="btn btn-outline-success w-100"
+                        <a class="btn btn-warning w-100"
                            asp-controller="Campaigns"
                            asp-action="Register"
                            asp-route-promotionId="@ev.Id">

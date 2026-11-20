@@ -47,26 +47,12 @@ else
                     <td><partial name="_PromotionStatusBadge" model="promotion.PromotionStatus" /></td>
                     <td>@promotion.ClientName</td>
                     <td>@promotion.SubmissionCount</td>
-                    <td>
-                        <a asp-controller="Promotions"
-                           asp-action="Details"
-                           asp-route-id="@promotion.Id"
-                           class="btn btn-info">
-                            Details
-                        </a>
-                     
-                        <a asp-controller="Promotions"
-                           asp-action="Edit"
-                           asp-route-id="@promotion.Id"
-                           class="btn btn-warning">
-                            Edit
-                        </a>
-                        <a asp-controller="Promotions"
-                           asp-action="Delete"
-                           asp-route-id="@promotion.Id"
-                           class="btn btn-danger">
-                            Delete
-                        </a>
+                    <td class="text-nowrap">
+                        <div class="d-flex gap-1">
+                            <a ... class="btn btn-sm btn-info">Details</a>
+                            <a ... class="btn btn-sm btn-warning">Edit</a>
+                            <a ... class="btn btn-sm btn-danger">Delete</a>
+                        </div>
                     </td>
                 </tr>
             }
