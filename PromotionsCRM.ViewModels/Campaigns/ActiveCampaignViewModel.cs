@@ -14,11 +14,11 @@ namespace PromotionsCRM.ViewModels.Campaign
 
         public PromotionType PromotionType { get; set; }
 
-        public string DaysLeft
+        public int DaysLeft
         {
             get
             {
-                string daysLeft = (EndDate - DateTime.Today).Days.ToString();
+                int daysLeft = (EndDate - DateTime.Today).Days;
                 return daysLeft;
             }
         }

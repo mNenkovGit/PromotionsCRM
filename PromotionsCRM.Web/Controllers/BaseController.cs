@@ -8,12 +8,13 @@ namespace PromotionsCRM.Web.Controllers
     [AutoValidateAntiforgeryToken]
     public abstract class BaseController : Controller
     {
-            protected string? GetUserId()
-            => User.FindFirstValue(ClaimTypes.NameIdentifier);
+        protected string? GetUserId()
+        => User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        protected string? GetUserEmail() 
+        protected string? GetUserEmail()
             => User.FindFirstValue(ClaimTypes.Email);
 
-        protected bool IsUserAuhtenticated 
-            => User.Identity?.IsAuthenticated ?? false; 
+        protected bool IsUserAuhtenticated
+            => User.Identity?.IsAuthenticated ?? false;
+    }
 }
