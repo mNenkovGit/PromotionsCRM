@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using PromotionsCRM.Common;
 using PromotionsCRM.Services.DTOs.Client.Request;
 using PromotionsCRM.Services.Interfaces;
 using PromotionsCRM.ViewModels.Clients;
@@ -83,6 +84,7 @@ namespace PromotionsCRM.Web.Controllers
             return View(clientViewModel);
         }
 
+        [Authorize(Roles = RoleNames.Administrator)]
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -113,6 +115,7 @@ namespace PromotionsCRM.Web.Controllers
             return View(clientEditViewModel);
         }
 
+        [Authorize(Roles = RoleNames.Administrator)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, ClientEditViewModel model)

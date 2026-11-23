@@ -1,4 +1,5 @@
-﻿@using PromotionsCRM.ViewModels.Promotions
+﻿@using PromotionsCRM.Common
+@using PromotionsCRM.ViewModels.Promotions
 @model PromotionDetailsViewModel
 @{
     ViewBag.Title = "Promotion Details";
@@ -19,12 +20,15 @@
         <p class="card-text mb-1"><strong>Client Name:</strong> <a asp-controller="Clients" asp-action="Details" asp-route-id="@Model.ClientId">@Model.ClientName</a></p>
         <p class="card-text mb-1"><strong>Promotion Countries:</strong> @(string.Join(", ", Model.Countries))</p>
         <p class="card-text mb-1"><strong>Promotion Products:</strong> @string.Join(", ", Model.Products)</p>
-        <a asp-controller="Products"
-           asp-action="Create"
-           asp-route-promoId="@Model.Id"
-           class="btn btn-success mt-3">
-            Add Product
-        </a>
+        @if (User.IsInRole(RoleNames.Administrator))
+        {  
+            <a asp-controller="Products"
+               asp-action="Create"
+               asp-route-promoId="@Model.Id"
+               class="btn btn-success mt-3">
+                Add Product
+            </a>
+        }
         <h5 class="mt-4">
             Submission Statuses:</h5>
             @if (Model.SubmissionsByStatus.Any())
@@ -53,18 +57,21 @@
                 <p>No submissions yet!</p>
             }
 
-        <a asp-controller="Promotions"
-           asp-action="Edit"
-           asp-route-id="@Model.Id"
-           class="btn btn-warning mt-3">
-            Edit
-        </a>
-        <a asp-controller="Promotions"
-           asp-action="Delete"
-           asp-route-id="@Model.Id"
-           class="btn btn-danger mt-3">
-            Delete
-        </a>
+        @if (User.IsInRole(RoleNames.Administrator))
+        {
+            <a asp-controller="Promotions"
+               asp-action="Edit"
+               asp-route-id="@Model.Id"
+               class="btn btn-warning mt-3">
+                Edit
+            </a>
+            <a asp-controller="Promotions"
+               asp-action="Delete"
+               asp-route-id="@Model.Id"
+               class="btn btn-danger mt-3">
+                Delete
+            </a>  
+        }
     </div>
 </div>
 

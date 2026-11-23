@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using PromotionsCRM.Common;
 using PromotionsCRM.Common.Enums;
 using PromotionsCRM.Services.DTOs.Promotion.Request;
 using PromotionsCRM.Services.Implementations;
@@ -76,6 +77,7 @@ namespace PromotionsCRM.Web.Controllers
             return View(promotionDetailsViewModel);
         }
 
+        [Authorize(Roles = RoleNames.Administrator)]
         [HttpGet]
         public async Task<IActionResult> Create(int? clientId)
         {
@@ -105,6 +107,7 @@ namespace PromotionsCRM.Web.Controllers
             return View(newPromotion);
         }
 
+        [Authorize(Roles = RoleNames.Administrator)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(PromotionCreateViewModel createPromotion)
@@ -197,6 +200,7 @@ namespace PromotionsCRM.Web.Controllers
             }
         }
 
+        [Authorize(Roles = RoleNames.Administrator)]
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -224,6 +228,7 @@ namespace PromotionsCRM.Web.Controllers
             return View(promotionViewModel);
         }
 
+        [Authorize(Roles = RoleNames.Administrator)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, PromotionEditViewModel model)
@@ -296,6 +301,7 @@ namespace PromotionsCRM.Web.Controllers
             return RedirectToAction(nameof(PromotionsController.Details), "Promotions", new { id });
         }
 
+        [Authorize(Roles = RoleNames.Administrator)]
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
@@ -325,6 +331,7 @@ namespace PromotionsCRM.Web.Controllers
             return View(promotionViewModel);
         }
 
+        [Authorize(Roles = RoleNames.Administrator)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ActionName("Delete")]

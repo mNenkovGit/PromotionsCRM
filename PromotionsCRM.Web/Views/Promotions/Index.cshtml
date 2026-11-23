@@ -1,4 +1,5 @@
-﻿@using PromotionsCRM.ViewModels.Promotions
+﻿@using PromotionsCRM.Common
+@using PromotionsCRM.ViewModels.Promotions
 @model IEnumerable<PromotionViewModel>
 
 @{
@@ -50,8 +51,11 @@ else
                     <td class="text-nowrap">
                         <div class="d-flex gap-1">
                             <a ... class="btn btn-sm btn-info">Details</a>
-                            <a ... class="btn btn-sm btn-warning">Edit</a>
-                            <a ... class="btn btn-sm btn-danger">Delete</a>
+                            @if (User.IsInRole(RoleNames.Administrator))
+                            {
+                                <a ... class="btn btn-sm btn-warning">Edit</a>
+                                <a ... class="btn btn-sm btn-danger">Delete</a> 
+                            }
                         </div>
                     </td>
                 </tr>

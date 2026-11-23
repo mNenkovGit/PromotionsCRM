@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using PromotionsCRM.Common;
 using PromotionsCRM.Services.DTOs.Product.Request;
 using PromotionsCRM.Services.Interfaces;
 using PromotionsCRM.ViewModels.Products;
@@ -17,6 +19,7 @@ namespace PromotionsCRM.Web.Controllers
             _logger = logger;
         }
 
+        [Authorize(Roles = RoleNames.Administrator)]
         [HttpGet]
         public async Task<IActionResult> Create(int? promoId)
         {
@@ -41,6 +44,7 @@ namespace PromotionsCRM.Web.Controllers
             return View(newProduct);
         }
 
+        [Authorize(Roles = RoleNames.Administrator)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductCreateViewModel createModel)
