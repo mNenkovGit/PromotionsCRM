@@ -64,6 +64,10 @@ namespace PromotionsCRM.Web
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
+            app.MapControllerRoute(
+            name: "areas",
+            pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
             await app.RunAsync();
         }
         private static void ConfigureIdentityOptions(IdentityOptions options, ConfigurationManager configuration)

@@ -28,6 +28,9 @@ The application has two parts:
   - User registration, login and logout with ASP.NET Core Identity
   - Custom-styled login and registration pages
   - Anonymous visitors who open a staff page are redirected to the login page and returned to the requested page after logging in
+  - Two roles: **Administrator** (manages clients, promotions and products) and **User** (staff member processing submissions)
+  - Roles and test accounts are seeded automatically on application start
+  - Management actions are protected on the server with role-based authorization; the corresponding buttons are hidden for users without the Administrator role
 - **Clients**
   - List of all clients with search by name
   - Client details with contact information and all promotions of the client, with search within these promotions
@@ -197,9 +200,20 @@ The database is seeded with sample countries, clients, promotions, products, cus
 
    On first launch you will see the current offers. They are available without an account.
 
-5. Create a staff account
+5. Test accounts
 
-   To access the staff part, click **Register** in the navigation bar and create an account. No email confirmation is required.
+   Two accounts are created automatically on first launch. Their credentials are in `PromotionsCRM.Web/appsettings.json` (section `UserSeed`):
+
+   | Role | Email | Password |
+   |---|---|---|
+   | Administrator | admin@promotionscrm.com | admin123 |
+   | User | user@promotionscrm.com | user123 |
+
+   New accounts can also be created through the **Register** page. They receive the **User** role automatically.
+
+   Password requirements:
+   - at least 6 characters
+   - at least 2 different characters
 
    Password requirements:
    - at least 6 characters
@@ -210,7 +224,6 @@ The database is seeded with sample countries, clients, promotions, products, cus
 ## Planned Features
 
 - Processing of submissions by staff members: list with filtering and pagination, details and status changes
-- User roles (User and Administrator) and an administration area
 - Custom 404 and 500 error pages
 - Unit tests for the services
 
