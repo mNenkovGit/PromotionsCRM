@@ -1,5 +1,5 @@
 ﻿@using PromotionsCRM.ViewModels.Submissions
-@model IEnumerable<SubmissionListItemViewModel>
+@model SubmissionsIndexViewModel
 
 @{
     ViewBag.Title = "Submissions";
@@ -7,9 +7,35 @@
 
 <h2 class="text-center">Submissions</h2>
 
-@if (!Model.Any())
+<form asp-action="Index" method="get" class="row g-2 align-items-end mb-4">
+    <div class="col-12 col-md-3">
+        <label asp-for="Status" class="form-label">Status</label>
+        <select asp-for="Status" asp-items="Html.GetEnumSelectList<StatusName>()" class="form-select">
+            <option value="">All statuses</option>
+        </select>
+    </div>
+
+    <div class="col-12 col-md-4">
+        <label asp-for="PromotionId" class="form-label">Promotion</label>
+        <select asp-for="PromotionId" asp-items="Model.Promotions" class="form-select">
+            <option value="">All promotions</option>
+        </select>
+    </div>
+
+    <div class="col-12 col-md-3">
+        <label asp-for="Search" class="form-label">Customer</label>
+        <input asp-for="Search" class="form-control" placeholder="Name or email" />
+    </div>
+
+    <div class="col-12 col-md-2 d-flex gap-2">
+        <button type="submit" class="btn btn-primary w-100">Filter</button>
+        <a asp-action="Index" class="btn btn-secondary w-100">Clear</a>
+    </div>
+</form>
+
+@if (!Model.Submissions.Any())
 {
-    <p>No Submissions found.</p>
+    <p class="text-muted">No Submissions found.</p>
 }
 else
 {
@@ -27,7 +53,7 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var submission in Model)
+            @foreach (var submission in Model.Submissions)
             {
                 <tr>
                     <td>@submission.SubmittedOn.ToString("dd/MM/yyyy")</td>

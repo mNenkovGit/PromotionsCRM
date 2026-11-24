@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using PromotionsCRM.Common.Enums;
+using PromotionsCRM.Services.DTOs.Submission.Request;
 using PromotionsCRM.Services.Interfaces;
 using PromotionsCRM.ViewModels.Submissions;
 
@@ -15,9 +18,16 @@ namespace PromotionsCRM.Web.Controllers
             _logger = logger;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(StatusName? status, int? promotionId, string? search)
         {
-            var responseData = await _submissionService.GetAllSubmissionsAsync();
+            var filter = new SubmissionFilterRequestDto()
+            {
+                Status = status,
+                PromotionId = promotionId,
+                Search = search
+            };
+
+            var responseData = await _submissionService.GetAllSubmissionsAsync(filter);
 
             var allSubmissionsViewModel = responseData
                 .Select(s => new SubmissionListItemViewModel()
@@ -33,7 +43,30 @@ namespace PromotionsCRM.Web.Controllers
                 })
                 .ToArray();
 
-            return View(allSubmissionsViewModel);
+            
+
+            var model = new SubmissionsIndexViewModel()
+            {
+                Submissions = allSubmissionsViewModel,
+                Status = status,
+                PromotionId = promotionId,
+                Search = search,
+                Promotions = await LoadPromotionsAsync()
+            };
+
+
+            return View(model);
+        }
+
+        private async Task<IEnumerable<SelectListItem>> LoadPromotionsAsync()
+        {
+            var promotions = await _submissionService.GetPromotionsForFilterAsync();
+
+            return promotions.Select(p => new SelectListItem()
+            {
+                Value = p.Id.ToString(),
+                Text = p.Name,
+            });
         }
     }
 }
