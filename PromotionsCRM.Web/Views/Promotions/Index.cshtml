@@ -50,11 +50,11 @@ else
                     <td>@promotion.SubmissionCount</td>
                     <td class="text-nowrap">
                         <div class="d-flex gap-1">
-                            <a ... class="btn btn-sm btn-info">Details</a>
+                            <a asp-action="Details" asp-route-id="@promotion.Id" class="btn btn-sm btn-info">Details</a>
                             @if (User.IsInRole(RoleNames.Administrator))
                             {
-                                <a ... class="btn btn-sm btn-warning">Edit</a>
-                                <a ... class="btn btn-sm btn-danger">Delete</a> 
+                                <a asp-action="Edit" asp-route-id="@promotion.Id" class="btn btn-sm btn-warning">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@promotion.Id" class="btn btn-sm btn-danger">Delete</a>
                             }
                         </div>
                     </td>

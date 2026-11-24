@@ -3,78 +3,93 @@
 @model PromotionDetailsViewModel
 @{
     ViewBag.Title = "Promotion Details";
+    bool isAdmin = User.IsInRole(RoleNames.Administrator);
 }
 
-<h2>Promotion Overview</h2>
-
-<div class="card">
-    <div class="card-body">
-        <h4 class="card-title">@Model.Name</h4>
-
-        <p class="card-text mb-1"><strong>Id:</strong> @Model.Id</p>
-        <p class="card-text mb-1"><strong>Promotion Name:</strong> @Model.Name</p>
-        <p class="card-text mb-1"><strong>Start Date:</strong> @Model.StartDate.ToString("dd/MM/yyyy")</p>
-        <p class="card-text mb-1"><strong>End Date:</strong> @Model.EndDate.ToString("dd/MM/yyyy")</p>
-        <p class="card-text mb-1"><strong>Promotion Status:</strong> <partial name="_PromotionStatusBadge" model="Model.PromotionStatus" /></p>
-        <p class="card-text mb-1"><strong>Promotion Type:</strong> @Model.PromotionType</p>
-        <p class="card-text mb-1"><strong>Client Name:</strong> <a asp-controller="Clients" asp-action="Details" asp-route-id="@Model.ClientId">@Model.ClientName</a></p>
-        <p class="card-text mb-1"><strong>Promotion Countries:</strong> @(string.Join(", ", Model.Countries))</p>
-        <p class="card-text mb-1"><strong>Promotion Products:</strong> @string.Join(", ", Model.Products)</p>
-        @if (User.IsInRole(RoleNames.Administrator))
-        {  
-            <a asp-controller="Products"
-               asp-action="Create"
-               asp-route-promoId="@Model.Id"
-               class="btn btn-success mt-3">
-                Add Product
-            </a>
-        }
-        <h5 class="mt-4">
-            Submission Statuses:</h5>
-            @if (Model.SubmissionsByStatus.Any())
-            {
-                <table class="table table-sm table-striped w-auto">
-                <thead>
-                    <tr>
-                        <th>Status</th>
-                        <th>Count</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.SubmissionsByStatus)
-                    {
-                        <tr>
-
-                            <td>@item.Key</td>
-                            <td>@item.Value</td>
-                        </tr>
-                    }    
-                </tbody>
-                </table>
-            }
-            else
-            {
-                <p>No submissions yet!</p>
-            }
-
-        @if (User.IsInRole(RoleNames.Administrator))
-        {
-            <a asp-controller="Promotions"
-               asp-action="Edit"
-               asp-route-id="@Model.Id"
-               class="btn btn-warning mt-3">
-                Edit
-            </a>
-            <a asp-controller="Promotions"
-               asp-action="Delete"
-               asp-route-id="@Model.Id"
-               class="btn btn-danger mt-3">
-                Delete
-            </a>  
-        }
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+    <div>
+        <div class="text-muted">@Model.ClientName</div>
+        <h2 class="mb-0">@Model.Name</h2>
     </div>
+    <partial name="_PromotionStatusBadge" model="Model.PromotionStatus" />
 </div>
 
-<div class="mt-3">
-    <a asp-controller="Promotions" asp-action="Index">Back to Promotions</a>
+<div class="row g-3">
+
+    <div class="col-12 col-lg-7">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Promotion</h5>
+
+                <p class="mb-1"><strong>Period:</strong> @Model.StartDate.ToString("dd/MM/yyyy") – @Model.EndDate.ToString("dd/MM/yyyy")</p>
+                <p class="mb-1"><strong>Type:</strong> @Model.PromotionType</p>
+                <p class="mb-1">
+                    <strong>Client:</strong>
+                    <a asp-controller="Clients" asp-action="Details" asp-route-id="@Model.ClientId">@Model.ClientName</a>
+                </p>
+                <p class="mb-1"><strong>Countries:</strong> @string.Join(", ", Model.Countries)</p>
+                <p class="mb-0"><strong>Products:</strong> @string.Join(", ", Model.Products)</p>
+
+                @if (isAdmin)
+                {
+                    <hr />
+                    <div class="d-flex flex-wrap gap-2">
+                        <a asp-controller="Products" asp-action="Create" asp-route-promoId="@Model.Id" class="btn btn-success">Add Product</a>
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-5">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Submissions</h5>
+
+                @if (Model.SubmissionsByStatus.Any())
+                {
+                    <table class="table table-sm mb-3">
+                        <thead>
+                            <tr>
+                                <th>Status</th>
+                                <th class="text-end">Count</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.SubmissionsByStatus)
+                            {
+                                <tr>
+                                    <td>
+                                        <a asp-controller="Submissions" asp-action="Index"
+                                           asp-route-promotionId="@Model.Id"
+                                           asp-route-status="@item.Key"
+                                           class="text-decoration-none">
+                                            <partial name="_SubmissionStatusBadge" model="item.Key" />
+                                        </a>
+                                    </td>
+                                    <td class="text-end">@item.Value</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    <a asp-controller="Submissions" asp-action="Index" asp-route-promotionId="@Model.Id"
+                       class="btn btn-outline-primary w-100">
+                        View all @Model.SubmissionCount submissions
+                    </a>
+                }
+                else
+                {
+                    <p class="text-muted mb-0">No submissions yet.</p>
+                }
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="mt-4">
+    <a asp-action="Index" class="btn btn-secondary">Back to Promotions</a>
 </div>
