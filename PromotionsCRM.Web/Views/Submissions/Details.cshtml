@@ -76,6 +76,17 @@
                         <span class="text-muted">Not processed yet</span>
                     }
                 </p>
+                <p class="mb-1">
+                    <strong>Processed By:</strong>
+                    @if (!string.IsNullOrEmpty(Model.ProcessedByEmail))
+                    {
+                        @Model.ProcessedByEmail
+                    }
+                    else
+                    {
+                        <span class="text-muted">—</span>
+                    }
+                </p>
             </div>
         </div>
     </div>

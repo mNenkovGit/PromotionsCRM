@@ -105,7 +105,8 @@ namespace PromotionsCRM.Services.Implementations
                     PurchaseDate = s.PurchaseDate,
                     SubmittedOn = s.SubmittedOn,
                     Status = s.Status,
-                    ProcessedOn = s.ProcessedOn
+                    ProcessedOn = s.ProcessedOn,
+                    ProcessedByEmail = s.ProcessedBy != null ? s.ProcessedBy.Email : null,
                 })
                 .FirstOrDefaultAsync(); 
         }

@@ -33,5 +33,7 @@ namespace PromotionsCRM.Services.DTOs.Submission.Response
         public StatusName Status { get; set; }
 
         public DateTime? ProcessedOn { get; set; }
+
+        public string? ProcessedByEmail { get; set; }
     }
 }

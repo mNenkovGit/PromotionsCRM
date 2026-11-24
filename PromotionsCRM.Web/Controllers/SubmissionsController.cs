@@ -96,6 +96,7 @@ namespace PromotionsCRM.Web.Controllers
                 SubmittedOn = submissionDetailsDto.SubmittedOn,
                 Status = submissionDetailsDto.Status,
                 ProcessedOn = submissionDetailsDto.ProcessedOn,
+                ProcessedByEmail = submissionDetailsDto.ProcessedByEmail
             };
 
             return View(submisionDetailsViewModel);

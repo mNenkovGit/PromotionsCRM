@@ -33,5 +33,7 @@ namespace PromotionsCRM.ViewModels.Submissions
         public StatusName Status { get; set; }
 
         public DateTime? ProcessedOn { get; set; }
+
+        public string? ProcessedByEmail { get; set; }
     }
 }
