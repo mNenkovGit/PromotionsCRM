@@ -64,6 +64,43 @@ namespace PromotionsCRM.Web.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            if (id  < 0)
+            {
+                return BadRequest("Submission Id is mandatory!");
+            }
+
+            var submissionDetailsDto = await _submissionService.GetSubmissionDetailsAsync(id);
+
+            if (submissionDetailsDto == null)
+            {
+                return NotFound("Submission not found!");
+            }
+
+            var submisionDetailsViewModel = new SubmissionDetailsViewModel()
+            {
+                Id = submissionDetailsDto.Id,
+                CustomerName = submissionDetailsDto.CustomerName,
+                CustomerEmail = submissionDetailsDto.CustomerEmail,
+                CustomerPhone = submissionDetailsDto.CustomerPhone,
+                CustomerCountry = submissionDetailsDto.CustomerCountry,
+                PromotionName = submissionDetailsDto.PromotionName,
+                PromotionId = submissionDetailsDto.PromotionId,
+                ClientName = submissionDetailsDto.ClientName,
+                PromotionStartDate = submissionDetailsDto.PromotionStartDate,
+                PromotionEndDate = submissionDetailsDto.PromotionEndDate,
+                ProductName = submissionDetailsDto.ProductName,
+                PurchaseDate = submissionDetailsDto.PurchaseDate,
+                SubmittedOn = submissionDetailsDto.SubmittedOn,
+                Status = submissionDetailsDto.Status,
+                ProcessedOn = submissionDetailsDto.ProcessedOn,
+            };
+
+            return View(submisionDetailsViewModel);
+        }
+
         private async Task<IEnumerable<SelectListItem>> LoadPromotionsAsync()
         {
             var promotions = await _submissionService.GetPromotionsForFilterAsync();

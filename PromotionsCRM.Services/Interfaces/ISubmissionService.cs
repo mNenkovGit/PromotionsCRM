@@ -8,5 +8,7 @@ namespace PromotionsCRM.Services.Interfaces
         Task<PagedResponseDto<SubmissionListItemResponseDto>> GetAllSubmissionsAsync(SubmissionFilterRequestDto filter);
 
         Task<IEnumerable<PromotionsResponseDto>> GetPromotionsForFilterAsync();
+
+        Task<SubmissionDetailsResponseDto?> GetSubmissionDetailsAsync(int id);
     }
 }

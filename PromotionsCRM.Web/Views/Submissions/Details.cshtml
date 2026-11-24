@@ -1,0 +1,87 @@
+﻿@using PromotionsCRM.ViewModels.Submissions
+@model SubmissionDetailsViewModel
+
+@{
+    ViewBag.Title = "Submission Details";
+
+    bool isPurchaseWithinPeriod = Model.PurchaseDate >= Model.PromotionStartDate
+                               && Model.PurchaseDate <= Model.PromotionEndDate;
+}
+
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+    <h2 class="mb-0">Submission #@Model.Id</h2>
+    <partial name="_SubmissionStatusBadge" model="Model.Status" />
+</div>
+
+<div class="row g-3">
+
+    <div class="col-12 col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Customer</h5>
+
+                <p class="mb-1"><strong>Name:</strong> @Model.CustomerName</p>
+                <p class="mb-1"><strong>Email:</strong> @Model.CustomerEmail</p>
+                <p class="mb-1"><strong>Phone:</strong> @Model.CustomerPhone</p>
+                <p class="mb-0"><strong>Country:</strong> @Model.CustomerCountry</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Promotion &amp; Purchase</h5>
+
+                <p class="mb-1">
+                    <strong>Promotion:</strong>
+                    <a asp-controller="Promotions" asp-action="Details" asp-route-id="@Model.PromotionId">@Model.PromotionName</a>
+                </p>
+                <p class="mb-1"><strong>Client:</strong> @Model.ClientName</p>
+                <p class="mb-1">
+                    <strong>Period:</strong>
+                    @Model.PromotionStartDate.ToString("dd/MM/yyyy") – @Model.PromotionEndDate.ToString("dd/MM/yyyy")
+                </p>
+                <p class="mb-1"><strong>Product:</strong> @Model.ProductName</p>
+                <p class="mb-0">
+                    <strong>Purchase date:</strong> @Model.PurchaseDate.ToString("dd/MM/yyyy")
+                    @if (isPurchaseWithinPeriod)
+                    {
+                        <span class="badge bg-success ms-1">Within period</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger ms-1">Outside period</span>
+                    }
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Processing</h5>
+
+                <p class="mb-1"><strong>Status:</strong> <partial name="_SubmissionStatusBadge" model="Model.Status" /></p>
+                <p class="mb-1"><strong>Submitted on:</strong> @Model.SubmittedOn.ToString("dd/MM/yyyy")</p>
+                <p class="mb-0">
+                    <strong>Processed on:</strong>
+                    @if (Model.ProcessedOn.HasValue)
+                    {
+                        @Model.ProcessedOn.Value.ToString("dd/MM/yyyy")
+                    }
+                    else
+                    {
+                        <span class="text-muted">Not processed yet</span>
+                    }
+                </p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="mt-4">
+    <a asp-action="Index" class="btn btn-secondary">Back to submissions</a>
+</div>

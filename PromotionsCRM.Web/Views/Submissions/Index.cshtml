@@ -50,6 +50,7 @@ else
                 <th>Purchase Date</th>
                 <th>Status</th>
                 <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -64,6 +65,7 @@ else
                     <td>@submission.PurchaseDate.ToString("dd/MM/yyyy")</td>
                     <td><partial name="_SubmissionStatusBadge" model="submission.Status" /></td>
                     <td class="text-nowrap">
+                    <a asp-action="Details" asp-route-id="@submission.Id" class="btn btn-sm btn-outline-primary">Details</a>
                     </td>
                 </tr>
             }

@@ -84,5 +84,30 @@ namespace PromotionsCRM.Services.Implementations
                 .ToArrayAsync();
 
         }
+
+        public async Task<SubmissionDetailsResponseDto?> GetSubmissionDetailsAsync(int id)
+        {
+            return await _submissionRepository.AllAsNoTracking()
+                .Where(s => s.Id == id)
+                .Select(s => new SubmissionDetailsResponseDto()
+                {
+                    Id = s.Id,
+                    CustomerName = s.Customer.FirstName + " " + s.Customer.LastName,
+                    CustomerEmail = s.Customer.Email,
+                    CustomerCountry = s.Customer.Country.Name,
+                    CustomerPhone = s.Customer.PhoneNumber,
+                    PromotionName = s.Promotion.Name,
+                    PromotionId = s.PromotionId,
+                    ClientName = s.Promotion.Client.Name,
+                    PromotionStartDate = s.Promotion.StartDate,
+                    PromotionEndDate = s.Promotion.EndDate,
+                    ProductName = s.Product.Name,
+                    PurchaseDate = s.PurchaseDate,
+                    SubmittedOn = s.SubmittedOn,
+                    Status = s.Status,
+                    ProcessedOn = s.ProcessedOn
+                })
+                .FirstOrDefaultAsync(); 
+        }
     }
 }
