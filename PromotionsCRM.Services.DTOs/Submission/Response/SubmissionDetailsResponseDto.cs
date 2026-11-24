@@ -35,5 +35,7 @@ namespace PromotionsCRM.Services.DTOs.Submission.Response
         public DateTime? ProcessedOn { get; set; }
 
         public string? ProcessedByEmail { get; set; }
+
+        public IEnumerable<StatusName> AllowedNextStatuses { get; set; } = new List<StatusName>();
     }
 }

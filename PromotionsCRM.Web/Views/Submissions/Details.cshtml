@@ -87,6 +87,24 @@
                         <span class="text-muted">—</span>
                     }
                 </p>
+                <hr />
+
+                @if (Model.AllowedNextStatuses.Any())
+                {
+                    <form asp-action="ChangeStatus" asp-route-id="@Model.Id" method="post">
+                        <label for="newStatus" class="form-label">Change status</label>
+                        <select id="newStatus" name="newStatus" class="form-select mb-2"
+                                asp-items="Html.GetEnumSelectList<StatusName>()
+                                                    .Where(i => Model.AllowedNextStatuses.Contains((StatusName)int.Parse(i.Value)))">
+                        <option value="">Select new status...</option>
+                    </select>
+                    <button type="submit" class="btn btn-warning w-100">Update status</button>
+                </form>
+                                }
+                else
+                {
+                    <p class="text-muted mb-0">This submission is final and cannot be changed.</p>
+                }
             </div>
         </div>
     </div>

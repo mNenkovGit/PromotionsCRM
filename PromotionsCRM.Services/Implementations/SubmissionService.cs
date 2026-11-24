@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PromotionsCRM.Common.Enums;
+using PromotionsCRM.Data.Models;
 using PromotionsCRM.Data.Repository.Contracts;
 using PromotionsCRM.Services.DTOs.Submission.Request;
 using PromotionsCRM.Services.DTOs.Submission.Response;
@@ -87,7 +88,7 @@ namespace PromotionsCRM.Services.Implementations
 
         public async Task<SubmissionDetailsResponseDto?> GetSubmissionDetailsAsync(int id)
         {
-            return await _submissionRepository.AllAsNoTracking()
+            var submission = await _submissionRepository.AllAsNoTracking()
                 .Where(s => s.Id == id)
                 .Select(s => new SubmissionDetailsResponseDto()
                 {
@@ -109,6 +110,43 @@ namespace PromotionsCRM.Services.Implementations
                     ProcessedByEmail = s.ProcessedBy != null ? s.ProcessedBy.Email : null,
                 })
                 .FirstOrDefaultAsync(); 
+
+            if (submission != null)
+            {
+                submission.AllowedNextStatuses = GetAllowedNextStatuses(submission.Status);
+            }
+
+            return submission;
+        }
+
+        private static StatusName[] GetAllowedNextStatuses(StatusName current) => current switch
+        {
+            StatusName.BeingProcessed => new[] { StatusName.MissingInfo, StatusName.Valid, StatusName.Invalid, StatusName.Cancelled },
+            StatusName.MissingInfo => new[] { StatusName.Valid, StatusName.Invalid, StatusName.Cancelled  },
+            _ => Array.Empty<StatusName>()
+        };
+
+        public async Task<bool> ChangeStatusAsync(int submissionId, StatusName newStatus, string processedById)
+        {
+           var submission = await _submissionRepository.FindByIdAsync(submissionId);
+
+            if (submission == null)
+            {
+                return false;
+            }
+
+            if (!GetAllowedNextStatuses(submission.Status).Contains(newStatus))
+            {
+                return false;
+            }
+
+            submission.Status = newStatus;
+            submission.ProcessedById = processedById;
+            submission.ProcessedOn = DateTime.Today;
+
+            await _submissionRepository.SaveChangesAsync();
+
+            return true;
         }
     }
 }

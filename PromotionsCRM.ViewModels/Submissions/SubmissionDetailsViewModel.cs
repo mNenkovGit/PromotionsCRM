@@ -35,5 +35,9 @@ namespace PromotionsCRM.ViewModels.Submissions
         public DateTime? ProcessedOn { get; set; }
 
         public string? ProcessedByEmail { get; set; }
+
+        public IEnumerable<StatusName> AllowedNextStatuses { get; set; } = new List<StatusName>();
+
+        public StatusName NewStatus { get; set; }
     }
 }

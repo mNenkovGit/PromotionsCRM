@@ -96,10 +96,49 @@ namespace PromotionsCRM.Web.Controllers
                 SubmittedOn = submissionDetailsDto.SubmittedOn,
                 Status = submissionDetailsDto.Status,
                 ProcessedOn = submissionDetailsDto.ProcessedOn,
-                ProcessedByEmail = submissionDetailsDto.ProcessedByEmail
+                ProcessedByEmail = submissionDetailsDto.ProcessedByEmail,
+                AllowedNextStatuses = submissionDetailsDto.AllowedNextStatuses,
             };
 
             return View(submisionDetailsViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeStatus(int id, StatusName? newStatus)
+        {
+            if (newStatus == null)
+            {
+                TempData["ErrorMessage"] = "Please select a new status!";
+                return RedirectToAction(nameof(Details), new { id });
+            }
+
+            string? userId = GetUserId();
+
+            if (userId == null)
+            {
+                return Forbid();
+            }
+
+            try
+            {
+                bool isChanged = await _submissionService.ChangeStatusAsync(id, newStatus.Value, userId);
+
+                if (isChanged)
+                {
+                    TempData["SuccessMessage"] = "Status updated successfully!";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Status could not be changed!";
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while changing the status of submission {SubmissionId}", id);
+                TempData["ErrorMessage"] = "Status could not be changed!";
+            }
+
+            return RedirectToAction(nameof(Details), new { id });
         }
 
         private async Task<IEnumerable<SelectListItem>> LoadPromotionsAsync()
