@@ -1,0 +1,23 @@
+﻿@using PromotionsCRM.Common.Enums
+@model StatusName
+
+@{
+    string cssClass = Model switch
+    {
+        StatusName.BeingProcessed => "bg-warning text-dark",
+        StatusName.Valid => "bg-success",
+        StatusName.Invalid => "bg-danger",
+        StatusName.MissingInfo => "bg-secondary",
+        StatusName.Cancelled => "bg-secondary",
+        _ => "bg-light text-dark"
+    };
+
+    string text = Model switch
+    {
+        StatusName.BeingProcessed => "Being processed",
+        StatusName.MissingInfo => "Missing info",
+        _ => Model.ToString()
+    };
+}
+
+<span class="badge @cssClass">@text</span>

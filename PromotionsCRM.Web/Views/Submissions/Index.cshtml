@@ -1,0 +1,46 @@
+﻿@using PromotionsCRM.ViewModels.Submissions
+@model IEnumerable<SubmissionListItemViewModel>
+
+@{
+    ViewBag.Title = "Submissions";
+}
+
+<h2 class="text-center">Submissions</h2>
+
+@if (!Model.Any())
+{
+    <p>No Submissions found.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Submitted On</th>
+                <th>Customer Name</th>
+                <th>Email</th>
+                <th>Promotion</th>
+                <th>Product</th>
+                <th>Purchase Date</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var submission in Model)
+            {
+                <tr>
+                    <td>@submission.SubmittedOn.ToString("dd/MM/yyyy")</td>
+                    <td>@submission.CustomerName</td>
+                    <td>@submission.CustomerEmail</td>
+                    <td>@submission.PromotionName</td>
+                    <td>@submission.ProductName</td>
+                    <td>@submission.PurchaseDate.ToString("dd/MM/yyyy")</td>
+                    <td><partial name="_SubmissionStatusBadge" model="submission.Status" /></td>
+                    <td class="text-nowrap">
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

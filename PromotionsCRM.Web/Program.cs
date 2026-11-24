@@ -35,6 +35,7 @@ namespace PromotionsCRM.Web
             builder.Services.AddScoped<IClientService, ClientService>();
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<ICampaignService, CampaignService>();
+            builder.Services.AddScoped<ISubmissionService, SubmissionService>();
             builder.Services.RegisterRepositoriesFromAssembly(typeof(PromotionsCrmDbContext).Assembly);
 
             var app = builder.Build();
