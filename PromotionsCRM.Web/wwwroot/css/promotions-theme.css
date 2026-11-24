@@ -415,3 +415,13 @@ a:focus-visible,
 .offer-days {
     flex-shrink: 0;
 }
+
+.pagination .page-link {
+    color: var(--ink);
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--ink);
+    border-color: var(--ink);
+    color: #fff;
+}

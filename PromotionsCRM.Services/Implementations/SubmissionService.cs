@@ -4,6 +4,7 @@ using PromotionsCRM.Data.Repository.Contracts;
 using PromotionsCRM.Services.DTOs.Submission.Request;
 using PromotionsCRM.Services.DTOs.Submission.Response;
 using PromotionsCRM.Services.Interfaces;
+using static PromotionsCRM.Common.Validations;
 
 namespace PromotionsCRM.Services.Implementations
 {
@@ -19,7 +20,7 @@ namespace PromotionsCRM.Services.Implementations
             _promotionRepository = promotionRepository;
         }
 
-        public async Task<IEnumerable<SubmissionListItemResponseDto>> GetAllSubmissionsAsync(SubmissionFilterRequestDto filter)
+        public async Task<PagedResponseDto<SubmissionListItemResponseDto>> GetAllSubmissionsAsync(SubmissionFilterRequestDto filter)
         {
             var query = _submissionRepository.AllAsNoTracking();
 
@@ -41,8 +42,12 @@ namespace PromotionsCRM.Services.Implementations
                                       || s.Customer.FirstName.Contains(search)
                                       || s.Customer.LastName.Contains(search));
             }
+            var pageNumber = Math.Max(filter.PageNumber, 1);
+            var pageSize = SubmissionsPageSize;
 
-            return await query
+            int totalCount = await query.CountAsync();
+
+            var items = await query
                 .Select(s => new SubmissionListItemResponseDto()
                 {
                     Id = s.Id,
@@ -56,7 +61,15 @@ namespace PromotionsCRM.Services.Implementations
                 })
                 .OrderByDescending(s => s.Status == StatusName.BeingProcessed || s.Status == StatusName.MissingInfo)
                 .ThenBy(s => s.SubmittedOn)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
                 .ToArrayAsync();
+
+            return new PagedResponseDto<SubmissionListItemResponseDto>()
+            {
+                Items = items,
+                TotalCount = totalCount,
+            };
         }
 
         public async Task<IEnumerable<PromotionsResponseDto>> GetPromotionsForFilterAsync()

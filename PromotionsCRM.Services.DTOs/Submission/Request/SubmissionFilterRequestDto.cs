@@ -9,5 +9,7 @@ namespace PromotionsCRM.Services.DTOs.Submission.Request
         public int? PromotionId { get; set; }
 
         public string? Search { get; set; }
+
+        public int PageNumber { get; set; }
     }
 }

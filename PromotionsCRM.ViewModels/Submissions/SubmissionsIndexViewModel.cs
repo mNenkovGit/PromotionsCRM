@@ -14,5 +14,9 @@ namespace PromotionsCRM.ViewModels.Submissions
         public string? Search { get; set; }
 
         public IEnumerable<SelectListItem> Promotions { get; set; } = new List<SelectListItem>();
+
+        public int CurrentPage { get; set; }
+
+        public int TotalPages { get; set; }
     }
 }

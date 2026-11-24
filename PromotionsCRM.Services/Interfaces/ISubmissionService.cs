@@ -5,7 +5,7 @@ namespace PromotionsCRM.Services.Interfaces
 {
     public interface ISubmissionService
     {
-        Task<IEnumerable<SubmissionListItemResponseDto>> GetAllSubmissionsAsync(SubmissionFilterRequestDto filter);
+        Task<PagedResponseDto<SubmissionListItemResponseDto>> GetAllSubmissionsAsync(SubmissionFilterRequestDto filter);
 
         Task<IEnumerable<PromotionsResponseDto>> GetPromotionsForFilterAsync();
     }

@@ -4,6 +4,8 @@ using PromotionsCRM.Common.Enums;
 using PromotionsCRM.Services.DTOs.Submission.Request;
 using PromotionsCRM.Services.Interfaces;
 using PromotionsCRM.ViewModels.Submissions;
+using static PromotionsCRM.Common.Validations;
+
 
 namespace PromotionsCRM.Web.Controllers
 {
@@ -18,18 +20,20 @@ namespace PromotionsCRM.Web.Controllers
             _logger = logger;
         }
 
-        public async Task<IActionResult> Index(StatusName? status, int? promotionId, string? search)
+        public async Task<IActionResult> Index(StatusName? status, int? promotionId, string? search, int page = 1)
         {
             var filter = new SubmissionFilterRequestDto()
             {
                 Status = status,
                 PromotionId = promotionId,
-                Search = search
+                Search = search,
+                PageNumber = page
             };
 
             var responseData = await _submissionService.GetAllSubmissionsAsync(filter);
 
-            var allSubmissionsViewModel = responseData
+
+            var allSubmissionsViewModel = responseData.Items
                 .Select(s => new SubmissionListItemViewModel()
                 {
                     Id = s.Id,
@@ -43,7 +47,7 @@ namespace PromotionsCRM.Web.Controllers
                 })
                 .ToArray();
 
-            
+            int totalPages = (int)Math.Ceiling(responseData.TotalCount / (double)SubmissionsPageSize);
 
             var model = new SubmissionsIndexViewModel()
             {
@@ -51,7 +55,9 @@ namespace PromotionsCRM.Web.Controllers
                 Status = status,
                 PromotionId = promotionId,
                 Search = search,
-                Promotions = await LoadPromotionsAsync()
+                Promotions = await LoadPromotionsAsync(),
+                CurrentPage = Math.Max(page, 1),
+                TotalPages = totalPages
             };
 
 

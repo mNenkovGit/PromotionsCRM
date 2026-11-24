@@ -37,5 +37,7 @@
 
         public const int PasswordMinLen = 6;
         public const int PasswordMaxLen = 50;
+
+        public const int SubmissionsPageSize = 10;
     }
 }
