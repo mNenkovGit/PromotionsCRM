@@ -17,7 +17,7 @@ namespace PromotionsCRM.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.10")
+                .HasAnnotation("ProductVersion", "8.0.23")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -1051,6 +1051,9 @@ namespace PromotionsCRM.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
+                    b.Property<string>("ProcessedById")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime?>("ProcessedOn")
                         .HasColumnType("datetime2");
 
@@ -1069,18 +1072,15 @@ namespace PromotionsCRM.Migrations
                     b.Property<DateTime>("SubmittedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
+                    b.HasIndex("ProcessedById");
+
                     b.HasIndex("ProductId");
 
                     b.HasIndex("PromotionId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Submissions", (string)null);
 
@@ -1193,44 +1193,6 @@ namespace PromotionsCRM.Migrations
                             Status = 2,
                             SubmittedOn = new DateTime(2026, 4, 8, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
-                });
-
-            modelBuilder.Entity("PromotionsCRM.Data.Models.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(80)
-                        .HasColumnType("nvarchar(80)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -1355,6 +1317,11 @@ namespace PromotionsCRM.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "ProcessedBy")
+                        .WithMany()
+                        .HasForeignKey("ProcessedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("PromotionsCRM.Data.Models.Product", "Product")
                         .WithMany("Submissions")
                         .HasForeignKey("ProductId")
@@ -1367,17 +1334,13 @@ namespace PromotionsCRM.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("PromotionsCRM.Data.Models.User", "User")
-                        .WithMany("Submissions")
-                        .HasForeignKey("UserId");
-
                     b.Navigation("Customer");
+
+                    b.Navigation("ProcessedBy");
 
                     b.Navigation("Product");
 
                     b.Navigation("Promotion");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("PromotionsCRM.Data.Models.Client", b =>
@@ -1410,11 +1373,6 @@ namespace PromotionsCRM.Migrations
 
                     b.Navigation("PromotionsCountries");
 
-                    b.Navigation("Submissions");
-                });
-
-            modelBuilder.Entity("PromotionsCRM.Data.Models.User", b =>
-                {
                     b.Navigation("Submissions");
                 });
 #pragma warning restore 612, 618

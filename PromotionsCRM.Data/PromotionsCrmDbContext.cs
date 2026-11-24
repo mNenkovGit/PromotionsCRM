@@ -14,8 +14,6 @@ namespace PromotionsCRM.Data
         public virtual DbSet<Promotion> Promotions { get; set; } = null!;
         public virtual DbSet<PromotionCountry> PromotionsCountries { get; set; } = null!;
         public virtual DbSet<Submission> Submissions { get; set; } = null!;
-        public virtual DbSet<User> Users { get; set; } = null!;
-
 
         public PromotionsCrmDbContext(DbContextOptions<PromotionsCrmDbContext> options) : base(options)
         {

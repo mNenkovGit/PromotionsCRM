@@ -1,4 +1,4 @@
-﻿
+﻿using Microsoft.AspNetCore.Identity;
 using PromotionsCRM.Common.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -24,11 +24,9 @@ namespace PromotionsCRM.Data.Models
 
         public StatusName Status { get; set; }
 
-
-        [ForeignKey(nameof(User))]
-        public int? UserId { get; set; }
-        public virtual User? User { get; set; }
-
+        [ForeignKey(nameof(ProcessedBy))]
+        public string? ProcessedById { get; set; }
+        public virtual IdentityUser? ProcessedBy { get; set; }
 
         [Column(TypeName = "datetime2")]
         public DateTime PurchaseDate { get; set; }

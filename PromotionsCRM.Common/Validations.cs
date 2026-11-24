@@ -32,9 +32,6 @@
         public const int ProductNameMinLen = 2;
         public const int ProductNameMaxLen = 50;
 
-        public const int UserNameMinLen = 2;
-        public const int UsernameMaxLen = 50;
-
         public const int PasswordMinLen = 6;
         public const int PasswordMaxLen = 50;
 

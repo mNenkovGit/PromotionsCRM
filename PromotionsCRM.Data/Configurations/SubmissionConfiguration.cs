@@ -14,6 +14,13 @@ namespace PromotionsCRM.Data
                .WithMany(c => c.Submissions)
                .HasForeignKey(s => s.CustomerId)
                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .HasOne(s => s.ProcessedBy)
+                .WithMany()
+                .HasForeignKey(s => s.ProcessedById)
+                .OnDelete(DeleteBehavior.Restrict);
+
             builder.HasData(
              new Submission { Id = 1, CustomerId = 1, PromotionId = 1, ProductId = 1, Status = StatusName.Valid, PurchaseDate = new DateTime(2026, 6, 10), SubmittedOn = new DateTime(2026, 6, 12), ProcessedOn = new DateTime(2026, 6, 20) },
              new Submission { Id = 2, CustomerId = 2, PromotionId = 1, ProductId = 2, Status = StatusName.Invalid, PurchaseDate = new DateTime(2026, 7, 5), SubmittedOn = new DateTime(2026, 7, 6), ProcessedOn = new DateTime(2026, 7, 15) },
