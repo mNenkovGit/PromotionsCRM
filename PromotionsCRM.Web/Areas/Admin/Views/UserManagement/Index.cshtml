@@ -1,0 +1,79 @@
+﻿@model IEnumerable<UserViewModel>
+@{
+    ViewBag.Title = "User Management";
+}
+
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+    <h2 class="mb-0">User Management</h2>
+    <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="btn btn-secondary">Back to dashboard</a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped align-middle">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Roles</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                bool isAdmin = user.Roles.Contains(RoleNames.Administrator);
+
+                <tr>
+                    <td>@user.Email</td>
+                    <td>
+                        @foreach (var role in user.Roles)
+                        {
+                            <span class="badge @(role == RoleNames.Administrator ? "bg-warning text-dark" : "bg-secondary") me-1">@role</span>
+                        }
+                    </td>
+                    <td class="text-end">
+                        @if (!isAdmin)
+                        {
+                            <div class="d-flex justify-content-end align-items-center gap-1 flex-wrap">
+                                <select id="roleDropdown-@user.Id" class="form-select form-select-sm w-auto">
+                                    <option value="@RoleNames.User">@RoleNames.User</option>
+                                    <option value="@RoleNames.Administrator">@RoleNames.Administrator</option>
+                                </select>
+
+                                <form method="post" asp-area="Admin" asp-controller="UserManagement" asp-action="AssignRole" class="d-inline">
+                                    <input type="hidden" name="userId" value="@user.Id" />
+                                    <input type="hidden" name="roleName" id="assignRoleInput-@user.Id" />
+                                    <button type="submit" class="btn btn-sm btn-primary"
+                                            onclick="setRoleValue('@user.Id', 'assignRoleInput')">
+                                        Assign
+                                    </button>
+                                </form>
+
+                                <form method="post" asp-area="Admin" asp-controller="UserManagement" asp-action="RemoveRole" class="d-inline">
+                                    <input type="hidden" name="userId" value="@user.Id" />
+                                    <input type="hidden" name="roleName" id="removeRoleInput-@user.Id" />
+                                    <button type="submit" class="btn btn-sm btn-warning"
+                                            onclick="setRoleValue('@user.Id', 'removeRoleInput')">
+                                        Remove
+                                    </button>
+                                </form>
+
+                                <form method="post" asp-area="Admin" asp-controller="UserManagement" asp-action="DeleteUser" class="d-inline">
+                                    <input type="hidden" name="userId" value="@user.Id" />
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        }
+                        else
+                        {
+                            <span class="text-muted">Administrator accounts cannot be edited here</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script src="~/js/user-management.js" asp-append-version="true"></script>
+}

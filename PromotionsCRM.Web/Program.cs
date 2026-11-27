@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
+using PromotionsCRM.Common;
 using PromotionsCRM.Data;
 using PromotionsCRM.Services.Implementations;
 using PromotionsCRM.Services.Interfaces;
@@ -36,6 +37,8 @@ namespace PromotionsCRM.Web
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<ICampaignService, CampaignService>();
             builder.Services.AddScoped<ISubmissionService, SubmissionService>();
+            builder.Services.AddScoped<IUserManagementService, UserManagementService>();
+
             builder.Services.RegisterRepositoriesFromAssembly(typeof(PromotionsCrmDbContext).Assembly);
 
             var app = builder.Build();
@@ -58,6 +61,20 @@ namespace PromotionsCRM.Web
             app.MapShortCircuit(404, "robots.txt");
 
             app.UseAuthentication();
+
+            app.Use((context, next) =>
+            {
+                if (context.User.Identity?.IsAuthenticated == true && context.Request.Path == "/")
+                {
+                    if (context.User.IsInRole(RoleNames.Administrator))
+                    {
+                        context.Response.Redirect("/Admin/Home/Index");
+                        return Task.CompletedTask;
+                    }
+                }
+                return next();
+            });
+
             app.UseAuthorization();
 
             app.MapRazorPages();
