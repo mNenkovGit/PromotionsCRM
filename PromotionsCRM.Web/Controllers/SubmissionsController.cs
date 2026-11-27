@@ -70,14 +70,14 @@ namespace PromotionsCRM.Web.Controllers
         {
             if (id  < 0)
             {
-                return BadRequest("Submission Id is mandatory!");
+                return BadRequest();
             }
 
             var submissionDetailsDto = await _submissionService.GetSubmissionDetailsAsync(id);
 
             if (submissionDetailsDto == null)
             {
-                return NotFound("Submission not found!");
+                return NotFound();
             }
 
             var submisionDetailsViewModel = new SubmissionDetailsViewModel()

@@ -25,14 +25,14 @@ namespace PromotionsCRM.Web.Controllers
         {
             if (promoId == null || promoId <= 0)
             {
-                return BadRequest("Invalid promotion ID!");
+                return BadRequest();
             }
 
             var promotionName = await _productService.GetPromotionNameAsync(promoId.Value);
 
             if (promotionName == null)
             {
-                return NotFound("Promotion not found!");
+                return NotFound();
             }
 
             var newProduct = new ProductCreateViewModel()
@@ -53,7 +53,7 @@ namespace PromotionsCRM.Web.Controllers
 
             if (promotionName is null)
             {
-                return BadRequest("Invalid promotion!");
+                return BadRequest();
             }
 
             if (!string.IsNullOrWhiteSpace(createModel.Name) && await _productService.ProductNameExistsAsync(createModel.PromotionId, createModel.Name))

@@ -48,14 +48,14 @@ namespace PromotionsCRM.Web.Controllers
         {
             if (id == null || id <= 0)
             {
-                return BadRequest("Client ID is mandatory!");
+                return BadRequest();
             }
 
             var clientResponseDto = await _clientService.GetClientDetailsAsync(id.Value, name);
 
             if (clientResponseDto == null)
             {
-                return NotFound("Client not found!");
+                return NotFound();
             }
 
             var clientViewModel = new ClientDetailsViewModel()
@@ -90,13 +90,13 @@ namespace PromotionsCRM.Web.Controllers
         {
             if (id == null || id <= 0)
             {
-                return BadRequest("Client ID is mandatory!");
+                return BadRequest();
             }
             var editClientDto = await _clientService.GetClientForEditAsync(id.Value);
 
             if (editClientDto == null)
             {
-                return NotFound("Client not found!");
+                return NotFound();
             }
 
             var clientEditViewModel = new ClientEditViewModel()
@@ -122,7 +122,7 @@ namespace PromotionsCRM.Web.Controllers
         {
             if (id <= 0)
             {
-                return BadRequest("Client Id is mandatory!");
+                return BadRequest();
             }
 
             if (!string.IsNullOrWhiteSpace(model.Name) && await _clientService.ClientNameExistsAsync(model.Name, id))
@@ -159,7 +159,7 @@ namespace PromotionsCRM.Web.Controllers
 
                 if (!result)
                 {
-                    return NotFound("Client not found!");
+                    return NotFound();
                 }
                 TempData[NotificationKeys.SuccessMessage] = "Client edited successfully!";
             }

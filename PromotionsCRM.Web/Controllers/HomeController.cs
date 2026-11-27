@@ -23,6 +23,7 @@ namespace PromotionsCRM.Web.Controllers
                 return RedirectToAction("Index", "Campaigns");
             }
 
+
             return View();
         }
 
@@ -37,7 +38,19 @@ namespace PromotionsCRM.Web.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View("ServerError");
+        }
+
+        [AllowAnonymous]
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult StatusCodeError(int statusCode)
+        {
+            if (statusCode == 404)
+            {
+                return View("NotFound");
+            }
+
+            return View("ServerError");
         }
     }
 }

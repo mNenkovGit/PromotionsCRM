@@ -53,6 +53,8 @@ namespace PromotionsCRM.Web
                 app.UseHsts();
             }
 
+            app.UseStatusCodePagesWithReExecute("/Home/StatusCodeError", "?statusCode={0}");
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

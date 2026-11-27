@@ -82,14 +82,14 @@ namespace PromotionsCRM.Web.Controllers
         {
             if (promotionId <= 0)
             {
-                return BadRequest("Invalid promotion!");
+                return BadRequest();
             }
 
             var formData = await _campaignService.GetRegistrationFormDataAsync(promotionId);
 
             if (formData == null)
             {
-                return NotFound("Promotion does not exist!");
+                return NotFound();
             }
 
             var model = new CampaignRegistrationViewModel()
@@ -110,7 +110,7 @@ namespace PromotionsCRM.Web.Controllers
 
             if (formData == null)
             {
-                return NotFound("Invalid Campaign!");
+                return NotFound();
             }
 
             bool isProductValid = formData.Products.Any(p => p.Id == model.ProductId);

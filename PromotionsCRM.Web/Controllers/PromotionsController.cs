@@ -50,14 +50,14 @@ namespace PromotionsCRM.Web.Controllers
         {
             if (id <= 0)
             {
-                return BadRequest("Promotion ID is mandatory!");
+                return BadRequest();
             }
 
             var promotionDetailsResponseDto = await _promotionService.GetPromotionDetailsAsync(id);
 
             if (promotionDetailsResponseDto == null)
             {
-                return NotFound("Promotion not found!");
+                return NotFound();
             }
             var promotionDetailsViewModel = new PromotionDetailsViewModel()
             {
@@ -83,14 +83,14 @@ namespace PromotionsCRM.Web.Controllers
         {
             if (clientId == null || clientId <= 0)
             {
-                return BadRequest("Invalid client ID!");
+                return BadRequest();
             }
 
             var clientName = await _promotionService.GetClientNameAsync(clientId.Value);
 
             if (clientName == null)
             {
-                return NotFound("Client does not exist!");
+                return NotFound();
             }
 
 
@@ -206,14 +206,14 @@ namespace PromotionsCRM.Web.Controllers
         {
             if (id == null || id <= 0)
             {
-                return BadRequest("Invalid Promotion ID!");
+                return BadRequest();
             }
 
             var promotionForEditDto = await _promotionService.GetPromotionForEditAsync(id.Value);
 
             if (promotionForEditDto == null)
             {
-                return NotFound("Promotion not found!");
+                return NotFound();
             }
 
             var promotionViewModel = new PromotionEditViewModel()
@@ -235,14 +235,14 @@ namespace PromotionsCRM.Web.Controllers
         {
             if (id <= 0)
             {
-                return BadRequest("There was an error while editing the promotion! Please try again!");
+                return BadRequest();
             }
 
             int? clientId = await _promotionService.GetPromotionClientIdAsync(id);
 
             if (clientId == null)
             {
-                return NotFound("Promotion not found!");
+                return NotFound();
             }
 
             if (!string.IsNullOrWhiteSpace(model.Name) && await _promotionService.PromotionNameExistsAsync(clientId.Value, model.Name, id))
@@ -282,7 +282,7 @@ namespace PromotionsCRM.Web.Controllers
 
                 if (!isEdited)
                 {
-                    return NotFound("Promotion not found or could not be edited!");
+                    return NotFound();
                 }
 
                 TempData[NotificationKeys.SuccessMessage] = "Promotion edited successfully!";
@@ -307,13 +307,13 @@ namespace PromotionsCRM.Web.Controllers
         {
             if (id <= 0)
             {
-                return BadRequest("Invalid Promotion ID!");
+                return BadRequest();
             }
             var promotionDto = await _promotionService.GetPromotionForDeletionAsync(id);
 
             if (promotionDto == null)
             {
-                return NotFound("Promotion not found!");
+                return NotFound();
             }
 
             var promotionViewModel = new PromotionDeleteViewModel()
@@ -339,7 +339,7 @@ namespace PromotionsCRM.Web.Controllers
         {
             if (id <= 0)
             {
-                return BadRequest("Invalid Promotion ID!");
+                return BadRequest();
             }
             bool hasSubmissions = await _promotionService.HasSubmissionsAsync(id);
 
@@ -356,7 +356,7 @@ namespace PromotionsCRM.Web.Controllers
                 var isDeleted = await _promotionService.DeletePromotionAsync(id);
                 if (!isDeleted)
                 {
-                    return NotFound("Promotion not found or could not be deleted!");
+                    return NotFound();
                 }
 
                 TempData[NotificationKeys.SuccessMessage] = "Promotion deleted successfully!";
