@@ -183,7 +183,7 @@ namespace PromotionsCRM.Web.Controllers
 
                 await _promotionService.CreatePromotionAsync(promotionDto);
 
-                TempData["SuccessMessage"] = "Promotion created successfully!";
+                TempData[NotificationKeys.SuccessMessage] = "Promotion created successfully!";
 
                 return RedirectToAction(nameof(ClientsController.Details), "Clients", new { id = createPromotion.ClientId });
             }
@@ -192,7 +192,7 @@ namespace PromotionsCRM.Web.Controllers
                 _logger.LogError(ex, "An error occurred while creating the promotion!");
 
                 createPromotion.ClientName = clientName;
-                TempData["ErrorMessage"] = "An error occurred while creating the promotion. Please try again later!";
+                TempData[NotificationKeys.ErrorMessage] = "An error occurred while creating the promotion. Please try again later!";
 
                 createPromotion.Countries = await LoadCountriesAsync();
 
@@ -285,14 +285,14 @@ namespace PromotionsCRM.Web.Controllers
                     return NotFound("Promotion not found or could not be edited!");
                 }
 
-                TempData["SuccessMessage"] = "Promotion edited successfully!";
+                TempData[NotificationKeys.SuccessMessage] = "Promotion edited successfully!";
             }
 
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error occurred while editing the promotion!");
 
-                TempData["ErrorMessage"] = "Unexpected error occurred while editing the promotion!";
+                TempData[NotificationKeys.ErrorMessage] = "Unexpected error occurred while editing the promotion!";
 
 
                 return View(model);
@@ -347,7 +347,7 @@ namespace PromotionsCRM.Web.Controllers
             {
                 _logger.LogWarning("There are already submitted registrations for this promotion! Delete Action is denied!");
 
-                TempData["ErrorMessage"] = "This promotion has submissions and cannot be deleted!";
+                TempData[NotificationKeys.ErrorMessage] = "This promotion has submissions and cannot be deleted!";
                 return RedirectToAction(nameof(Details), new { id });
             }
 
@@ -359,13 +359,13 @@ namespace PromotionsCRM.Web.Controllers
                     return NotFound("Promotion not found or could not be deleted!");
                 }
 
-                TempData["SuccessMessage"] = "Promotion deleted successfully!";
+                TempData[NotificationKeys.SuccessMessage] = "Promotion deleted successfully!";
                 return RedirectToAction(nameof(PromotionsController.Index), "Promotions");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error occurred while deleting promotion {PromotionId}", id);
-                TempData["ErrorMessage"] = "Unexpected error occurred while deleting promotion! Try again later!";
+                TempData[NotificationKeys.ErrorMessage] = "Unexpected error occurred while deleting promotion! Try again later!";
 
                 return RedirectToAction(nameof(Details), new { id });
             }

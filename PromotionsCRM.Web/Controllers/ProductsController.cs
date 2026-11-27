@@ -76,7 +76,7 @@ namespace PromotionsCRM.Web.Controllers
                 };
                 await _productService.CreateProductAsync(creatProductDto);
 
-                TempData["SuccessMessage"] = "Product added successfully!";
+                TempData[NotificationKeys.SuccessMessage] = "Product added successfully!";
 
                 return RedirectToAction(nameof(PromotionsController.Details), "Promotions", new { id = createModel.PromotionId });
             }
@@ -85,7 +85,7 @@ namespace PromotionsCRM.Web.Controllers
                 _logger.LogError(ex, "An error occurred while creating the product!");
 
                 createModel.PromotionName = promotionName;
-                TempData["ErrorMessage"] = "An error occurred while creating the product. Please try again later!";
+                TempData[NotificationKeys.ErrorMessage] = "An error occurred while creating the product. Please try again later!";
 
                 return View(createModel);
             }

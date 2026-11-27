@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using PromotionsCRM.Common;
 using PromotionsCRM.Common.Enums;
 using PromotionsCRM.Services.DTOs.Submission.Request;
 using PromotionsCRM.Services.Interfaces;
@@ -108,7 +109,7 @@ namespace PromotionsCRM.Web.Controllers
         {
             if (newStatus == null)
             {
-                TempData["ErrorMessage"] = "Please select a new status!";
+                TempData[NotificationKeys.ErrorMessage] = "Please select a new status!";
                 return RedirectToAction(nameof(Details), new { id });
             }
 
@@ -125,17 +126,17 @@ namespace PromotionsCRM.Web.Controllers
 
                 if (isChanged)
                 {
-                    TempData["SuccessMessage"] = "Status updated successfully!";
+                    TempData[NotificationKeys.SuccessMessage] = "Status updated successfully!";
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = "Status could not be changed!";
+                    TempData[NotificationKeys.ErrorMessage] = "Status could not be changed!";
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error while changing the status of submission {SubmissionId}", id);
-                TempData["ErrorMessage"] = "Status could not be changed!";
+                TempData[NotificationKeys.ErrorMessage] = "Status could not be changed!";
             }
 
             return RedirectToAction(nameof(Details), new { id });

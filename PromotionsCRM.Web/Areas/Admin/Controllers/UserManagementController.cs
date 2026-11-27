@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using PromotionsCRM.Common;
 using PromotionsCRM.Services.DTOs.UserManagement.Request;
 using PromotionsCRM.Services.Interfaces;
 using PromotionsCRM.ViewModels.Admin;
@@ -40,7 +41,7 @@ namespace PromotionsCRM.Web.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                TempData["ErrorMessage"] = "Please select a role!";
+                TempData[NotificationKeys.ErrorMessage] = "Please select a role!";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -63,18 +64,18 @@ namespace PromotionsCRM.Web.Areas.Admin.Controllers
 
                 if (isAssigned)
                 {
-                    TempData["SuccessMessage"] = "Role assigned successfully!";
+                    TempData[NotificationKeys.SuccessMessage] = "Role assigned successfully!";
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = "The role could not be assigned.";
+                    TempData[NotificationKeys.ErrorMessage] = "The role could not be assigned.";
                 }
 
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error while assigning role {RoleName} to user {UserId}", inputModel.RoleName, inputModel.UserId);
-                TempData["ErrorMessage"] = "An unexpected error occurred while assigning the role.";
+                TempData[NotificationKeys.ErrorMessage] = "An unexpected error occurred while assigning the role.";
             }
 
             return RedirectToAction(nameof(Index));
@@ -85,7 +86,7 @@ namespace PromotionsCRM.Web.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                TempData["ErrorMessage"] = "Please select a role!";
+                TempData[NotificationKeys.ErrorMessage] = "Please select a role!";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -108,18 +109,18 @@ namespace PromotionsCRM.Web.Areas.Admin.Controllers
 
                 if (isRemoved)
                 {
-                    TempData["SuccessMessage"] = "Role removed successfully!";
+                    TempData[NotificationKeys.SuccessMessage] = "Role removed successfully!";
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = "The role could not be removed.";
+                    TempData[NotificationKeys.ErrorMessage] = "The role could not be removed.";
                 }
             }
 
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error while removing role {RoleName} to user {UserId}", inputModel.RoleName, inputModel.UserId);
-                TempData["ErrorMessage"] = "An unexpected error occurred while removing the role.";
+                TempData[NotificationKeys.ErrorMessage] = "An unexpected error occurred while removing the role.";
             }
 
             return RedirectToAction(nameof(Index));
@@ -130,7 +131,7 @@ namespace PromotionsCRM.Web.Areas.Admin.Controllers
         {
             if (string.IsNullOrWhiteSpace(userId))
             {
-                TempData["ErrorMessage"] = "Invalid user.";
+                TempData[NotificationKeys.ErrorMessage] = "Invalid user.";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -145,17 +146,17 @@ namespace PromotionsCRM.Web.Areas.Admin.Controllers
 
                 if (isDeleted)
                 {
-                    TempData["SuccessMessage"] = "User deleted successfully!";
+                    TempData[NotificationKeys.SuccessMessage] = "User deleted successfully!";
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = "The user could not be deleted. Users who have processed submissions cannot be deleted!";
+                    TempData[NotificationKeys.ErrorMessage] = "The user could not be deleted. Users who have processed submissions cannot be deleted!";
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error while deleting the user {UserId}", userId);
-                TempData["ErrorMessage"] = "An unexpected error occurred while deleting the user.";
+                TempData[NotificationKeys.ErrorMessage] = "An unexpected error occurred while deleting the user.";
             }
 
             return RedirectToAction(nameof(Index));

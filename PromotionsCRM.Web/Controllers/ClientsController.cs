@@ -161,14 +161,14 @@ namespace PromotionsCRM.Web.Controllers
                 {
                     return NotFound("Client not found!");
                 }
-                TempData["SuccessMessage"] = "Client edited successfully!";
+                TempData[NotificationKeys.SuccessMessage] = "Client edited successfully!";
             }
 
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error occurred while editing the Client! Try again later!");
 
-                TempData["ErrorMessage"] = "Unexpected error occurred while editing the Client!";
+                TempData[NotificationKeys.ErrorMessage] = "Unexpected error occurred while editing the Client!";
 
                 model.Countries = await LoadCountriesAsync();
 

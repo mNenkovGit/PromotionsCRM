@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using PromotionsCRM.Common;
 using PromotionsCRM.Data.Models;
 using PromotionsCRM.Services.DTOs.Campaign.Request;
 using PromotionsCRM.Services.DTOs.Campaign.Response;
@@ -157,14 +158,14 @@ namespace PromotionsCRM.Web.Controllers
 
                 await _campaignService.RegisterAsync(campaignDto);
 
-                TempData["RegisteredCampaign"]  = formData.PromotionName;
+                TempData[NotificationKeys.RegisteredCampaign]  = formData.PromotionName;
                 return RedirectToAction(nameof(RegistrationConfirmation));
             }
             catch (Exception ex)
             {
                 FillFormData(model, formData);
 
-                TempData["ErrorMessage"] = "An error occurred while submitting your registration. Please try again later!";
+                TempData[NotificationKeys.ErrorMessage] = "An error occurred while submitting your registration. Please try again later!";
 
                 _logger.LogError(ex, "An error occurred while submitting your registration!");
 
@@ -196,7 +197,7 @@ namespace PromotionsCRM.Web.Controllers
         [HttpGet]
         public IActionResult RegistrationConfirmation()
         {
-            string? campaignName = TempData["RegisteredCampaign"] as string;
+            string? campaignName = TempData[NotificationKeys.RegisteredCampaign] as string;
 
             if (campaignName == null)
             {
