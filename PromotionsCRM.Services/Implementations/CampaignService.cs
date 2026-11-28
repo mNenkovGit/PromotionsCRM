@@ -117,8 +117,8 @@ namespace PromotionsCRM.Services.Implementations
             {
                 customer = new Customer()
                 {
-                    FirstName = registration.FirstName,
-                    LastName = registration.LastName,
+                    FirstName = registration.FirstName.Trim(),
+                    LastName = registration.LastName.Trim(),
                     Email = registration.Email,
                     PhoneNumber = registration.PhoneNumber.Trim(),
                     CountryId = registration.CountryId,
@@ -126,6 +126,7 @@ namespace PromotionsCRM.Services.Implementations
                 };
 
                 await _customerRepository.AddAsync(customer);
+            }
 
                 var submission = new Submission()
                 {
@@ -139,7 +140,6 @@ namespace PromotionsCRM.Services.Implementations
 
                 await _submissionRepository.AddAsync(submission);
                 await _submissionRepository.SaveChangesAsync();
-            }
         }
 
 

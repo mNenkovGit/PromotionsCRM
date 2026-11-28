@@ -1,8 +1,6 @@
-﻿using Azure.Core;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PromotionsCRM.Data.Repository.Contracts;
-using PromotionsCRM.Data.Repository.Implementations;
 using PromotionsCRM.Services.DTOs.UserManagement.Request;
 using PromotionsCRM.Services.DTOs.UserManagement.Response;
 using PromotionsCRM.Services.Interfaces;
